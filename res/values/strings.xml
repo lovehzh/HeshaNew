@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Hesha</string>
+
+    <string name="collection">专辑</string>
+    <string name="choice">选酒</string>
+    <string name="friends">朋友圈</string>
+    <string name="my_info">我的</string>
+    
+    <string name="back">返回</string>
+    <string name="title">标题</string>
+    <string name="more">更多</string>
+    
+    <!-- album -->
+	<string name="collection_category">专辑分类</string>
+	<string name="create_collection">创建专辑</string>
+</resources>

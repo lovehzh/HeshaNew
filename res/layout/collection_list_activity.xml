@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/LinearLayout01"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent" 
+	android:orientation="vertical"
+	android:layout_gravity="center"
+	android:background="#ffffff" 
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <RelativeLayout 
+        android:id="@+id/head"
+        style="@style/TitleBackground"
+        >
+        <Button 
+            android:id="@+id/btnBack"
+            style="@style/TitleButtonLeft"
+            android:text="@string/back"
+            />
+        
+        <TextView 
+            android:id="@+id/tvTitle"
+            style="@style/TitleName"
+            android:text="@string/title"
+            />
+        
+        <Button 
+            android:id="@+id/btnCreateCollection"
+            style="@style/TitleButtonRight"
+            android:text="@string/create_collection"
+            
+            />
+    </RelativeLayout>
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head"
+        >
+        <LinearLayout 
+            android:layout_width="match_parent"
+	        	android:layout_height="wrap_content"
+	        	android:orientation="vertical"
+            >
+            
+            
+        </LinearLayout>
+    </ScrollView>
+	
+    
+</RelativeLayout>
