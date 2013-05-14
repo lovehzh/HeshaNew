@@ -34,7 +34,12 @@ public class CollectionListActivity extends Activity implements OnClickListener{
 			break;
 			
 		case R.id.btnCreateCollection:
-			
+			boolean isSignin = false;
+			if(isSignin) {
+				
+			}else {
+				
+			}
 			break;
 
 		default:
