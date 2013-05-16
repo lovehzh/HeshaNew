@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/LinearLayout01"
+<LinearLayout android:id="@+id/LinearLayout01"
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent" 
 	android:orientation="vertical"
@@ -8,12 +8,11 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	
     <RelativeLayout
-        android:id="@+id/rl1" 
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         >
         <TextView
-            android:id="@+id/tvTitleName" 
+            android:id="@+id/tvCategoryName" 
             android:layout_height="wrap_content"
         		android:layout_width="wrap_content"
         		android:text="@string/title"
@@ -31,7 +30,6 @@
     <RelativeLayout 
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_below="@+id/rl1"
         >
         <ImageView
             android:layout_height="wrap_content"
@@ -58,8 +56,68 @@
             />
     </RelativeLayout>
     
+    <TextView
+        android:id="@+id/tvItemTitle" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="奔富巴罗萨谷的试酒室"
+        />
+    
+    
+    <TextView
+        android:id="@+id/tvItemDes" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="奔富在南澳洲，有两个主要的试酒室，一个在阿德莱德，一个，就在巴罗萨谷，这里。这里的服务员，很漂亮喔，嘻嘻。"
+        />
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <!-- pictures num -->
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/pictur"
+            />
+        <TextView 
+            android:id="@+id/tvPictursNum" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/digital_0"
+            />
+        
+        <!-- goods num -->
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/goods"
+	        android:layout_marginLeft="10dip"
+            />
+        <TextView 
+            android:id="@+id/tvGoodsNum" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/digital_0"
+            />
+        
+        <TextView 
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        
+        <!-- creator -->
+        <TextView 
+            android:id="@+id/tvCreator" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="麦兜的小窝"
+            />
+    </LinearLayout>
     
  
 	
     
-</RelativeLayout>
+</LinearLayout>

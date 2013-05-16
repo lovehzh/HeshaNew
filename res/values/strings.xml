@@ -8,11 +8,16 @@
     <string name="friends">朋友圈</string>
     <string name="my_info">我的</string>
     
-    <string name="back">返回</string>
     <string name="title">标题</string>
+    <string name="digital_0">0</string>
+    
+    <string name="back">返回</string>
     <string name="more">更多</string>
     
     <!-- album -->
 	<string name="collection_category">专辑分类</string>
 	<string name="create_collection">创建专辑</string>
+	
+	<string name="pictur">图片</string>
+	<string name="goods">商品</string>
 </resources>
