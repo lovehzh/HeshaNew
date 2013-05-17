@@ -13,11 +13,43 @@
     
     <string name="back">返回</string>
     <string name="more">更多</string>
-    
+    <string name="press_again_exit">再按一次退出</string>
     <!-- album -->
 	<string name="collection_category">专辑分类</string>
-	<string name="create_collection">创建专辑</string>
+	<string name="create_collection">+创建专辑</string>
 	
 	<string name="pictur">图片</string>
 	<string name="goods">商品</string>
+	
+	<!-- login -->
+	<string name="retrive_password">找回密码</string>
+	<string name="login">登陆</string>
+	<string name="account">账户</string>
+	<string name="password">密码</string>
+	<string name="account_hint">昵称/邮件</string>
+	<string name="password_hint">请输入密码</string>
+	
+	<string name="taobao_account">淘宝账户</string>
+	<string name="weibo_account">微博账号</string>
+	<string name="qq_account">QQ号</string>
+	
+	<string name="signup_hesha">注册喝啥</string>
+	<string name="signup">注册</string>
+	
+	<!-- signup -->
+	<string name="email">邮箱</string>
+	<string name="nickname">昵称</string>
+	
+	<string name="email_hint">请输入你常用的一个邮箱地址</string>
+	<string name="nickname_hint">取一个你在喝啥的昵称</string>
+	<string name="done">完成</string>
+	
+	<string name="no_net">目前网络不可以用</string>
+    <string name="server_response_error">错误:\n服务暂不可用，请稍后再试</string>
+    <string name="retry">重试</string>
+    
+    <!-- retrieve password -->
+    <string name="retrieve_password">找回密码</string>
+    <string name="input_the_regist_email">请输入注册时使用的邮箱</string>
+    <string name="submit">提交</string>
 </resources>

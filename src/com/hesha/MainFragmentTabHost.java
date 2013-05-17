@@ -7,8 +7,12 @@ package com.hesha;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.view.KeyEvent;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class MainFragmentTabHost extends FragmentActivity {
@@ -94,6 +98,35 @@ public class MainFragmentTabHost extends FragmentActivity {
 		}
 		
 		return null;
+	}
+	
+	
+	/**
+	 * 连续按两次返回键就退出
+	 */
+	private long firstTime;
+	private Boolean ifExit;
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(keyCode == KeyEvent.KEYCODE_BACK) {
+			if(System.currentTimeMillis() - firstTime < 3000){
+				ifExit = true;
+			}else{
+				firstTime = System.currentTimeMillis();
+				ifExit = false;
+				Toast.makeText(this,
+						getResources().getString(R.string.press_again_exit),
+						Toast.LENGTH_SHORT).show();
+			}
+			if(ifExit){
+				//do something, just like animation
+				finish();
+			}
+			
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 	
 }

@@ -77,7 +77,13 @@ public class CollectionFragment extends Fragment implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.add_collection:
-			Toast.makeText(getActivity(), "s", Toast.LENGTH_SHORT).show();
+			boolean isLogin = false;
+			if(isLogin) {
+				
+			}else {
+				Intent intent = new Intent(activity, LoginActivity.class);
+				startActivity(intent);
+			}
 			break;
 
 		default:

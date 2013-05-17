@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/LinearLayout01"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent" 
+	android:orientation="vertical"
+	android:layout_gravity="center"
+	android:background="#ffffff" 
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <RelativeLayout 
+        android:id="@+id/head"
+        style="@style/TitleBackground"
+        >
+        <Button 
+            android:id="@+id/btnBack"
+            style="@style/TitleButtonLeft"
+            android:text="@string/back"
+            />
+        
+        <TextView 
+            android:id="@+id/tvTitle"
+            style="@style/TitleName"
+            android:text="@string/signup"
+            />
+        
+        <Button 
+            android:id="@+id/btnSignup"
+            style="@style/TitleButtonRight"
+            android:text="@string/done"
+            
+            />
+    </RelativeLayout>
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head"
+        >
+        <LinearLayout 
+            android:layout_width="match_parent"
+	        	android:layout_height="wrap_content"
+	        	android:orientation="vertical"
+	        	android:layout_marginTop="10dip"
+            >
+            
+            <LinearLayout 
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:background="@drawable/row_bg_top_select"
+                android:gravity="center"
+                >
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    />
+                <EditText 
+                    android:id="@+id/etEmail"
+                    style="@style/EditTextMargin"
+                    android:hint="@string/email_hint"
+                    />
+            </LinearLayout>
+            
+            <LinearLayout 
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:background="@drawable/row_bg_middle_select"
+                android:gravity="center"
+                >
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nickname"
+                    />
+                <EditText 
+                    android:id="@+id/etNickname"
+                    style="@style/EditTextMargin"
+                    android:hint="@string/nickname_hint"
+                    />
+            </LinearLayout>
+            
+            <LinearLayout 
+                android:layout_width="match_parent"
+                android:layout_height="40dip"
+                android:background="@drawable/row_bg_bottom_select"
+                android:gravity="center"
+                >
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password"
+                    />
+                <EditText
+                    android:id="@+id/etPassword" 
+                    style="@style/EditTextMargin"
+                    android:hint="@string/password_hint"
+                    />
+            </LinearLayout>
+            
+            
+            <TextView 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="---------- 使用以下互联方式登陆 ----------"
+                android:layout_marginTop="10dip"
+                android:gravity="center"
+                />
+            
+            <TextView 
+	            	android:textSize="18.0sp" 
+	            	android:textColor="@color/default_text" 
+	            	android:ellipsize="marquee" 
+	            	android:gravity="center_vertical" 
+	            	android:id="@+id/tv_taobao_account" 
+	            	android:background="@drawable/row_bg_top_select" 
+	            	android:paddingLeft="20.0dip" 
+	            	android:paddingRight="15.0dip" 
+	            	android:focusable="true" 
+	            	android:clickable="true" 
+	            	android:layout_width="fill_parent" 
+	            	android:layout_height="45.0dip" 
+	            	android:text="@string/taobao_account" 
+	            	android:singleLine="true" 
+	            	android:selectAllOnFocus="true" 
+	            	android:drawableRight="@drawable/hi_setting_more" 
+	            	android:drawableLeft="@drawable/ic_launcher"
+	            	android:drawablePadding="10.0dip" 
+	            	android:marqueeRepeatLimit="marquee_forever" 
+	            	android:layout_marginTop="10dip"
+	            	/>
+            
+            <TextView 
+	            	android:textSize="18.0sp" 
+	            	android:textColor="@color/default_text" 
+	            	android:ellipsize="marquee" 
+	            	android:gravity="center_vertical" 
+	            	android:id="@+id/tv_weibo_account" 
+	            	android:background="@drawable/row_bg_middle_select" 
+	            	android:paddingLeft="20.0dip" 
+	            	android:paddingRight="15.0dip" 
+	            	android:focusable="true" 
+	            	android:clickable="true" 
+	            	android:layout_width="fill_parent" 
+	            	android:layout_height="45.0dip" 
+	            	android:text="@string/weibo_account" 
+	            	android:singleLine="true" 
+	            	android:selectAllOnFocus="true" 
+	            	android:drawableRight="@drawable/hi_setting_more" 
+	            	android:drawableLeft="@drawable/ico_sina"
+	            	android:drawablePadding="10.0dip" 
+	            	android:marqueeRepeatLimit="marquee_forever" />
+            
+            
+            <TextView 
+	            	android:textSize="18.0sp" 
+	            	android:textColor="@color/default_text" 
+	            	android:ellipsize="marquee" 
+	            	android:gravity="center_vertical" 
+	            	android:id="@+id/tv_qq_account" 
+	            	android:background="@drawable/row_bg_bottom_select" 
+	            	android:paddingLeft="20.0dip" 
+	            	android:paddingRight="15.0dip" 
+	            	android:focusable="true" 
+	            	android:clickable="true" 
+	            	android:layout_width="fill_parent" 
+	            	android:layout_height="45.0dip" 
+	            	android:text="@string/qq_account" 
+	            	android:singleLine="true" 
+	            	android:selectAllOnFocus="true" 
+	            	android:drawableRight="@drawable/hi_setting_more" 
+	            	android:drawableLeft="@drawable/ico_qq"
+	            	android:drawablePadding="10.0dip" 
+	            	android:marqueeRepeatLimit="marquee_forever" />
+            
+            
+        </LinearLayout>
+    </ScrollView>
+	
+    
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.hesha;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,9 +37,10 @@ public class CollectionListActivity extends Activity implements OnClickListener{
 		case R.id.btnCreateCollection:
 			boolean isSignin = false;
 			if(isSignin) {
-				
+				//show dialog
 			}else {
-				
+				Intent intent = new Intent(this, LoginActivity.class);
+				startActivity(intent);
 			}
 			break;
 
