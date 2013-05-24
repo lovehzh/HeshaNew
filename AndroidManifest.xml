@@ -37,6 +37,7 @@
     		<activity android:name=".LoginActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		<activity android:name=".SignupActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		<activity android:name=".RetrievePasswordActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+    		<activity android:name=".MyInfoFragment" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		
     		
     </application>

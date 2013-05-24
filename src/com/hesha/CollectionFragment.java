@@ -1,7 +1,11 @@
 package com.hesha;
 
 
+
+import com.hesha.tasks.GetCollectionPageTask;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,10 +20,20 @@ public class CollectionFragment extends Fragment implements OnClickListener{
 	private Button btnCreateCollection;
 	private LinearLayout ll0, ll1;
 	private Activity activity;
+	private ProgressDialog dialog;
+	
+//	private PageIndicator pageIndicator;
+//	private int originalPostion;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
+		activity = getActivity();
+		dialog = new ProgressDialog(activity);
+		
+		GetCollectionPageTask collectionPage = new GetCollectionPageTask(activity, dialog);
+		collectionPage.execute((Void)null);
 		
 	}
 		
@@ -40,7 +54,10 @@ public class CollectionFragment extends Fragment implements OnClickListener{
 	
 	private void initComponent() {
 		
-		activity = getActivity();
+		
+//		pageIndicator = (PageIndicator)activity.findViewById(R.id.pi);
+//		pageIndicator.setIndex(originalPostion);
+		
 		btnCreateCollection = (Button)activity.findViewById(R.id.add_collection);
 		btnCreateCollection.setOnClickListener(CollectionFragment.this);
 		
@@ -50,7 +67,7 @@ public class CollectionFragment extends Fragment implements OnClickListener{
 		//add button dynamic
 		int itemSize = 10;
 		for(int i=0; i<itemSize; i++) {
-			Button btnTite = new Button(activity);
+			final Button btnTite = new Button(activity);
 			btnTite.setText("some" + i);
 			btnTite.setTag(i);
 			if(i < itemSize / 2) {
@@ -65,8 +82,11 @@ public class CollectionFragment extends Fragment implements OnClickListener{
 				public void onClick(View v) {
 					int i = Integer.valueOf(v.getTag().toString());
 					Toast.makeText(activity, "some" + i, Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent(activity, CollectionListActivity.class);
-					startActivity(intent);
+//					Intent intent = new Intent(activity, CollectionListActivity.class);
+//					startActivity(intent);
+//					int targetPosition = Integer.valueOf(btnTite.getTag().toString());
+//					pageIndicator.changePosition(originalPostion, targetPosition - originalPostion);
+//					originalPostion = targetPosition;
 				}
 			});
 		}

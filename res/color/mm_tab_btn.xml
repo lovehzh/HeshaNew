@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:color="#a50202" />
-    <item android:color="#eaf26f" />
+    <item android:state_checked="true" android:color="#d55151" />
+    <item android:color="#000000" />
     <!-- 
     	<item android:state_checked="true" android:color="#ffffffff" />
     	<item android:color="#ff616161" />

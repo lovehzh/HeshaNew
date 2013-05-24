@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -35,7 +35,7 @@
 	    <item name="android:layout_width">match_parent</item>
 	    <item name="android:layout_height">wrap_content</item>
 	    <item name="android:background">@drawable/title_top_bg</item>
-	    <item name="android:gravity">center_vertical</item>
+	    <item name="android:layout_gravity">center_vertical</item>
 	</style>
 	
     <style name="TitleName">
@@ -88,6 +88,17 @@
 	    <item name="android:singleLine">true</item>
 	    <item name="android:background">#00000000</item>
 	    <item name="android:layout_marginLeft">10dip</item>
+	</style>
+	
+	<style name="MainRadioButton">
+	    <item name="android:layout_width">0dip</item>
+	    <item name="android:layout_height">wrap_content</item>
+	    <item name="android:background">@drawable/tab_hesha</item>
+	    <item name="android:layout_weight">1</item>
+	    <item name="android:button">@null</item>
+	    <item name="android:gravity">center</item>
+	    <item name="android:textColor">@color/mm_tab_btn</item>
+	    <item name="android:textSize">19sp</item>
 	</style>
 
 </resources>

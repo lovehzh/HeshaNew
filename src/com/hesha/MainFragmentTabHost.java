@@ -4,14 +4,16 @@ package com.hesha;
 
 
 
+import com.hesha.view.PageIndicator;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.RadioGroup;
+import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
@@ -22,11 +24,21 @@ public class MainFragmentTabHost extends FragmentActivity {
 	private String[] TabTag 		= {"tab1", "tab2", "tab3", "tab4"};
 	private RadioGroup radioGroup;
 	
+	private Intent intent;
+	
+	private PageIndicator pageIndicator;
+	private int originalPostion, targetPosition;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_tabhost);
+		
+		pageIndicator = (PageIndicator)findViewById(R.id.pi);
+		pageIndicator.setIndex(originalPostion);
+		
+		intent = new Intent(this, MyInfoFragment.class);
 		
 		radioGroup = (RadioGroup)findViewById(R.id.main_radio);
 		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -36,24 +48,31 @@ public class MainFragmentTabHost extends FragmentActivity {
 				switch (checkedId) {
 				case R.id.main_tab_0:
 					mTabHost.setCurrentTabByTag(TabTag[0]);
+					targetPosition = 0;
 					break;
 					
 				case R.id.main_tab_1:
 					mTabHost.setCurrentTabByTag(TabTag[1]);
+					targetPosition = 1;
 					break;
 					
 				case R.id.main_tab_2:
 					mTabHost.setCurrentTabByTag(TabTag[2]);
+					targetPosition = 2;
 					break;
 					
 				case R.id.main_tab_3:
 					mTabHost.setCurrentTabByTag(TabTag[3]);
+					targetPosition = 3;
 					break;
 					
 
 				default:
 					break;
 				}
+				
+				pageIndicator.changePosition(originalPostion, targetPosition - originalPostion);
+				originalPostion = targetPosition;
 			}
 		});
 		
@@ -73,6 +92,10 @@ public class MainFragmentTabHost extends FragmentActivity {
 			mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 			mTabHost.bringToFront();
 			
+			TabSpec myInfoSpec = mTabHost.newTabSpec(TabTag[3]);
+			myInfoSpec.setIndicator("",null).setContent(intent);
+			
+			
 			mTabHost.addTab(
 	        		mTabHost.newTabSpec(TabTag[0]).setIndicator(""),
 	        		CollectionFragment.class, 
@@ -88,10 +111,7 @@ public class MainFragmentTabHost extends FragmentActivity {
 	        		FriendsFragment.class, 
 	        		null);
 			
-			mTabHost.addTab(
-	        		mTabHost.newTabSpec(TabTag[3]).setIndicator(""),
-	        		MyInfoFragment.class, 
-	        		null);
+			mTabHost.addTab(myInfoSpec);
 			
 		}else {
 			return mTabHost;
