@@ -9,9 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.MyListView.OnRefreshListener;
 import com.hesha.adapter.CollectionTypeAndPreviewItemsAdapter;
 import com.hesha.bean.CollectionStruct;
+import com.hesha.bean.CollectionType;
 import com.hesha.bean.CollectionTypeAndPreviewItems;
 import com.hesha.constants.Constants;
-import com.hesha.tasks.GetCollectionPageTask;
 import com.hesha.utils.HttpUrlConnectionUtils;
 
 import android.app.Activity;
@@ -35,21 +35,18 @@ public class TabCollectionActivity extends Activity implements OnClickListener {
 	private MyListView list;
 	private CollectionTypeAndPreviewItemsAdapter adapter;
 	private ArrayList<CollectionTypeAndPreviewItems> objs;
+	private ArrayList<CollectionType> collectionTypes;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.collection_fragment);
 		
+		collectionTypes = new ArrayList<CollectionType>();
 		dialog = new ProgressDialog(this);
 		GetCollectionPageTask collectionPage = new GetCollectionPageTask(this, dialog);
 		collectionPage.execute((Void)null);
 		
-		objs = new ArrayList<CollectionTypeAndPreviewItems>();
-		for(int i=0; i<8; i++) {
-			CollectionTypeAndPreviewItems obj = new CollectionTypeAndPreviewItems();
-			objs.add(obj);
-		}
 		
 		initComponent();
 	}
@@ -62,10 +59,38 @@ public class TabCollectionActivity extends Activity implements OnClickListener {
 		ll1 = (LinearLayout) findViewById(R.id.ll_1);
 
 		// add button dynamic
-		int itemSize = 10;
+//		int itemSize = 10;
+//		for (int i = 0; i < itemSize; i++) {
+//			final Button btnTite = new Button(this);
+//			btnTite.setText("some" + i);
+//			btnTite.setTag(i);
+//			if (i < itemSize / 2) {
+//				ll0.addView(btnTite);
+//			} else {
+//				ll1.addView(btnTite);
+//			}
+//
+//			btnTite.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					int i = Integer.valueOf(v.getTag().toString());
+//					Toast.makeText(TabCollectionActivity.this, "some" + i,
+//							Toast.LENGTH_SHORT).show();
+//				}
+//			});
+//		}
+		
+		list = (MyListView)findViewById(R.id.list);
+		list.setonRefreshListener(refreshListener);
+		
+	}
+	
+	private void addCollectionTypesUI() {
+		// add button dynamic
+		int itemSize = collectionTypes.size();
 		for (int i = 0; i < itemSize; i++) {
 			final Button btnTite = new Button(this);
-			btnTite.setText("some" + i);
+			btnTite.setText(collectionTypes.get(i).getCollection_type_name());
 			btnTite.setTag(i);
 			if (i < itemSize / 2) {
 				ll0.addView(btnTite);
@@ -82,11 +107,6 @@ public class TabCollectionActivity extends Activity implements OnClickListener {
 				}
 			});
 		}
-		
-		list = (MyListView)findViewById(R.id.list);
-		list.setonRefreshListener(refreshListener);
-		adapter = new CollectionTypeAndPreviewItemsAdapter(this, android.R.layout.simple_list_item_1, objs, list);
-		list.setAdapter(adapter);
 	}
 
 	@Override
@@ -186,8 +206,17 @@ public class TabCollectionActivity extends Activity implements OnClickListener {
 			try {
 				struct = mapper.readValue(response, CollectionStruct.class);
 				
-//				ArrayList<CollectionTypeAndReviewItems> list = struct.getData().ge
-//				Log.i(TAG, "list.size = " + list.size());
+				objs = struct.getData().getCollections_data();
+				
+				for(int i=0; i<objs.size(); i++) {
+					CollectionType temp = objs.get(i).getCollection_type();
+					collectionTypes.add(temp);
+				}
+				addCollectionTypesUI();
+				
+				adapter = new CollectionTypeAndPreviewItemsAdapter(TabCollectionActivity.this, android.R.layout.simple_list_item_1, objs, list);
+				list.setAdapter(adapter);
+				
 			} catch (JsonParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

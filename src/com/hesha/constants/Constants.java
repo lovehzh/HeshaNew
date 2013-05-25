@@ -2,6 +2,7 @@ package com.hesha.constants;
 
 public interface Constants{
 	public static final String SERVER_URL = "http://192.168.1.41:8084/rest/index.php";
+	public static final String IMAGE_BASE_URL = "http://192.168.1.41:8084/";
 	public static final boolean D = true;
 	
 	public static final int ITEM_PHOTO = 1;     //普通图片

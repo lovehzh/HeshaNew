@@ -3,9 +3,16 @@ package com.hesha.adapter;
 import java.util.ArrayList;
 
 import com.hesha.R;
+import com.hesha.bean.BaseItem;
+import com.hesha.bean.Collection;
+import com.hesha.bean.CollectionType;
 import com.hesha.bean.CollectionTypeAndPreviewItems;
+import com.hesha.bean.ImageBean;
+import com.hesha.constants.Constants;
+import com.hesha.utils.AsyncImageLoader;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +24,7 @@ import android.widget.TextView;
 public class CollectionTypeAndPreviewItemsAdapter extends ArrayAdapter<CollectionTypeAndPreviewItems>{
 	private ArrayList<CollectionTypeAndPreviewItems> objs;
 	private Context context;
+	private AsyncImageLoader asyncImageLoader;
 	private ListView listView;
 	public CollectionTypeAndPreviewItemsAdapter(Context context,
 			int textViewResourceId, ArrayList<CollectionTypeAndPreviewItems> objs,
@@ -25,6 +33,7 @@ public class CollectionTypeAndPreviewItemsAdapter extends ArrayAdapter<Collectio
 		this.context = context;
 		this.objs = objs;
 		this.listView = listView;
+		asyncImageLoader = new AsyncImageLoader(context);
 	}
 	
 	@Override
@@ -56,6 +65,55 @@ public class CollectionTypeAndPreviewItemsAdapter extends ArrayAdapter<Collectio
 			holder = (Holder)convertView.getTag();
 		}
 		
+		CollectionType collectionType = obj.getCollection_type();
+		Collection collection = obj.getCollections();
+		
+		holder.tvCategoryName.setText(collectionType.getCollection_type_name());
+		holder.tvItemTitle.setText(collection.getCollection_name());
+		holder.tvItemDes.setText(collection.getCollection_des());
+		holder.tvPictursNum.setText(collection.getImage_num() + "");
+		holder.tvGoodsNum.setText(collection.getProduct_num() + "");
+		holder.tvCreator.setText(collection.getUser_info().getUser_name());
+		
+		ArrayList<BaseItem> items = collection.getItems();
+		
+		ArrayList<ImageView> imageViews = new ArrayList<ImageView>();
+		imageViews.add(holder.iv0);
+		imageViews.add(holder.iv1);
+		imageViews.add(holder.iv2);
+		
+		for(int i=0; i<items.size(); i++) {
+			ImageBean imageBean = items.get(i).getItem_image().get(0);
+			String imageUrl = Constants.IMAGE_BASE_URL + imageBean.getThumb();
+			ImageView iv = imageViews.get(i);
+			iv.setTag(imageUrl);
+			
+			Drawable cacheImagePictureContent = asyncImageLoader.loadDrawable(imageUrl, 
+					new AsyncImageLoader.ImageCallback() {
+						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+							ImageView imageViewByTag = (ImageView)listView.findViewWithTag(imageUrl);
+							if(null != imageViewByTag){
+								imageViewByTag.setImageDrawable(imageDrawable);
+							}
+						}
+					});
+			
+			iv.setImageDrawable(cacheImagePictureContent);
+		}
+		
+//		String imageUrl0 = Constants.IMAGE_BASE_URL + imageBeans.get(0).getThumb();
+//		holder.iv0.setTag(imageUrl0); 
+//		Drawable cacheImagePictureContent = asyncImageLoader.loadDrawable(imageUrl0, 
+//				new AsyncImageLoader.ImageCallback() {
+//					public void imageLoaded(Drawable imageDrawable, String imageUrl) {
+//						ImageView imageViewByTag = (ImageView)listView.findViewWithTag(imageUrl);
+//						if(null != imageViewByTag){
+//							imageViewByTag.setImageDrawable(imageDrawable);
+//						}
+//					}
+//				});
+//		
+//		holder.iv0.setImageDrawable(cacheImagePictureContent);
 		
 		return convertView;
 	}

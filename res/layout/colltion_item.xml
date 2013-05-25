@@ -28,37 +28,35 @@
             />
     </RelativeLayout>
     
-    <RelativeLayout 
+    <LinearLayout 
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:gravity="center"
         >
         <ImageView
             android:id="@+id/iv_0"
             android:layout_height="wrap_content"
-        		android:layout_width="wrap_content"
+        		android:layout_width="0dip"
         		android:text="@string/title"
-        		android:layout_alignParentLeft="true"
-        		android:background="@drawable/ic_launcher"
+        		android:layout_weight="1"
             />
         
         <ImageView
             android:id="@+id/iv_1"
             android:layout_height="wrap_content"
-        		android:layout_width="wrap_content"
+        		android:layout_width="0dip"
         		android:text="@string/title"
-        		android:layout_centerInParent="true"
-        		android:background="@drawable/ic_launcher"
+        		android:layout_weight="1"
             />
         
         <ImageView 
             android:id="@+id/iv_2"
             android:layout_height="wrap_content"
-        		android:layout_width="wrap_content"
+        		android:layout_width="0dip"
         		android:text="@string/more"
-        		android:layout_alignParentRight="true"
-        		android:background="@drawable/ic_launcher"
+        		android:layout_weight="1"
             />
-    </RelativeLayout>
+    </LinearLayout>
     
     <TextView
         android:id="@+id/tv_item_title" 

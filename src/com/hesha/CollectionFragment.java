@@ -2,7 +2,6 @@ package com.hesha;
 
 
 
-import com.hesha.tasks.GetCollectionPageTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,8 +31,6 @@ public class CollectionFragment extends Fragment implements OnClickListener{
 		activity = getActivity();
 		dialog = new ProgressDialog(activity);
 		
-		GetCollectionPageTask collectionPage = new GetCollectionPageTask(activity, dialog);
-		collectionPage.execute((Void)null);
 		
 	}
 		
