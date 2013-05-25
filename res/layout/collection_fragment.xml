@@ -32,59 +32,40 @@
 	        android:layout_marginRight="5dip"
             />
     </RelativeLayout>
-    <ScrollView 
+    
+    <!-- collection category -->
+    <HorizontalScrollView 
+        android:id="@+id/hs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:id="@+id/ll_0" 
+                android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
+                ></LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/ll_1" 
+                android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
+                ></LinearLayout>
+            
+        </LinearLayout>
+    </HorizontalScrollView>
+
+	<com.hesha.MyListView
+	    android:id="@+id/list"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+   			android:layout_height="match_parent"
 	    >
-	    <LinearLayout 
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical"
-		     >
-		    <!-- collection category -->
-		    <HorizontalScrollView 
-		        android:id="@+id/hs"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        >
-		        <LinearLayout 
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:orientation="vertical"
-		            >
-		            <LinearLayout
-		                android:id="@+id/ll_0" 
-		                android:layout_width="wrap_content"
-		            		android:layout_height="wrap_content"
-		                ></LinearLayout>
-		            
-		            <LinearLayout
-		                android:id="@+id/ll_1" 
-		                android:layout_width="wrap_content"
-		            		android:layout_height="wrap_content"
-		                ></LinearLayout>
-		            
-		        </LinearLayout>
-		    </HorizontalScrollView>
-		
-			 <include layout="@layout/colltion_item"/>
-			 
-			 <include layout="@layout/colltion_item"/>
-			 
-			 <include layout="@layout/colltion_item"/>
-			 
-			 <include layout="@layout/colltion_item"/>
-			 
-			 <include layout="@layout/colltion_item"/>
-			 
-			 <include layout="@layout/colltion_item"/>
-			 
-			 <include layout="@layout/colltion_item"/>
-			 
-			 <include layout="@layout/colltion_item"/>
-		
-		</LinearLayout>
-	</ScrollView>
+	</com.hesha.MyListView> 
+	
 </LinearLayout>
 
 

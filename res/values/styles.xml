@@ -100,5 +100,13 @@
 	    <item name="android:textColor">@color/mm_tab_btn</item>
 	    <item name="android:textSize">19sp</item>
 	</style>
+	
+	<style name="progress">
+        <item name="android:indeterminateDrawable">@drawable/progress_medium_white</item>
+        <item name="android:minWidth">16dip</item>
+        <item name="android:maxWidth">16dip</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
 
 </resources>

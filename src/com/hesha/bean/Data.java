@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 public class Data {
 
-	private ArrayList<CollectionTypeAndReviewItems>  collections_data;
+	private ArrayList<CollectionTypeAndPreviewItems>  collections_data;
 
-	public ArrayList<CollectionTypeAndReviewItems> getCollections_data() {
+	public ArrayList<CollectionTypeAndPreviewItems> getCollections_data() {
 		return collections_data;
 	}
 
 	public void setCollections_data(
-			ArrayList<CollectionTypeAndReviewItems> collections_data) {
+			ArrayList<CollectionTypeAndPreviewItems> collections_data) {
 		this.collections_data = collections_data;
 	}
 	

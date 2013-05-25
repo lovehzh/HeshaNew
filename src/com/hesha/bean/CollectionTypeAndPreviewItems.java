@@ -1,20 +1,19 @@
 package com.hesha.bean;
 
-import java.util.ArrayList;
 
-public class CollectionTypeAndReviewItems {
+public class CollectionTypeAndPreviewItems {
 	private CollectionType collection_type;
-	private ArrayList<Collection> collections;
+	private Collection collections;
 	public CollectionType getCollection_type() {
 		return collection_type;
 	}
 	public void setCollection_type(CollectionType collection_type) {
 		this.collection_type = collection_type;
 	}
-	public ArrayList<Collection> getCollections() {
+	public Collection getCollections() {
 		return collections;
 	}
-	public void setCollections(ArrayList<Collection> collections) {
+	public void setCollections(Collection collections) {
 		this.collections = collections;
 	}
 	

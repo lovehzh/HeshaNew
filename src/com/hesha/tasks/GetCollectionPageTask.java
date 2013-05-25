@@ -1,13 +1,11 @@
 package com.hesha.tasks;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.bean.CollectionStruct;
-import com.hesha.bean.CollectionTypeAndReviewItems;
 import com.hesha.constants.Constants;
 import com.hesha.utils.HttpUrlConnectionUtils;
 
