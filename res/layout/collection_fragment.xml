@@ -62,7 +62,11 @@
 	<com.hesha.MyListView
 	    android:id="@+id/list"
 	    android:layout_width="match_parent"
-   			android:layout_height="match_parent"
+   		android:layout_height="match_parent"
+   		android:layout_marginLeft="2dip"
+   		android:layout_marginRight="2dip"
+   		android:layout_marginBottom="4dip"
+   		android:divider="@null"
 	    >
 	</com.hesha.MyListView> 
 	

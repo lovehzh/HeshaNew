@@ -5,16 +5,19 @@
 	android:orientation="vertical"
 	android:layout_gravity="center"
 	android:background="#ffffff" 
+	android:paddingTop="3dip"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	
     <RelativeLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:background="@drawable/c_top"
         >
         <TextView
             android:id="@+id/tv_category_name" 
             android:layout_height="wrap_content"
         		android:layout_width="wrap_content"
+        		style="@style/collection_tilte"
         		android:text="@string/title"
         		android:layout_alignParentLeft="true"
             />
@@ -23,15 +26,22 @@
             android:id="@+id/tv_more" 
             android:layout_height="wrap_content"
         		android:layout_width="wrap_content"
+        		style="@style/collection_more"
         		android:text="@string/more"
         		android:layout_alignParentRight="true"
             />
     </RelativeLayout>
-    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/c_bottom"
+        >
     <LinearLayout 
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:gravity="center"
+        android:layout_marginTop="2dip"
         >
         <ImageView
             android:id="@+id/iv_0"
@@ -58,10 +68,13 @@
             />
     </LinearLayout>
     
+    
+    
     <TextView
         android:id="@+id/tv_item_title" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/item_tilte"
         android:text="奔富巴罗萨谷的试酒室"
         />
     
@@ -70,6 +83,7 @@
         android:id="@+id/tv_item_des" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/item_des"
         android:text="奔富在南澳洲，有两个主要的试酒室，一个在阿德莱德，一个，就在巴罗萨谷，这里。这里的服务员，很漂亮喔，嘻嘻。"
         />
     
@@ -81,12 +95,14 @@
         <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        style="@style/pic_count"
 	        android:text="@string/pictur"
             />
         <TextView 
             android:id="@+id/tv_picturs_num" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        style="@style/pic_count"
 	        android:text="@string/digital_0"
             />
         
@@ -94,6 +110,7 @@
         <TextView 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        style="@style/pic_count"
 	        android:text="@string/goods"
 	        android:layout_marginLeft="10dip"
             />
@@ -101,6 +118,7 @@
             android:id="@+id/tv_goods_num" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        style="@style/pic_count"
 	        android:text="@string/digital_0"
             />
         
@@ -108,6 +126,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="@style/pic_count"
             />
         
         <!-- creator -->
@@ -120,6 +139,6 @@
     </LinearLayout>
     
  
-	
+	</LinearLayout>
     
 </LinearLayout>

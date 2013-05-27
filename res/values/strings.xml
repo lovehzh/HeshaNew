@@ -12,7 +12,7 @@
     <string name="digital_0">0</string>
     
     <string name="back">返回</string>
-    <string name="more">更多</string>
+    <string name="more">更多&gt;&gt;</string>
     <string name="press_again_exit">再按一次退出</string>
     <!-- album -->
 	<string name="collection_category">专辑分类</string>
