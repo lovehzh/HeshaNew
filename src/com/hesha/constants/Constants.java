@@ -8,4 +8,7 @@ public interface Constants{
 	public static final int ITEM_PHOTO = 1;     //普通图片
 	public static final int ITEM_SUBJECT = 2;   //单品 
 	public static final int ITEM_LINK = 3;      //来自淘宝，天猫等的商品
+	
+	public static final String GB_SUCCESS = "GB0000000";
+	public static final String CONNECTION_TIMED_OUT = "connection_timed_out";
 }

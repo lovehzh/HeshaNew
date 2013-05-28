@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dip"
      >
 
     <ImageView 
@@ -16,18 +17,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="1"
+        android:layout_marginLeft="12dip"
         >
         <TextView 
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title"
+            android:textColor="#1f9fce"
+            android:textSize="14sp"
             />
         
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title"
+            android:text="@string/create_this"
+            android:textColor="#949494"
+            android:textSize="12sp"
             />
         
         <TextView 
@@ -37,6 +43,8 @@
             android:text="@string/digital_0"
             android:drawableLeft="@drawable/items_icon"
             android:drawablePadding="3dip"
+            android:textColor="#949494"
+            android:textSize="12sp"
             />
     </LinearLayout>
     
@@ -46,17 +54,22 @@
         android:orientation="vertical"
         >
         <TextView 
+            android:id="@+id/tv_creation_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title"
+            android:textColor="#949494"
+            android:textSize="12sp"
             />
         
         <Button 
-            android:id="@+id/btn_back"
+            android:id="@+id/btn_back_to_cat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/back_to_cat_btn"
             android:text="@string/title"
+            android:textColor="#1f9fce"
+            android:textSize="14sp"
             />
         
     </LinearLayout>
