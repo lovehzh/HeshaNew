@@ -130,7 +130,7 @@
 	</style>
 	
 	<style name="collection_more">
-	    <item name="android:textColor">#a4a4a4</item>
+	    <item name="android:textColor">@color/more_btn</item>
 	    <item name="android:textSize">17sp</item>
 	</style>
 	

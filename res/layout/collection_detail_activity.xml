@@ -27,5 +27,86 @@
             />
         
     </RelativeLayout>
+    
+    <include layout="@layout/creator_view"/>
+    
+    <TextView 
+        android:id="@+id/tv_collection_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        />
+    
+    <GridView 
+	    android:id="@+id/grid"
+	    android:numColumns="3"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	    ></GridView>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/details_bottom_height"
+        android:layout_gravity="bottom"
+        android:background="@drawable/back_behind_menu"
+        android:orientation="horizontal"
+        >
+        <com.hesha.widget.CustomButton
+            android:id="@+id/rlCollect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            Image="@drawable/button_details_collect_default"
+            ImageID="@+id/imageview_details_collect"
+            Text="@string/DetailsCollect"
+            TextID="@+id/textview_details_collect"
+            android:background="@drawable/back_button_default_style"
+            android:clickable="true"
+            >
+        </com.hesha.widget.CustomButton>
+        
+        <com.hesha.widget.CustomButton
+            android:id="@+id/rlLike"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            Image="@drawable/button_details_like_default"
+            ImageID="@+id/imageview_details_like"
+            Text="@string/DetailsLike"
+            TextID="@+id/textview_details_like"
+            android:background="@drawable/back_button_default_style"
+            android:clickable="true"
+            >
+        </com.hesha.widget.CustomButton>
+        
+        <com.hesha.widget.CustomButton
+            android:id="@+id/rlDiscuss"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            Image="@drawable/button_details_discuss_default"
+            ImageID="@+id/imageview_details_discuss"
+            Text="@string/DetailsDiscuss"
+            TextID="@+id/textview_details_discuss"
+            android:background="@drawable/back_button_default_style"
+            android:clickable="true"
+            >
+        </com.hesha.widget.CustomButton>
+        
+        <com.hesha.widget.CustomButton
+            android:id="@+id/rlShare"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            Image="@drawable/button_details_share_default"
+            ImageID="@+id/imageview_details_share"
+            Text="@string/DetailsShare"
+            TextID="@+id/textview_details_share"
+            android:background="@drawable/back_button_default_style"
+            android:clickable="true"
+            >
+        </com.hesha.widget.CustomButton>
+    </LinearLayout>
 
 </LinearLayout>

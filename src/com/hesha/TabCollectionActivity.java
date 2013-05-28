@@ -104,6 +104,9 @@ public class TabCollectionActivity extends Activity implements OnClickListener {
 					int i = Integer.valueOf(v.getTag().toString());
 					Toast.makeText(TabCollectionActivity.this, "some" + i,
 							Toast.LENGTH_SHORT).show();
+					
+					Intent intent = new Intent(TabCollectionActivity.this, CollectionDetailsActivity.class);
+					startActivity(intent);
 				}
 			});
 		}
