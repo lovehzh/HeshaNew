@@ -13,7 +13,6 @@ import com.hesha.bean.CollectionDetailStruct;
 import com.hesha.bean.CollectionInfoAndItems;
 import com.hesha.bean.LinkItem;
 import com.hesha.bean.PhotoItem;
-import com.hesha.bean.SubjectItem;
 import com.hesha.constants.Constants;
 import com.hesha.utils.DateUtils;
 import com.hesha.utils.HttpUrlConnectionUtils;
@@ -37,7 +36,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class CollectionDetailsActivity extends Activity implements OnClickListener, OnItemClickListener{
+public class ItemDetailsActivity extends Activity implements OnClickListener, OnItemClickListener{
 	private static final String TAG = "CollectionDetailsActivity";
 	private Button btnBack, btnBackToCat;
 	private TextView tvTitle;
@@ -60,10 +59,10 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.collection_detail_activity);
+		setContentView(R.layout.item_detail_activity);
 		
-		initData();
-		initComponent();
+		//initData();
+		//initComponent();
 	}
 	
 	private void initData() {
@@ -121,8 +120,7 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-		Intent intent = new Intent(this, ItemDetailsActivity.class);
-		startActivity(intent);
+		
 	}
 	
 	private void loadData(){
@@ -173,7 +171,7 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 				break;
 				
 			case CONNECTION_TIME_OUT:
-				TimeoutErrorDialog.showTimeoutError(CollectionDetailsActivity.this);
+				TimeoutErrorDialog.showTimeoutError(ItemDetailsActivity.this);
 				break;
 
 			default:

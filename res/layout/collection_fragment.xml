@@ -10,7 +10,7 @@
         style="@style/TitleBackground"
         >
         <TextView
-	        android:id="@+id/textView1"
+	        android:id="@+id/tv_title"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/collection_category" 
@@ -19,6 +19,18 @@
 	        android:textColor="#ffffff"
 	        android:textSize="25sp"
 	        />
+        
+        <Button 
+            android:id="@+id/btn_go_main"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/back_to_main"
+	        android:layout_centerVertical="true"
+	        android:textColor="#ffffff"
+	        android:layout_marginLeft="5dip"
+	        android:background="@drawable/back_to_main_selector"
+	        android:visibility="gone"
+            />
         
         <Button 
             android:id="@+id/add_collection"
@@ -58,6 +70,32 @@
             
         </LinearLayout>
     </HorizontalScrollView>
+    
+    <RelativeLayout
+	    android:id="@+id/rl_tips"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingBottom="10dp"
+	    android:paddingTop="10dp"
+	     >
+	
+	      <TextView
+	          android:id="@+id/pulldown_header_text"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_centerInParent="true"
+	          android:text="加载中..." />
+	
+	
+	    <ProgressBar
+	        android:id="@+id/pulldown_header_loading"
+	        style="@android:style/Widget.ProgressBar.Small.Inverse"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="20dp" />
+	
+	</RelativeLayout>
 
 	<com.hesha.MyListView
 	    android:id="@+id/list"
@@ -67,6 +105,18 @@
    		android:layout_marginRight="2dip"
    		android:layout_marginBottom="4dip"
    		android:divider="@null"
+	    >
+	</com.hesha.MyListView> 
+	
+	<com.hesha.MyListView
+	    android:id="@+id/list2"
+	    android:layout_width="match_parent"
+   		android:layout_height="match_parent"
+   		android:layout_marginLeft="2dip"
+   		android:layout_marginRight="2dip"
+   		android:layout_marginBottom="4dip"
+   		android:divider="@null"
+   		android:visibility="gone"
 	    >
 	</com.hesha.MyListView> 
 	

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/LinearLayout01"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent" 
+	android:orientation="vertical"
+	android:layout_gravity="center"
+	android:background="#ffffff" 
+	android:paddingTop="3dip"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/four_conor"
+        >
+    <LinearLayout 
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="2dip"
+        >
+        <ImageView
+            android:id="@+id/iv_0"
+            android:layout_height="wrap_content"
+        		android:layout_width="0dip"
+        		android:text="@string/title"
+        		android:layout_weight="1"
+            />
+        
+        <ImageView
+            android:id="@+id/iv_1"
+            android:layout_height="wrap_content"
+        		android:layout_width="0dip"
+        		android:text="@string/title"
+        		android:layout_weight="1"
+            />
+        
+        <ImageView 
+            android:id="@+id/iv_2"
+            android:layout_height="wrap_content"
+        		android:layout_width="0dip"
+        		android:text="@string/more"
+        		android:layout_weight="1"
+            />
+    </LinearLayout>
+    
+    
+    
+    <TextView
+        android:id="@+id/tv_item_title" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/item_tilte"
+        android:text="奔富巴罗萨谷的试酒室"
+        />
+    
+    
+    <TextView
+        android:id="@+id/tv_item_des" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/item_des"
+        android:text="奔富在南澳洲，有两个主要的试酒室，一个在阿德莱德，一个，就在巴罗萨谷，这里。这里的服务员，很漂亮喔，嘻嘻。"
+        />
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <!-- pictures num -->
+        <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        style="@style/pic_count"
+	        android:text="@string/pictur"
+            />
+        <TextView 
+            android:id="@+id/tv_picturs_num" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        style="@style/pic_count"
+	        android:text="@string/digital_0"
+            />
+        
+        <!-- goods num -->
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        style="@style/pic_count"
+	        android:text="@string/goods"
+	        android:layout_marginLeft="10dip"
+            />
+        <TextView 
+            android:id="@+id/tv_goods_num" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        style="@style/pic_count"
+	        android:text="@string/digital_0"
+            />
+        
+        <TextView 
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/pic_count"
+            />
+        
+        <!-- creator -->
+        <TextView 
+            android:id="@+id/tv_creator" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="麦兜的小窝"
+            />
+    </LinearLayout>
+    
+ 
+	</LinearLayout>
+	
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="3dip"
+        />
+    
+</LinearLayout>

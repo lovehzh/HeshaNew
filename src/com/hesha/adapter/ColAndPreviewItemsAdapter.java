@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.hesha.R;
 import com.hesha.bean.BaseItem;
 import com.hesha.bean.Collection;
-import com.hesha.bean.CollectionType;
-import com.hesha.bean.CollectionTypeAndPreviewItems;
 import com.hesha.bean.ImageBean;
 import com.hesha.constants.Constants;
 import com.hesha.utils.AsyncImageLoader;
@@ -21,14 +19,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CollectionTypeAndPreviewItemsAdapter extends ArrayAdapter<CollectionTypeAndPreviewItems>{
-	private ArrayList<CollectionTypeAndPreviewItems> objs;
+public class ColAndPreviewItemsAdapter extends ArrayAdapter<Collection>{
+	private ArrayList<Collection> objs;
 	private Context context;
 	private AsyncImageLoader asyncImageLoader;
 	private ListView listView;
-	private OnMoreClickListener listener;
-	public CollectionTypeAndPreviewItemsAdapter(Context context,
-			int textViewResourceId, ArrayList<CollectionTypeAndPreviewItems> objs,
+	public ColAndPreviewItemsAdapter(Context context,
+			int textViewResourceId, ArrayList<Collection> objs,
 			ListView listView) {
 		super(context, textViewResourceId, objs);
 		this.context = context;
@@ -40,15 +37,13 @@ public class CollectionTypeAndPreviewItemsAdapter extends ArrayAdapter<Collectio
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		System.out.println("objs size = " + objs.size());
-		final CollectionTypeAndPreviewItems obj = objs.get(position);
+		final Collection collection = objs.get(position);
 		Holder holder;
 		if(null == convertView) {
 			LayoutInflater inflater = LayoutInflater.from(context);
-			convertView = inflater.inflate(R.layout.colltion_item, null);
+			convertView = inflater.inflate(R.layout.colltion_item_without_title, null);
 			holder = new Holder();
 			
-			holder.tvCategoryName = (TextView)convertView.findViewById(R.id.tv_category_name);
-			holder.tvMore = (TextView)convertView.findViewById(R.id.tv_more);
 			
 			holder.iv0 = (ImageView)convertView.findViewById(R.id.iv_0);
 			holder.iv1 = (ImageView)convertView.findViewById(R.id.iv_1);
@@ -66,18 +61,6 @@ public class CollectionTypeAndPreviewItemsAdapter extends ArrayAdapter<Collectio
 			holder = (Holder)convertView.getTag();
 		}
 		
-		final CollectionType collectionType = obj.getCollection_type();
-		Collection collection = obj.getCollections();
-		
-		holder.tvCategoryName.setText(collectionType.getCollection_type_name());
-		holder.tvMore.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//type id
-				int typeId = collectionType.getCollection_type_id();
-				listener.onMoreClick(typeId);
-			}
-		});
 		
 		holder.tvItemTitle.setText(collection.getCollection_name());
 		holder.tvItemDes.setText(collection.getCollection_des());
@@ -111,14 +94,12 @@ public class CollectionTypeAndPreviewItemsAdapter extends ArrayAdapter<Collectio
 			iv.setImageDrawable(cacheImagePictureContent);
 		}
 		
+		
 		return convertView;
 	}
 	
 	
 	class Holder {
-		TextView tvCategoryName;
-		TextView tvMore;
-		
 		ImageView iv0;
 		ImageView iv1;
 		ImageView iv2;
@@ -130,14 +111,5 @@ public class CollectionTypeAndPreviewItemsAdapter extends ArrayAdapter<Collectio
 		TextView tvGoodsNum;
 		TextView tvCreator;
  	}
-	
-	public interface OnMoreClickListener {
-		public void onMoreClick(int typeId);
-	}
-
-	public void setListener(OnMoreClickListener listener) {
-		this.listener = listener;
-	}
-	
 	
 }

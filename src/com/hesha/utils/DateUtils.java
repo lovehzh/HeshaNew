@@ -1072,6 +1072,18 @@ public class DateUtils {
 		return result;
 	}
 	
+	/**
+	 * 跟据秒数取得当前时间
+	 * @param timeSeconds
+	 * @return yyyy年MM月dd日
+	 */
+	public static String getStringFromTimeSeconds(long timeSeconds) {
+		Date date = getDateFromTimeMillis(timeSeconds * 1000);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+		String result = format.format(date);
+		return result;
+	}
+	
 	public static String getStringFromTimeMillisWithOutSeconds(String timeMillis) {
 		Long l = 0L;
 		try {
