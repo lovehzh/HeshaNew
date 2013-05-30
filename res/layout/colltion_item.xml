@@ -6,6 +6,7 @@
 	android:layout_gravity="center"
 	android:background="#ffffff" 
 	android:paddingTop="3dip"
+	android:focusable="true"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	
     <RelativeLayout
@@ -135,6 +136,10 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="麦兜的小窝"
+	        android:background="@drawable/user_bg"
+	        android:textColor="@color/more_btn"
+	        android:gravity="center"
+	        android:clickable="true"
             />
     </LinearLayout>
     

@@ -1,5 +1,6 @@
 package com.hesha.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -19,7 +20,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 "user_info":{ 用户数据(基本数据结构 }		        // 用户信息(有可能为空)
 **/
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Collection {
+public class Collection implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String collection_name;
 	private int collection_id;
 	private String collection_image;

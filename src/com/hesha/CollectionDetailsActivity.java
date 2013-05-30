@@ -11,6 +11,7 @@ import com.hesha.bean.BaseItem;
 import com.hesha.bean.Collection;
 import com.hesha.bean.CollectionDetailStruct;
 import com.hesha.bean.CollectionInfoAndItems;
+import com.hesha.bean.CollectionType;
 import com.hesha.bean.LinkItem;
 import com.hesha.bean.PhotoItem;
 import com.hesha.bean.SubjectItem;
@@ -41,13 +42,14 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	private static final String TAG = "CollectionDetailsActivity";
 	private Button btnBack, btnBackToCat;
 	private TextView tvTitle;
-	private TextView tvUsername, tvItemNum, tvCreationDate;
+	private TextView tvUsername, tvItemNum, tvCreationDate, tvColDes;
 	private Collection collection;
 	private GridView gridView;
 	private ImageAndTextListAdapter adapter;
 	private ArrayList<BaseItem> baseItems;
 	private int collectionId;
 	private CollectionInfoAndItems collectionInfoAndItems;
+	private CollectionType currentColType;
 	
 	private RelativeLayout rlTips;
 	private TextView tvTipText;
@@ -68,8 +70,11 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	
 	private void initData() {
 		Intent intent = getIntent();
+		collection = (Collection)intent.getSerializableExtra("collection");
+		currentColType = (CollectionType)intent.getSerializableExtra("col_type");
+		
 		baseItems = new ArrayList<BaseItem>();
-		//collectionId = intent.getIntExtra("collectiion_id", -1);
+		collectionId = collection.getCollection_id();
 		loadData();
 	}
 	
@@ -78,7 +83,7 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 		tvUsername.setText(collection.getUser_info().getUser_name());
 		tvItemNum.setText("" + collection.getImage_num());
 		tvCreationDate.setText(DateUtils.getStringFromTimeSeconds( collection.getCreation_date()));
-		
+		tvColDes.setText(collection.getCollection_des());
 	}
 	
 	private void initComponent() {
@@ -89,9 +94,11 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 		tvUsername = (TextView)findViewById(R.id.tv_username);
 		tvItemNum = (TextView)findViewById(R.id.tv_item_num);
 		tvCreationDate = (TextView)findViewById(R.id.tv_creation_date);
+		tvColDes = (TextView)findViewById(R.id.tv_collection_des);
+		updateUI();
 		
 		btnBackToCat = (Button)findViewById(R.id.btn_back_to_cat);
-		btnBackToCat.setText("");// need update
+		btnBackToCat.setText(currentColType.getCollection_type_name());
 		btnBackToCat.setOnClickListener(this);
 		
 		rlTips = (RelativeLayout)findViewById(R.id.rl_tips);
@@ -112,6 +119,7 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 			break;
 			
 		case R.id.btn_back_to_cat:
+			finish();
 			break;
 
 		default:
@@ -184,7 +192,7 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	
 	private CollectionInfoAndItems getCollectionFromServer() {
 		String response = "";
-		String url = Constants.SERVER_URL + "?ac=getItemsByCollectionId&collection_id=16&begin_index=0&page_num=10&sort_type=1&order_type=1";
+		String url = Constants.SERVER_URL + "?ac=getItemsByCollectionId&collection_id=" + collectionId +"&begin_index=0&page_num=30&sort_type=1&order_type=1";
 		CollectionInfoAndItems collectionInfoAndItems = new CollectionInfoAndItems();
 		
 		try {

@@ -1,9 +1,15 @@
 package com.hesha.bean;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class User {
+public class User implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** 用户数据
 	 "user_id": "12",                        //用户id
 	 "user_name": "酒庄大全",              	//用户名

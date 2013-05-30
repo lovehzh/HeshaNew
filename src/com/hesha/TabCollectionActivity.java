@@ -71,6 +71,8 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 	private static final int PAGE_SIZE = 20;
 	private int sortType =1, orderType =1;
 	private int startIndex;
+	
+	private CollectionType currentColType;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -368,7 +370,13 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 
 	@Override
 	public void onMoreClick(int typeId) {
-		Toast.makeText(context, "" + typeId, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(context, "" + typeId, Toast.LENGTH_SHORT).show();
+		for(CollectionType c : collectionTypes) {
+			if(c.getCollection_type_id() == typeId) {
+				currentColType = c;
+			}
+		}
+		
 		loadData(typeId);
 		//change UI
 		list.setVisibility(View.GONE);
@@ -391,8 +399,10 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 		switch (adapter.getId()) {
 		case R.id.list2:
 			//跳转到专辑的详细页面
-			Collection collection = collections.get(position);
+			Collection collection = collections.get(position - 1);
 			Intent intent = new Intent(this, CollectionDetailsActivity.class);
+			intent.putExtra("collection", collection);
+			intent.putExtra("col_type", currentColType);
 			startActivity(intent);
 			break;
 			

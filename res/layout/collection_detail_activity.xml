@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <RelativeLayout 
+        android:id="@+id/rl_top" 
         style="@style/TitleBackground"
         >
         <Button
@@ -13,7 +14,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
-	        android:background="@drawable/back_1_normal"
+	        android:background="@drawable/back_1_selector"
 	        />
         
         <TextView 
@@ -27,7 +28,9 @@
         
     </RelativeLayout>
     
-    <include layout="@layout/creator_view"/>
+    <include layout="@layout/creator_view"
+        android:id="@+id/ll_creator"
+        />
     
     <TextView 
         android:id="@+id/tv_collection_des"
@@ -35,6 +38,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title"
         android:layout_marginTop="10dip"
+        android:layout_below="@+id/ll_creator"
         />
     
     <RelativeLayout
@@ -43,7 +47,7 @@
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
 	    android:paddingTop="10dp"
-	    android:layout_below="@+id/head"
+	    android:layout_below="@+id/tv_collection_des"
 	     >
 	
 	      <TextView
@@ -71,12 +75,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dip"
+        android:layout_below="@+id/rl_tips"
 	    ></GridView>
     
     <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="@dimen/details_bottom_height"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/back_behind_menu"
         android:orientation="horizontal"
         >
@@ -137,4 +142,4 @@
         </com.hesha.widget.CustomButton>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

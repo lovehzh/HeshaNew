@@ -1,5 +1,7 @@
 package com.hesha.bean;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -10,7 +12,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  *
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CollectionType {
+public class CollectionType implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int collection_type_id;
 	private String collection_type_name;
 	public int getCollection_type_id() {

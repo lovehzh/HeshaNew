@@ -1,5 +1,6 @@
 package com.hesha.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -35,7 +36,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
     @Type(value = SubjectItem.class, name = "2"),
     @Type(value = LinkItem.class, name = "3") })
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class BaseItem {
+public class BaseItem implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<ImageBean> item_image;
 	private String item_des;
 	private int item_id;
