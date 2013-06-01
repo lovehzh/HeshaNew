@@ -14,6 +14,7 @@ import com.hesha.bean.CollectionType;
 import com.hesha.bean.CollectionTypeAndPreviewItems;
 import com.hesha.constants.Constants;
 import com.hesha.utils.HttpUrlConnectionUtils;
+import com.hesha.utils.MyDialog;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -143,7 +144,8 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 				intent = new Intent(this, LoginActivity.class);
 				startActivityForResult(intent, Constants.INTENT_CODE_COLLECTION);
 			} else {
-				
+				String token = settings.getString(Constants.TOKEN, "");
+				MyDialog.showCreateColDialog(context, token);
 			}
 			break;
 			

@@ -2,10 +2,16 @@ package com.hesha.utils;
 
 
 import com.hesha.R;
+import com.hesha.tasks.CreateCollectionTask;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 public class MyDialog {
@@ -46,5 +52,34 @@ public class MyDialog {
 			}
 		});
 		builder.create().show();
+	}
+	
+	public static void showCreateColDialog(final Context context, final String token) {
+		final Dialog dialog = new Dialog(context, R.style.dialog);
+		dialog.setContentView(R.layout.create_col_view);
+		
+		EditText etColName = (EditText)dialog.findViewById(R.id.et_col_name);
+		final String colName = etColName.getText().toString().trim();
+		final String colDes = "";
+		
+		Button btnOk = (Button)dialog.findViewById(R.id.btn_ok);
+		btnOk.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new CreateCollectionTask(context, new ProgressDialog(context), token, colName, colDes).execute((Void)null);
+			}
+		});
+		
+		Button btnCancel = (Button)dialog.findViewById(R.id.btn_cancel);
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialog.cancel();
+			}
+		});
+		
+		dialog.setCancelable(true);
+		dialog.show();
 	}
 }
