@@ -9,17 +9,16 @@
     <RelativeLayout 
         style="@style/TitleBackground"
         >
-        <TextView
-	        android:id="@+id/tv_title"
-	        android:layout_width="wrap_content"
+        <Button 
+            android:id="@+id/btn_go_main"
+            android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/collection_category" 
-	        android:layout_alignParentLeft="true"
+	        android:text="@string/back_to_main"
 	        android:layout_centerVertical="true"
 	        android:textColor="#ffffff"
-	        android:textSize="25sp"
-	        />
-        
+	        android:layout_marginLeft="5dip"
+	        android:background="@drawable/back_to_main_selector"
+            />
         
         <Button 
             android:id="@+id/add_collection"
@@ -66,7 +65,6 @@
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
 	    android:paddingTop="10dp"
-	    android:visibility="gone"
 	     >
 	
 	      <TextView

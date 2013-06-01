@@ -1,0 +1,62 @@
+[
+{"key":"GB2900500", "value":"服务器错误，请稍后再试"},
+{"key":"GB2900501", "value":"无法请求该服务"},
+{"key":"GB2900502", "value":"Device Id is empty."},
+{"key":"GB2900503", "value":"Device is not exists."},
+{"key":"GB2900504", "value":"密码格式错误，长度必须是6-32个字母或数字"},
+
+{"key":"GB2900505", "value":"用户名格式错误，长度必须是5-16个字符或数字"},
+{"key":"GB2900506", "value":"邮箱格式错误，请输入正确的邮箱格式"},
+{"key":"GB2900507", "value":"该邮箱地址已经注册，请使用其它邮箱地址"},
+{"key":"GB2900508", "value":"Mobile phone is not unique when do signup."},
+{"key":"GB2900509", "value":"Email address is not exist when send email for changing password."},
+
+{"key":"GB2900510", "value":"用户名或密码错误"},
+{"key":"GB2900511", "value":"该用户名已经注册，请使用其它用户名注册"},
+{"key":"GB2900512", "value":"Device token is empty."},
+{"key":"GB2900513", "value":"The uploaded files exceeds the max size which is set in php.ini!"},
+{"key":"GB2900514", "value":"The uploaded files exceeds the max size of file which specified in html form!"},
+
+{"key":"GB2900515", "value":"The uploaded file was only partially uploaded!"},
+{"key":"GB2900516", "value":"No file was uploaded!"},
+{"key":"GB2900517", "value":"文件类型错误，请上传.jpg格式的图片"},
+{"key":"GB2900518", "value":"Can not move the temporary file!"},
+{"key":"GB2900519", "value":"The temporary file is not uploaded file!"},
+
+{"key":"GB2900520", "value":"Token已过期，请重新登录"},
+{"key":"GB2900521", "value":"Token为空，请重新登录"},
+{"key":"GB2900522", "value":"该产品已经存在"},
+{"key":"GB2900523", "value":"Product id does not exist."},
+{"key":"GB2900524", "value":"该产品已经推荐过了"},
+
+{"key":"GB2900525", "value":"Title of review is not correct."},
+{"key":"GB2900526", "value":"不能添加自己为好友"},
+{"key":"GB2900527", "value":"文章标题不能超过60个字符"},
+{"key":"GB2900528", "value":"Article’s content is over long than limited length."},
+{"key":"GB2900529", "value":"Receiver’s name or id is empty."},
+
+{"key":"GB2900530", "value":"Article’s subject is empty."},
+{"key":"GB2900531", "value":"Article’s content is empty."},
+{"key":"GB2900532", "value":"不能给自己发送短消息"},
+{"key":"GB2900533", "value":"Short message id is empty."},
+{"key":"GB2900534", "value":"This message is not belongs to this user."},
+
+{"key":"GB2900535", "value":"Value of 'new' is incorrect for short message. "},
+{"key":"GB2900536", "value":"Short message’s subject is empty."},
+{"key":"GB2900537", "value":"Short message’s content is empty."},
+{"key":"GB2900538", "value":"No short message to be updated."},
+{"key":"GB2900539", "value":"No properties to be updated."},
+
+{"key":"GB2900540", "value":"Article’s title is over the max length."},
+{"key":"GB2900541", "value":"对不起,您没有足够的金币."},
+{"key":"GB2900542", "value":"Question’s title is over the max length."},
+
+
+{"key":"GB2900580", "value":"Property name is illegal."},
+{"key":"GB2900581", "value":"Property value’s type is not allowed."},
+{"key":"GB2900582", "value":"Operator is not allowed."},
+{"key":"GB2900583", "value":"Property value is empty or null, but this property should be mandatory for this item."},
+{"key":"GB2900584", "value":"Property value is not allowed."},
+
+{"key":"GB2900585", "value":"该用户不存在"}
+]
