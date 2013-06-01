@@ -81,7 +81,7 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	private void updateUI() {
 		tvTitle.setText(collection.getCollection_name());
 		tvUsername.setText(collection.getUser_info().getUser_name());
-		tvItemNum.setText("" + collection.getImage_num());
+		tvItemNum.setText("" + collection.getItem_nums());
 		tvCreationDate.setText(DateUtils.getStringFromTimeSeconds( collection.getCreation_date()));
 		tvColDes.setText(collection.getCollection_des());
 	}
@@ -130,6 +130,16 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 		Intent intent = new Intent(this, ItemDetailsActivity.class);
+		intent.putExtra("collection", collection);
+		BaseItem baseItem = baseItems.get(position);
+		if(baseItem instanceof PhotoItem) {//bug ?
+			baseItem.setItem_type(1);
+		}else if(baseItem instanceof SubjectItem) {
+			baseItem.setItem_type(2);
+		}else {
+			baseItem.setItem_type(3);
+		}
+		intent.putExtra("base_item", baseItem);
 		startActivity(intent);
 	}
 	
@@ -160,15 +170,15 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 					//updata ui
 					updateUI();
 					
-					ArrayList<BaseItem> baseItems = collectionInfoAndItems.getItems();
+					baseItems = collectionInfoAndItems.getItems();
 					adapter.clear();
 					for(BaseItem item : baseItems) {
 						if(item instanceof LinkItem){
-							Log.i(TAG, item.getItem_name() + "is link item");
+							Log.i(TAG, item.getItem_name() + "is link item" +  " item_type=" + item.getItem_type());
 						}else if(item instanceof PhotoItem) {
-							Log.i(TAG, item.getItem_name() + "is is photo");
+							Log.i(TAG, item.getItem_name() + "is is photo" +  " item_type=" + item.getItem_type());
 						}else {
-							Log.i(TAG, item.getItem_name() + "is subject");
+							Log.i(TAG, item.getItem_name() + "is subject" +  " item_type=" + item.getItem_type());
 						}
 						adapter.add(item);
 					}

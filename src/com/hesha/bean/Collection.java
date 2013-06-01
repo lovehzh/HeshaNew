@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 “update_date”:”213438834324”  	    		        //GMT
 “status”   	：”1/0”                              //0:审核未通过 1：审核通过
 "user_info":{ 用户数据(基本数据结构 }		        // 用户信息(有可能为空)
+“item_nums”						                //所有元素总数目
 **/
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Collection implements Serializable{
@@ -36,6 +37,7 @@ public class Collection implements Serializable{
 	private long update_date;
 	private int status;
 	private User user_info;
+	private int item_nums;
 	private ArrayList<BaseItem> items;
 	public String getCollection_name() {
 		return collection_name;
@@ -108,6 +110,12 @@ public class Collection implements Serializable{
 	}
 	public void setItems(ArrayList<BaseItem> items) {
 		this.items = items;
+	}
+	public int getItem_nums() {
+		return item_nums;
+	}
+	public void setItem_nums(int item_nums) {
+		this.item_nums = item_nums;
 	}
 	
 }
