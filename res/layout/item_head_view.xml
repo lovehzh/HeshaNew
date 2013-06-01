@@ -17,24 +17,31 @@
     <ImageView
         android:id="@+id/iv_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_launcher" />
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_launcher"
+         android:scaleType="fitCenter"
+         />
 
     <!-- 收藏 -->
 
     <LinearLayout
+        android:id="@+id/ll_collect_des"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/tv_num_of_collected"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/button_details_collect_default"
+            android:paddingLeft="2dp"
+             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="人已加入专辑" />
+            android:text="人已加入专辑" 
+            />
     </LinearLayout>
 
     <!-- 动态添加头像图片 -->
@@ -44,37 +51,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_launcher" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_launcher" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_launcher" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_launcher" />
     </LinearLayout>
 
     <!-- 喜欢 -->
 
     <LinearLayout
+        android:id="@+id/ll_like_des"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
         <TextView
             android:id="@+id/tv_num_of_liked"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            android:drawableLeft="@drawable/button_details_like_default"
+            android:paddingLeft="2dp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -89,25 +81,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_launcher" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_launcher" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_launcher" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_launcher" />
     </LinearLayout>
 
     <!-- 评论 -->

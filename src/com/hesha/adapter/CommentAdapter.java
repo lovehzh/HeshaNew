@@ -6,6 +6,7 @@ import com.hesha.R;
 import com.hesha.bean.Comment;
 import com.hesha.constants.Constants;
 import com.hesha.utils.AsyncImageLoader;
+import com.hesha.utils.DateUtils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -59,7 +60,7 @@ public class CommentAdapter extends ArrayAdapter<Comment>{
 		
 		holder.tvUsername.setText(comment.getUser_info().getUser_name());
 		holder.tvContent.setText(comment.getComment_content());
-		holder.tvDate.setText("");
+		holder.tvDate.setText(DateUtils.getStringFromTimeMillis(comment.getCreation_date() * 1000 + ""));
 		
 		
 		String imageUrl = Constants.IMAGE_BASE_URL + comment.getUser_info().getUser_avatar();

@@ -131,6 +131,8 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 		Intent intent = new Intent(this, ItemDetailsActivity.class);
 		intent.putExtra("collection", collection);
+		intent.putExtra("col_type", currentColType);
+		
 		BaseItem baseItem = baseItems.get(position);
 		if(baseItem instanceof PhotoItem) {//bug ?
 			baseItem.setItem_type(1);
