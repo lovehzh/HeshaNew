@@ -18,6 +18,7 @@
     <!-- album -->
 	<string name="collection_category">专辑分类</string>
 	<string name="create_collection">+创建专辑</string>
+	<string name="create_collection2">创建专辑</string>
 	
 	<string name="pictur">图片</string>
 	<string name="goods">商品</string>
@@ -67,4 +68,8 @@
     <string name="create_this">创建该专辑</string>
     <string name="no_record">对不起，没有相关记录</string>
     <string name="please_input_col_name">请输入专辑名称</string>
+    
+    <!-- 收藏 -->
+    <string name="collect">收集</string>
+    <string name="create_or_search">创建或收索专辑</string>
 </resources>

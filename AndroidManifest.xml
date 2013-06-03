@@ -48,6 +48,7 @@
     		<activity android:name=".CollectionsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
     		<activity android:name=".CollectionDetailsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
     		<activity android:name=".ItemDetailsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+    		<activity android:name=".FavoriteActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
     		
     </application>
 
