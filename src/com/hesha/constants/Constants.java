@@ -22,4 +22,5 @@ public interface Constants{
 	
 	public static final String CODE = "code";
 	public static final int INTENT_CODE_COLLECTION = 0;
+	public static final int INTENT_CODE_ITEM_DETAIL = 1;
 }

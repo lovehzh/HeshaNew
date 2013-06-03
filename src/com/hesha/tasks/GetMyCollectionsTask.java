@@ -1,6 +1,7 @@
 package com.hesha.tasks;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.bean.Collection;
-import com.hesha.bean.CreateColResStruct;
+import com.hesha.bean.ColsStruct;
 import com.hesha.bean.gen.GetMyCollectionsParameter;
 import com.hesha.constants.Constants;
 import com.hesha.utils.HttpUrlConnectionUtils;
@@ -45,6 +46,8 @@ public class GetMyCollectionsTask extends AsyncTask<Void, Void, Void> implements
 		
 		String data = JsonUtils.genJson(parameter);
 		
+		if(Constants.D) Log.i(TAG, "data:" + data);
+		
 		String url = SERVER_URL + "?ac=getMyCollections";
 		if(Constants.D) Log.i(TAG, "url:" + url);
 		
@@ -68,11 +71,11 @@ public class GetMyCollectionsTask extends AsyncTask<Void, Void, Void> implements
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			CreateColResStruct struct = mapper.readValue(response, CreateColResStruct.class);
+			ColsStruct struct = mapper.readValue(response, ColsStruct.class);
 			boolean success = Boolean.valueOf(struct.getSuccess());
 			if(success) {
-				Collection collection = struct.getData();
-				if(Constants.D) Log.i(TAG, "collecton:" + collection.getCollection_name());
+				ArrayList<Collection> collections = struct.getData();
+				if(Constants.D) Log.i(TAG, "collectons size:" + collections.size());
 			}else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(context);
 				builder.setTitle("获取数据失败");

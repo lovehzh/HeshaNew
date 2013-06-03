@@ -224,9 +224,10 @@ public class LoginActivity extends Activity implements OnClickListener, Constant
 						setResult(INTENT_CODE_COLLECTION);
 						finish();
 					}
-					//else if(intentCode == ActivityProductDetail.INTENT_CODE_FROM_PRODUCT_DETAIL) {
-//						finish();
-//					}
+					else if(intentCode == INTENT_CODE_ITEM_DETAIL) {
+						setResult(INTENT_CODE_ITEM_DETAIL);
+						finish();
+					}
 				}else {
 					String errorMessage = Utils.parseCode(LoginActivity.this, strCode);
 					AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);

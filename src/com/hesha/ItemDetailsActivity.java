@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +43,7 @@ import com.hesha.tasks.DownloadImageTask;
 import com.hesha.utils.AsyncImageLoader;
 import com.hesha.utils.DateUtils;
 import com.hesha.utils.HttpUrlConnectionUtils;
+import com.hesha.utils.MyDialog;
 import com.hesha.utils.ResponseErrorDialog;
 import com.hesha.utils.TimeoutErrorDialog;
 
@@ -76,6 +78,8 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 	private static final int WHAT_DOWNLOAD_IMAGE = 10;
 	
 	private Context context;
+	private RelativeLayout rlCollect, rlLike, rlDiscuss, rlShare;
+	private SharedPreferences settings;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -84,9 +88,12 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 		context = ItemDetailsActivity.this;
 		initData();
 		initComponent();
+		loadData();
 	}
 	
 	private void initData() {
+		settings = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE);
+		
 		Intent intent = getIntent();
 		collection = (Collection)intent.getSerializableExtra("collection");
 		currentColType = (CollectionType)intent.getSerializableExtra("col_type");
@@ -145,20 +152,36 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 //		listView.setOnItemClickListener(this);
 		
 		updateUI();
+		
+		rlCollect = (RelativeLayout)findViewById(R.id.rlCollect);
+		rlCollect.setOnClickListener(this);
 	}
 	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		loadData();
+		//loadData();
 	}
 
 	@Override
 	public void onClick(View v) {
+		Intent intent;
 		switch (v.getId()) {
 		case R.id.btn_back:
 			finish();
+			break;
+			
+		case R.id.rlCollect:
+			//先判断是否有登录，然后再进行后续操作
+			String username = settings.getString(Constants.USERNAME, "");
+			if (username.equals("")) {
+				intent = new Intent(this, LoginActivity.class);
+				startActivityForResult(intent, Constants.INTENT_CODE_ITEM_DETAIL);
+			} else {
+				intent =new Intent(this, FavoriteActivity.class);
+				startActivity(intent);
+			}
 			break;
 			
 
