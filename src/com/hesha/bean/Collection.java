@@ -118,4 +118,9 @@ public class Collection implements Serializable{
 		this.item_nums = item_nums;
 	}
 	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return collection_name;
+	}
 }

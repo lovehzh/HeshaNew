@@ -23,4 +23,11 @@ public interface Constants{
 	public static final String CODE = "code";
 	public static final int INTENT_CODE_COLLECTION = 0;
 	public static final int INTENT_CODE_ITEM_DETAIL = 1;
+	public static final int INTENT_CODE_ITEM_DETAIL_LIKE = 2;
+	
+	public static final int ADD = 1;
+	public static final int REMOVE = 2;
+	
+	public static final int FAVORITE = 1;
+	public static final int LIKE = 2;
 }

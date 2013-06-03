@@ -47,7 +47,7 @@ public class BaseItem implements Serializable{
 	private int item_type;  	       
 	private String item_name;
 	private int like_num;
-	private int collect_num;                
+	private int recollect_num;                
 	private int comment_num;              
 	private long creation_date;			
 	private long update_date;
@@ -92,11 +92,12 @@ public class BaseItem implements Serializable{
 	public void setLike_num(int like_num) {
 		this.like_num = like_num;
 	}
-	public int getCollect_num() {
-		return collect_num;
+	
+	public int getRecollect_num() {
+		return recollect_num;
 	}
-	public void setCollect_num(int collect_num) {
-		this.collect_num = collect_num;
+	public void setRecollect_num(int recollect_num) {
+		this.recollect_num = recollect_num;
 	}
 	public int getComment_num() {
 		return comment_num;

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hesha.bean.BaseItem;
+import com.hesha.bean.PhotoItem;
+import com.hesha.bean.SubjectItem;
 import com.hesha.bean.errorcode.ErrorCode;
 
 import android.content.Context;
@@ -143,6 +146,18 @@ public class Utils {
 		}
 		result = (int)d;
 		return result;
+	}
+	
+	public static BaseItem getRealBaseItem(BaseItem baseItem) {
+		if(baseItem instanceof PhotoItem) {//bug ?
+			baseItem.setItem_type(1);
+		}else if(baseItem instanceof SubjectItem) {
+			baseItem.setItem_type(2);
+		}else {
+			baseItem.setItem_type(3);
+		}
+		
+		return baseItem;
 	}
 	
 }
