@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,10 +44,12 @@ import com.hesha.bean.Comment;
 import com.hesha.bean.ItemDetailData;
 import com.hesha.bean.ItemDetailStruct;
 import com.hesha.bean.User;
+import com.hesha.bean.gen.AddCommentToItemPar;
 import com.hesha.bean.gen.AddItemToColPar;
 import com.hesha.bean.gen.DoActionForItemPar;
 import com.hesha.constants.Constants;
 import com.hesha.tasks.DownloadImageTask;
+import com.hesha.tasks.OnTaskFinishedListener;
 import com.hesha.utils.AsyncImageLoader;
 import com.hesha.utils.DateUtils;
 import com.hesha.utils.HttpUrlConnectionUtils;
@@ -56,7 +59,7 @@ import com.hesha.utils.ResponseErrorDialog;
 import com.hesha.utils.TimeoutErrorDialog;
 import com.hesha.utils.Utils;
 
-public class ItemDetailsActivity extends Activity implements OnClickListener, OnItemClickListener{
+public class ItemDetailsActivity extends Activity implements OnClickListener, OnItemClickListener, OnTaskFinishedListener{
 	private static final String TAG = "CollectionDetailsActivity";
 	private Button btnBack, btnBackToCat;
 	private TextView tvTitle;
@@ -92,6 +95,7 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 	private SharedPreferences settings;
 	
 	private boolean isLike;
+	private Dialog createCommentDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -170,6 +174,9 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 		
 		rlLike = (RelativeLayout)findViewById(R.id.rlLike);
 		rlLike.setOnClickListener(this);
+		
+		rlDiscuss = (RelativeLayout)findViewById(R.id.rlDiscuss);
+		rlDiscuss.setOnClickListener(this);
 	}
 	
 	@Override
@@ -221,6 +228,23 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 				
 				new DoActionForItemTask(this, new ProgressDialog(this), parameter).execute((Void)null);
 			}
+			break;
+			
+		case R.id.rlDiscuss:
+			username = settings.getString(Constants.USERNAME, "");
+			if (username.equals("")) {
+				intent = new Intent(this, LoginActivity.class);
+				startActivityForResult(intent, Constants.INTENT_CODE_ITEM_DETAIL_LIKE);
+			} else {
+				AddCommentToItemPar parameter = new AddCommentToItemPar();
+				parameter.setCollection_id(collection.getCollection_id());
+				parameter.setItem_id(baseItem.getItem_id());
+				parameter.setItem_type(Utils.getRealBaseItem(baseItem).getItem_type());
+				parameter.setToken(settings.getString(Constants.TOKEN, ""));
+				
+				createCommentDialog = MyDialog.showCommentDialog(this, parameter, this);
+			}
+			
 			break;
 			
 
@@ -511,5 +535,11 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 			}
 		}
 		
+	}
+
+	@Override
+	public void updateActivityUI() {
+		// TODO Auto-generated method stub
+		createCommentDialog.dismiss();
 	}
 }

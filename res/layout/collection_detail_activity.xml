@@ -85,19 +85,6 @@
         android:background="@drawable/back_behind_menu"
         android:orientation="horizontal"
         >
-        <com.hesha.widget.CustomButton
-            android:id="@+id/rlCollect"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            Image="@drawable/button_details_collect_default"
-            ImageID="@+id/imageview_details_collect"
-            Text="@string/DetailsCollect"
-            TextID="@+id/textview_details_collect"
-            android:background="@drawable/back_button_default_style"
-            android:clickable="true"
-            >
-        </com.hesha.widget.CustomButton>
         
         <com.hesha.widget.CustomButton
             android:id="@+id/rlLike"

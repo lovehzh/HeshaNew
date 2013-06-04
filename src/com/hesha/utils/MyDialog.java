@@ -2,7 +2,10 @@ package com.hesha.utils;
 
 
 import com.hesha.R;
+import com.hesha.bean.gen.AddCommentToItemPar;
+import com.hesha.tasks.AddCommentToItemTask;
 import com.hesha.tasks.CreateCollectionTask;
+import com.hesha.tasks.OnTaskFinishedListener;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,6 +15,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MyDialog {
@@ -81,5 +85,39 @@ public class MyDialog {
 		
 		dialog.setCancelable(true);
 		dialog.show();
+	}
+	
+	public static Dialog showCommentDialog(final Context context, final AddCommentToItemPar parameter, final OnTaskFinishedListener listener) {
+		final Dialog dialog = new Dialog(context, R.style.dialog);
+		dialog.setContentView(R.layout.comment_view);
+		
+		final EditText etColName = (EditText)dialog.findViewById(R.id.et_content_comment);
+		
+		
+		Button btnOk = (Button)dialog.findViewById(R.id.btn_submit_comment);
+		btnOk.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String commentContent = etColName.getText().toString().trim();
+				parameter.setComment_content(commentContent);
+				
+				AddCommentToItemTask task = new AddCommentToItemTask(context, new ProgressDialog(context), parameter);
+				task.setListener(listener);
+				task.execute((Void)null);
+			}
+		});
+		
+		Button btnCancel = (Button)dialog.findViewById(R.id.btn_cancel_comment);
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dialog.cancel();
+			}
+		});
+		
+		dialog.setCancelable(true);
+		dialog.show();
+		return dialog;
 	}
 }

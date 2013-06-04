@@ -72,4 +72,7 @@
     <!-- 收藏 -->
     <string name="collect">收集</string>
     <string name="create_or_search">创建或收索专辑</string>
+    
+    <!-- 评论 -->
+    <string name="pls_input_comment_content">请输入评论内容&#8230;</string>
 </resources>
