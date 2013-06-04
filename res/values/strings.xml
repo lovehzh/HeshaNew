@@ -54,6 +54,7 @@
     <string name="retrieve_password">找回密码</string>
     <string name="input_the_regist_email">请输入注册时使用的邮箱</string>
     <string name="submit">提交</string>
+    <string name="send">发送</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="tips">提示</string>

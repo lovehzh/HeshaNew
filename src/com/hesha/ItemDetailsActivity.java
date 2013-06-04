@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import com.hesha.adapter.CommentAdapter;
 import com.hesha.bean.BaseItem;
 import com.hesha.bean.ColStruct;
@@ -63,6 +64,7 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 	private static final String TAG = "CollectionDetailsActivity";
 	private Button btnBack, btnBackToCat;
 	private TextView tvTitle;
+	private ImageView ivAvatar;
 	private TextView tvUsername, tvItemNum, tvCreationDate, tvItemDes;
 	
 	private ImageView ivItem;
@@ -138,7 +140,8 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 		LayoutInflater inflater = getLayoutInflater();
 		LinearLayout llHeader = (LinearLayout)inflater.inflate(R.layout.item_head_view, null);
 	
-		
+		ivAvatar = (ImageView)llHeader.findViewById(R.id.iv_avatar);
+		new DownloadImageTask(ivAvatar).execute(Constants.IMAGE_BASE_URL + collection.getUser_info().getUser_avatar());
 		tvUsername = (TextView)llHeader.findViewById(R.id.tv_username);
 		tvItemNum = (TextView)llHeader.findViewById(R.id.tv_item_num);
 		tvItemNum.setVisibility(View.GONE);
@@ -236,13 +239,21 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 				intent = new Intent(this, LoginActivity.class);
 				startActivityForResult(intent, Constants.INTENT_CODE_ITEM_DETAIL_LIKE);
 			} else {
-				AddCommentToItemPar parameter = new AddCommentToItemPar();
-				parameter.setCollection_id(collection.getCollection_id());
-				parameter.setItem_id(baseItem.getItem_id());
-				parameter.setItem_type(Utils.getRealBaseItem(baseItem).getItem_type());
-				parameter.setToken(settings.getString(Constants.TOKEN, ""));
+				if(baseItem.getItem_type() == Constants.ITEM_PHOTO) {
+					AddCommentToItemPar parameter = new AddCommentToItemPar();
+					parameter.setCollection_id(collection.getCollection_id());
+					parameter.setItem_id(baseItem.getItem_id());
+					parameter.setItem_type(Utils.getRealBaseItem(baseItem).getItem_type());
+					parameter.setToken(settings.getString(Constants.TOKEN, ""));
+					
+					createCommentDialog = MyDialog.showCommentDialog(this, parameter, this);
+				}else {
+					intent = new Intent(this, CommentsActivity.class);
+					intent.putExtra("base_item", baseItem);
+					intent.putExtra("request_type", Constants.FROM_ITEM_ID);
+					startActivity(intent);
+				}
 				
-				createCommentDialog = MyDialog.showCommentDialog(this, parameter, this);
 			}
 			
 			break;

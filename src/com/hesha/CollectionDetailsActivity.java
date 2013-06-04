@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.adapter.ImageAndTextListAdapter;
 import com.hesha.bean.BaseItem;
+import com.hesha.bean.ColStruct;
 import com.hesha.bean.Collection;
 import com.hesha.bean.CollectionDetailStruct;
 import com.hesha.bean.CollectionInfoAndItems;
@@ -15,15 +16,23 @@ import com.hesha.bean.CollectionType;
 import com.hesha.bean.LinkItem;
 import com.hesha.bean.PhotoItem;
 import com.hesha.bean.SubjectItem;
+import com.hesha.bean.gen.DoActionForCollectionPar;
+import com.hesha.bean.gen.DoActionForItemPar;
 import com.hesha.constants.Constants;
+import com.hesha.tasks.DownloadImageTask;
 import com.hesha.utils.DateUtils;
 import com.hesha.utils.HttpUrlConnectionUtils;
+import com.hesha.utils.JsonUtils;
 import com.hesha.utils.TimeoutErrorDialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,13 +43,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class CollectionDetailsActivity extends Activity implements OnClickListener, OnItemClickListener{
+public class CollectionDetailsActivity extends Activity implements OnClickListener, OnItemClickListener, Constants{
 	private static final String TAG = "CollectionDetailsActivity";
 	private Button btnBack, btnBackToCat;
+	private ImageView ivAvatar;
 	private TextView tvTitle;
 	private TextView tvUsername, tvItemNum, tvCreationDate, tvColDes;
 	private Collection collection;
@@ -58,6 +70,10 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 //	private static final int WHAT_DID_REFRESH = 1;
 //	private static final int WHAT_DID_MORE = 2;
 	private static final int CONNECTION_TIME_OUT = 3;
+	
+	private SharedPreferences settings;
+	private boolean isCollected;
+	private RelativeLayout rlCollect, rlDiscuss, rlShare;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -69,6 +85,7 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	}
 	
 	private void initData() {
+		settings = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE);
 		Intent intent = getIntent();
 		collection = (Collection)intent.getSerializableExtra("collection");
 		currentColType = (CollectionType)intent.getSerializableExtra("col_type");
@@ -90,7 +107,10 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 		btnBack = (Button)findViewById(R.id.btn_back);
 		btnBack.setOnClickListener(this);
 		
+		
 		tvTitle = (TextView)findViewById(R.id.tv_title);
+		ivAvatar = (ImageView)findViewById(R.id.iv_avatar);
+		new DownloadImageTask(ivAvatar).execute(Constants.IMAGE_BASE_URL + collection.getUser_info().getUser_avatar());
 		tvUsername = (TextView)findViewById(R.id.tv_username);
 		tvItemNum = (TextView)findViewById(R.id.tv_item_num);
 		tvCreationDate = (TextView)findViewById(R.id.tv_creation_date);
@@ -109,10 +129,18 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 		adapter = new ImageAndTextListAdapter(this, baseItems, gridView);
 		gridView.setAdapter(adapter);
 		gridView.setOnItemClickListener(this);
+		
+		rlCollect = (RelativeLayout)findViewById(R.id.rlCollect);
+		rlCollect.setOnClickListener(this);
+		
+		rlDiscuss = (RelativeLayout)findViewById(R.id.rlDiscuss);
+		rlDiscuss.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
+		Intent intent;
+		String username;
 		switch (v.getId()) {
 		case R.id.btn_back:
 			finish();
@@ -120,6 +148,42 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 			
 		case R.id.btn_back_to_cat:
 			finish();
+			break;
+			
+		case R.id.rlCollect:
+			//先判断是否有登录，然后再进行后续操作
+			username = settings.getString(Constants.USERNAME, "");
+			if (username.equals("")) {
+				intent = new Intent(this, LoginActivity.class);
+				startActivityForResult(intent, INTENT_CODE_COLLECTION_DETAIL);
+			} else {
+				DoActionForCollectionPar parameter = new DoActionForCollectionPar();
+				parameter.setAction_type(FAVORITE);
+				if(isCollected) {
+					parameter.setAdd_flag(REMOVE);
+				}else {
+					parameter.setAdd_flag(ADD);
+				}
+				parameter.setCollection_id(collectionId);
+				parameter.setToken(settings.getString(TOKEN, ""));
+				
+				new DoActionForCollectionTask(this, new ProgressDialog(this), parameter).execute((Void)null);
+			}
+			break;
+			
+		case R.id.rlDiscuss:
+			username = settings.getString(Constants.USERNAME, "");
+			if (username.equals("")) {
+				intent = new Intent(this, LoginActivity.class);
+				startActivityForResult(intent, INTENT_CODE_COLLECTION_DETAIL);
+			} else {
+				intent = new Intent(this, CommentsActivity.class);
+				intent.putExtra("collection", collection);
+				startActivity(intent);
+			}
+			break;
+			
+		case R.id.rlShare:
 			break;
 
 		default:
@@ -249,5 +313,95 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 		}
 		
 		return null;
+	}
+	
+	public class DoActionForCollectionTask extends AsyncTask<Void, Void, Void> {
+		private static final String TAG = "DoActionForItemTask";
+		private Context context;
+		private ProgressDialog dialog;
+		String response;
+		private DoActionForCollectionPar parameter;
+		public DoActionForCollectionTask(Context context, ProgressDialog dialog, DoActionForCollectionPar parameter) {
+			this.context = context;
+			this.dialog = dialog;
+			
+			this.parameter = parameter;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			dialog.setMessage("正在提交数据");
+			dialog.show();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			
+			
+			String data = JsonUtils.genJson(parameter);
+			
+			if(Constants.D) Log.i(TAG, "data:" + data);
+			
+			String url = SERVER_URL + "?ac=doActionForCollection";
+			if(Constants.D) Log.i(TAG, "url:" + url);
+			
+			try {
+				response = HttpUrlConnectionUtils.post(url, data, Constants.CONTENT_TYPE_JSON);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(Constants.D) Log.i(TAG, "response:" + response);
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			if(dialog.isShowing()) {
+				dialog.dismiss();
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				ColStruct struct = mapper.readValue(response, ColStruct.class);
+				boolean success = Boolean.valueOf(struct.getSuccess());
+				if(success) {
+					Collection collection = struct.getData();
+					if(Constants.D) Log.i(TAG, "collectons size:" + collection);
+					if(isCollected) {
+						Toast.makeText(CollectionDetailsActivity.this, "已取消收藏", Toast.LENGTH_SHORT).show();
+					}else {
+						Toast.makeText(CollectionDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
+						
+					}
+					
+				}else {
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setTitle("获取数据失败");
+					builder.setMessage("错误：" + struct.getError_des());
+					builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+						}
+					});
+					
+					builder.create().show();
+				}
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }
