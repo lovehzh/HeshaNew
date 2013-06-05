@@ -74,7 +74,7 @@ public class AddCommentToItemTask extends AsyncTask<Void, Void, Void> implements
 			if(success) {
 				Collection collection = struct.getData();
 				if(Constants.D) Log.i(TAG, "collecton:" + collection.getCollection_name());
-				listener.updateActivityUI();
+				if(null != listener) listener.updateActivityUI();
 			}else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(context);
 				builder.setTitle("获取数据失败");

@@ -35,7 +35,6 @@ import android.widget.Toast;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import com.hesha.adapter.CommentAdapter;
 import com.hesha.bean.BaseItem;
 import com.hesha.bean.ColStruct;
@@ -46,7 +45,6 @@ import com.hesha.bean.ItemDetailData;
 import com.hesha.bean.ItemDetailStruct;
 import com.hesha.bean.User;
 import com.hesha.bean.gen.AddCommentToItemPar;
-import com.hesha.bean.gen.AddItemToColPar;
 import com.hesha.bean.gen.DoActionForItemPar;
 import com.hesha.constants.Constants;
 import com.hesha.tasks.DownloadImageTask;
@@ -239,6 +237,7 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 				intent = new Intent(this, LoginActivity.class);
 				startActivityForResult(intent, Constants.INTENT_CODE_ITEM_DETAIL_LIKE);
 			} else {
+				//baseItem = Utils.getRealBaseItem(baseItem);//当元素为图片时直接弹出对话框
 				if(baseItem.getItem_type() == Constants.ITEM_PHOTO) {
 					AddCommentToItemPar parameter = new AddCommentToItemPar();
 					parameter.setCollection_id(collection.getCollection_id());
@@ -250,6 +249,7 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 				}else {
 					intent = new Intent(this, CommentsActivity.class);
 					intent.putExtra("base_item", baseItem);
+					intent.putExtra("collection", collection);
 					intent.putExtra("request_type", Constants.FROM_ITEM_ID);
 					startActivity(intent);
 				}

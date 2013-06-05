@@ -5,7 +5,7 @@ public interface Constants{
 	public static final String IMAGE_BASE_URL = "http://192.168.1.41:8084/";
 	public static final boolean D = true;
 	
-	public static final int PAGE_SIZE = 20;
+	public static final int PAGE_SIZE = 10;
 	public static final int ITEM_PHOTO = 1;     //普通图片
 	public static final int ITEM_SUBJECT = 2;   //单品 
 	public static final int ITEM_LINK = 3;      //来自淘宝，天猫等的商品
@@ -37,5 +37,8 @@ public interface Constants{
 	
 	public static final int FROM_COLLECTION_ID = 0;
 	public static final int FROM_ITEM_ID = 1;
+	
+	public static final int DES = 0;
+	public static final int ASC = 1;
 	
 }

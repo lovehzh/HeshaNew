@@ -22,7 +22,6 @@
             style="@style/title1"
 	        android:text="@string/DetailsDiscuss"
 	        android:layout_centerInParent="true"
-	        android:layout_toRightOf="@+id/btn_back"
 	        android:layout_marginLeft="5dip"
             />
         
@@ -36,6 +35,7 @@
 	    android:layout_height="wrap_content"
 	    android:paddingBottom="10dp"
 	    android:paddingTop="10dp"
+	    android:visibility="gone"
 	     >
 	
 	      <TextView
@@ -76,7 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         >
-        <EditText 
+        <EditText
+            android:id="@+id/et_content" 
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
