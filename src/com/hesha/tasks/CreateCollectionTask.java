@@ -26,7 +26,7 @@ public class CreateCollectionTask extends AsyncTask<Void, Void, Void> implements
 	private String token;
 	String response;
 	private String colName, colDes;
-	
+	private OnTaskFinishedListener listener;
 	public CreateCollectionTask(Context context, ProgressDialog dialog, String token, 
 			String colName, String colDes) {
 		this.context = context;
@@ -81,6 +81,8 @@ public class CreateCollectionTask extends AsyncTask<Void, Void, Void> implements
 			if(success) {
 				Collection collection = struct.getData();
 				if(Constants.D) Log.i(TAG, "collecton:" + collection.getCollection_name());
+				//close create collection dialog after successful
+				listener.updateActivityUI(collection);
 			}else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(context);
 				builder.setTitle("获取数据失败");
@@ -96,14 +98,22 @@ public class CreateCollectionTask extends AsyncTask<Void, Void, Void> implements
 			}
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
+			if(null != listener) listener.jsonParseError();
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
+			if(null != listener) listener.jsonParseError();
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			if(null != listener) listener.jsonParseError();
 			e.printStackTrace();
 		}
 	}
+
+	public void setListener(OnTaskFinishedListener listener) {
+		this.listener = listener;
+	}
+	
 	
 }

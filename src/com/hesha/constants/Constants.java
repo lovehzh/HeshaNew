@@ -1,8 +1,8 @@
 package com.hesha.constants;
 
 public interface Constants{
-	public static final String SERVER_URL = "http://192.168.1.41:8084/rest/index.php";
-	public static final String IMAGE_BASE_URL = "http://192.168.1.41:8084/";
+	public static final String SERVER_URL = "http://gigabud.3322.org:9090/rest/index.php";//"http://192.168.1.41:8084/rest/index.php";
+	public static final String IMAGE_BASE_URL = "http://gigabud.3322.org:9090/";//"http://192.168.1.41:8084/";
 	public static final boolean D = true;
 	
 	public static final int PAGE_SIZE = 10;

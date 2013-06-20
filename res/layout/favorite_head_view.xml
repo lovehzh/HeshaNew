@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="gone"
+    android:padding="4dip"
     >
     <TextView
         android:id="@+id/tv_col_name" 
@@ -12,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/title"
+        android:textSize="22sp"
+        android:paddingLeft="33dip"
         />
 	
     <Button 
@@ -19,6 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/create_collection2"
+        android:background="#3ba7da"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:padding="4dip"
         />
 	
 </LinearLayout>

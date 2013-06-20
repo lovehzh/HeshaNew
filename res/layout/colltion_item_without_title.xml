@@ -22,7 +22,7 @@
         >
         <ImageView
             android:id="@+id/iv_0"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/col_img_height"
         		android:layout_width="0dip"
         		android:text="@string/title"
         		android:layout_weight="1"
@@ -30,7 +30,7 @@
         
         <ImageView
             android:id="@+id/iv_1"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/col_img_height"
         		android:layout_width="0dip"
         		android:text="@string/title"
         		android:layout_weight="1"
@@ -38,7 +38,7 @@
         
         <ImageView 
             android:id="@+id/iv_2"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/col_img_height"
         		android:layout_width="0dip"
         		android:text="@string/more"
         		android:layout_weight="1"
@@ -111,7 +111,11 @@
             android:id="@+id/tv_creator" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:background="@drawable/user_bg"
 	        android:text="麦兜的小窝"
+	        android:textColor="@color/more_btn"
+	        android:gravity="center"
+	        android:clickable="true"
             />
     </LinearLayout>
     

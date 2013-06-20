@@ -38,14 +38,18 @@ import com.hesha.bean.BaseItem;
 import com.hesha.bean.Collection;
 import com.hesha.bean.Comment;
 import com.hesha.bean.CommentStruct;
+import com.hesha.bean.User;
+import com.hesha.bean.gen.AddCommentToCollectionPar;
 import com.hesha.bean.gen.AddCommentToItemPar;
 import com.hesha.bean.gen.GetCommentsByCollectionIdPar;
 import com.hesha.bean.gen.GetCommentsByItemIdPar;
 import com.hesha.constants.Constants;
+import com.hesha.tasks.AddCommentToCollectionTask;
 import com.hesha.tasks.AddCommentToItemTask;
 import com.hesha.tasks.OnTaskFinishedListener;
 import com.hesha.utils.HttpUrlConnectionUtils;
 import com.hesha.utils.JsonUtils;
+import com.hesha.utils.MyDialog;
 import com.hesha.utils.TimeoutErrorDialog;
 import com.hesha.utils.Utils;
 
@@ -156,7 +160,14 @@ public class CommentsActivity extends Activity implements OnClickListener, OnIte
 	
 	private void send() {
 		if(requestType == FROM_COLLECTION_ID) {
+			AddCommentToCollectionPar par = new AddCommentToCollectionPar();
+			par.setCollection_id(collection.getCollection_id());
+			par.setComment_content(etContent.getText().toString().trim());
+			par.setToken(settings.getString(TOKEN, ""));
 			
+			AddCommentToCollectionTask task = new AddCommentToCollectionTask(this, new ProgressDialog(this), par);
+			task.setListener(this);
+			task.execute((Void)null); 
 		}else {
 			AddCommentToItemPar par = new AddCommentToItemPar();
 			par.setCollection_id(collection.getCollection_id());
@@ -234,14 +245,18 @@ public class CommentsActivity extends Activity implements OnClickListener, OnIte
 				boolean success = Boolean.valueOf(struct.getSuccess());
 				if(success) {
 					//
-					ArrayList<Comment> commentsExp = struct.getData().getExpert_comment();
-					ArrayList<Comment> commentsNor = struct.getData().getOther_comment();
-					
-					if(null != commentsExp) 
-					comments.addAll(commentsExp);
-					
-					if(null != commentsNor)
-					comments.addAll(commentsNor);
+					if(requestType == FROM_ITEM_ID) {
+						ArrayList<Comment> commentsExp = struct.getData().getExpert_comment();
+						ArrayList<Comment> commentsNor = struct.getData().getOther_comment();
+						
+						if(null != commentsExp) 
+						comments.addAll(commentsExp);
+						
+						if(null != commentsNor)
+						comments.addAll(commentsNor);
+					}else {
+						comments = struct.getComments();
+					}
 				}else {
 					AlertDialog.Builder builder = new AlertDialog.Builder(CommentsActivity.this);
 					builder.setTitle("获取数据失败");
@@ -275,6 +290,7 @@ public class CommentsActivity extends Activity implements OnClickListener, OnIte
 				ArrayList<Comment> comments = null;
 				if(requestType == FROM_COLLECTION_ID){
 					comments = getCommentsFromServer(index, PAGE_SIZE, 1, DES, collection.getCollection_id(), 3);//取服务器端数据
+					//comments = new ArrayList<Comment>();
 				}else {
 					comments = getCommentsFromServer(index, PAGE_SIZE, 1, DES, baseItem.getItem_id(), 3);
 				}
@@ -394,13 +410,27 @@ public class CommentsActivity extends Activity implements OnClickListener, OnIte
 	}
 
 	@Override
-	public void updateActivityUI() {
+	public void updateActivityUI(Object obj) {
 		// TODO Auto-generated method stub
 		if (imm.isActive()) {//如果开启
 			imm.hideSoftInputFromWindow(btnSend.getWindowToken(),0);
 		}
 		etContent.setText("");
 		Toast.makeText(this, "提交评论成功", Toast.LENGTH_SHORT).show();
-//		loadData();
+		
+		if(obj instanceof Comment) {
+			if(comments.size() == 0) list.removeHeaderView(headView);
+			comments.add(0,(Comment)obj);
+			adapter.notifyDataSetChanged();
+			
+		}
 	}
+
+	@Override
+	public void jsonParseError() {
+		// TODO Auto-generated method stub
+		MyDialog.showInfoDialog(this, R.string.tips, R.string.response_data_error);
+	}
+	
+	
 }

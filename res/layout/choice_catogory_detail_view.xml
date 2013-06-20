@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/ll_choice_cat_detail"
+	android:layout_width="match_parent" 
+	android:layout_height="match_parent" 
+	android:layout_gravity="center"
+	android:background="#ffffff" 
+	android:orientation="vertical"
+	android:visibility="visible"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <include layout="@layout/row_choice_catogory"/>
+    
+    <LinearLayout
+        android:id="@+id/ll_details_content" 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/img_repeat_wood"
+        >
+        
+        <GridView 
+		    android:id="@+id/grid"
+		    android:numColumns="2"
+	        android:gravity="center_horizontal"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="4dip"
+		    ></GridView>
+        
+    </LinearLayout>
+    
+    
+</LinearLayout>

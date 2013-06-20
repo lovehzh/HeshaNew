@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -96,6 +97,8 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 	
 	private boolean isLike;
 	private Dialog createCommentDialog;
+	private ImageView imgLike;
+	private boolean isCollect;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -150,6 +153,13 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 		btnBackToCat.setText(currentColType.getCollection_type_name());
 		
 		ivItem = (ImageView)llHeader.findViewById(R.id.iv_item);
+//		Display mDisplay= getWindowManager().getDefaultDisplay();
+//		int width= mDisplay.getWidth();
+//		int Height= mDisplay.getHeight();
+//		ivItem.setScaleType(ImageView.ScaleType.FIT_XY);
+//		ivItem.setAdjustViewBounds(true);
+//		ivItem.setMaxHeight(Height);//屏幕高度
+//		ivItem.setMaxWidth(width);//屏幕宽度  
 		loadPicture();
 		
 		tvNumOfCollected = (TextView)llHeader.findViewById(R.id.tv_num_of_collected);
@@ -172,9 +182,11 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 		
 		rlCollect = (RelativeLayout)findViewById(R.id.rlCollect);
 		rlCollect.setOnClickListener(this);
+		//imgCollect = (ImageView)findViewById(R.id.imageview_details_collect);
 		
 		rlLike = (RelativeLayout)findViewById(R.id.rlLike);
 		rlLike.setOnClickListener(this);
+		imgLike = (ImageView)findViewById(R.id.imageview_details_like);
 		
 		rlDiscuss = (RelativeLayout)findViewById(R.id.rlDiscuss);
 		rlDiscuss.setOnClickListener(this);
@@ -238,21 +250,21 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 				startActivityForResult(intent, Constants.INTENT_CODE_ITEM_DETAIL_LIKE);
 			} else {
 				//baseItem = Utils.getRealBaseItem(baseItem);//当元素为图片时直接弹出对话框
-				if(baseItem.getItem_type() == Constants.ITEM_PHOTO) {
-					AddCommentToItemPar parameter = new AddCommentToItemPar();
-					parameter.setCollection_id(collection.getCollection_id());
-					parameter.setItem_id(baseItem.getItem_id());
-					parameter.setItem_type(Utils.getRealBaseItem(baseItem).getItem_type());
-					parameter.setToken(settings.getString(Constants.TOKEN, ""));
-					
-					createCommentDialog = MyDialog.showCommentDialog(this, parameter, this);
-				}else {
+//				if(baseItem.getItem_type() == Constants.ITEM_PHOTO) {
+//					AddCommentToItemPar parameter = new AddCommentToItemPar();
+//					parameter.setCollection_id(collection.getCollection_id());
+//					parameter.setItem_id(baseItem.getItem_id());
+//					parameter.setItem_type(Utils.getRealBaseItem(baseItem).getItem_type());
+//					parameter.setToken(settings.getString(Constants.TOKEN, ""));
+//					
+//					createCommentDialog = MyDialog.showCommentDialog(this, parameter, this);
+//				}else {
 					intent = new Intent(this, CommentsActivity.class);
 					intent.putExtra("base_item", baseItem);
 					intent.putExtra("collection", collection);
 					intent.putExtra("request_type", Constants.FROM_ITEM_ID);
 					startActivity(intent);
-				}
+//				}
 				
 			}
 			
@@ -302,7 +314,10 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 	private void setUserIcon(ArrayList<User> users, LinearLayout ll) {
 		for(int i=0; i< users.size(); i++) {
 			ImageView iv = new ImageView(ItemDetailsActivity.this);
-			iv.setLayoutParams(new LayoutParams(R.dimen.avatar_size, R.dimen.avatar_size));
+			iv.setPadding(2, 2, 2, 2);
+//			iv.setScaleType(ImageView.ScaleType.FIT_XY);
+			LayoutParams params = new LayoutParams(75, 75);
+			iv.setLayoutParams(params);//(new LayoutParams(R.dimen.avatar_size, R.dimen.avatar_size));
 			new DownloadImageTask(iv).execute(Constants.IMAGE_BASE_URL + users.get(i).getUser_avatar());
 			iv.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -339,7 +354,8 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 			case WHAT_DOWNLOAD_IMAGE:
 				if(null != msg.obj) {
 					Drawable drawable = (Drawable)msg.obj;
-					ivItem.setBackgroundDrawable(drawable);
+//					ivItem.setBackgroundDrawable(drawable);
+					ivItem.setImageDrawable(drawable);
 				}
 				break;
 			case WHAT_DID_LOAD_DATA:
@@ -516,9 +532,12 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 					if(Constants.D) Log.i(TAG, "collectons size:" + collection);
 					if(isLike) {
 						Toast.makeText(ItemDetailsActivity.this, "已取消喜欢", Toast.LENGTH_SHORT).show();
+						imgLike.setImageResource(R.drawable.button_details_like_default);
+						isLike = false;
 					}else {
 						Toast.makeText(ItemDetailsActivity.this, "已喜欢", Toast.LENGTH_SHORT).show();
-						
+						imgLike.setImageResource(R.drawable.button_details_like_selected);
+						isLike = true;
 					}
 					
 				}else {
@@ -549,8 +568,14 @@ public class ItemDetailsActivity extends Activity implements OnClickListener, On
 	}
 
 	@Override
-	public void updateActivityUI() {
+	public void updateActivityUI(Object obj) {
 		// TODO Auto-generated method stub
 		createCommentDialog.dismiss();
+	}
+
+	@Override
+	public void jsonParseError() {
+		// TODO Auto-generated method stub
+		
 	}
 }

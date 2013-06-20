@@ -9,15 +9,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.bean.BaseItem;
 import com.hesha.bean.ColStruct;
 import com.hesha.bean.Collection;
-import com.hesha.bean.CollectionStruct;
 import com.hesha.bean.ColsStruct;
 import com.hesha.bean.PhotoItem;
 import com.hesha.bean.SubjectItem;
 import com.hesha.bean.gen.AddItemToColPar;
 import com.hesha.bean.gen.GetMyCollectionsParameter;
 import com.hesha.constants.Constants;
+import com.hesha.tasks.CreateCollectionTask;
+import com.hesha.tasks.OnTaskFinishedListener;
 import com.hesha.utils.HttpUrlConnectionUtils;
 import com.hesha.utils.JsonUtils;
+import com.hesha.utils.MyDialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,7 +46,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FavoriteActivity extends Activity implements OnClickListener, OnItemClickListener{
+public class FavoriteActivity extends Activity implements OnClickListener, OnItemClickListener, OnTaskFinishedListener{
 	private Button btnCancel, btnCreate;
 	private EditText etColName;
 	private TextView tvColName;
@@ -128,6 +130,15 @@ public class FavoriteActivity extends Activity implements OnClickListener, OnIte
 		case R.id.btn_cancel:
 			finish();
 			break;
+			
+		case R.id.btn_create:
+			String token = settings.getString(Constants.TOKEN, "");
+			String collectionName = etColName.getText().toString().trim();
+			String collectionDes = "";
+			CreateCollectionTask task = new CreateCollectionTask(this, new ProgressDialog(this), token, collectionName, collectionDes);
+			task.setListener(this);
+			task.execute((Void)null);
+			break;
 
 		default:
 			break;
@@ -151,7 +162,7 @@ public class FavoriteActivity extends Activity implements OnClickListener, OnIte
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			dialog.setMessage("正在提交数据");
+			dialog.setMessage("正在加载数据");
 			dialog.show();
 		}
 
@@ -253,7 +264,7 @@ public class FavoriteActivity extends Activity implements OnClickListener, OnIte
 				adapter.notifyDataSetChanged();
 			}else {
 				headView.setVisibility(View.VISIBLE);
-				tvColName.setText(temp);
+				tvColName.setText("\""+ temp + "\"");
 				adapter.clear();
 				ArrayList<Collection> resuts = localSearch(temp.toString());
 				for(Collection name : resuts) {
@@ -383,6 +394,32 @@ public class FavoriteActivity extends Activity implements OnClickListener, OnIte
 		par.setToken(token);
 		
 		new AddItemToColTask(this, new ProgressDialog(this), par).execute((Void)null);
+	}
+
+	@Override
+	public void updateActivityUI(Object obj) {
+		// TODO Auto-generated method stub
+		etColName.setText("");
+		
+		Collection collection = (Collection)obj;
+		
+		adapter.clear();
+		colsTemp = new ArrayList<Collection>();
+		colsTemp.addAll(cols);
+		colsTemp.add(0, collection);
+		for(Collection c : colsTemp) {
+			adapter.add(c);
+		}
+		
+		adapter.notifyDataSetChanged();
+		
+		
+	}
+
+	@Override
+	public void jsonParseError() {
+		// TODO Auto-generated method stub
+		MyDialog.showInfoDialog(this, R.string.tips, R.string.response_data_error);
 	}
 	
 	

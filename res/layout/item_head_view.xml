@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
     
     <include layout="@layout/creator_view"/>
@@ -17,9 +17,10 @@
     <ImageView
         android:id="@+id/iv_item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/ic_launcher"
-         android:scaleType="fitCenter"
+        android:layout_height="300dip"
+         android:scaleType="fitXY"
+         android:adjustViewBounds="true"
+         android:src="@drawable/collection_loading_default"
          />
 
     <!-- 收藏 -->
@@ -27,7 +28,8 @@
     <LinearLayout
         android:id="@+id/ll_collect_des"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:gravity="center">
 
         <TextView
             android:id="@+id/tv_num_of_collected"
@@ -48,8 +50,10 @@
 
     <LinearLayout
         android:id="@+id/ll_user_collected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:gravity="center|left"
+        android:background="@drawable/four_conor">
 
     </LinearLayout>
 
@@ -78,8 +82,10 @@
 
     <LinearLayout
         android:id="@+id/ll_user_liked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:background="@drawable/four_conor" >
 
     </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.hesha;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,13 +18,13 @@ import com.hesha.bean.LinkItem;
 import com.hesha.bean.PhotoItem;
 import com.hesha.bean.SubjectItem;
 import com.hesha.bean.gen.DoActionForCollectionPar;
-import com.hesha.bean.gen.DoActionForItemPar;
 import com.hesha.constants.Constants;
 import com.hesha.tasks.DownloadImageTask;
 import com.hesha.utils.DateUtils;
 import com.hesha.utils.HttpUrlConnectionUtils;
 import com.hesha.utils.JsonUtils;
 import com.hesha.utils.TimeoutErrorDialog;
+import com.hesha.utils.Utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -60,7 +61,6 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	private ImageAndTextListAdapter adapter;
 	private ArrayList<BaseItem> baseItems;
 	private int collectionId;
-	private CollectionInfoAndItems collectionInfoAndItems;
 	private CollectionType currentColType;
 	
 	private RelativeLayout rlTips;
@@ -74,6 +74,8 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	private SharedPreferences settings;
 	private boolean isCollected;
 	private RelativeLayout rlCollect, rlDiscuss, rlShare;
+	
+	private ImageView imgCollect;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -96,7 +98,7 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 	}
 	
 	private void updateUI() {
-		tvTitle.setText(collection.getCollection_name());
+		tvTitle.setText(Utils.decodeSpecial(collection.getCollection_name()));
 		tvUsername.setText(collection.getUser_info().getUser_name());
 		tvItemNum.setText("" + collection.getItem_nums());
 		tvCreationDate.setText(DateUtils.getStringFromTimeSeconds( collection.getCreation_date()));
@@ -132,6 +134,8 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 		
 		rlCollect = (RelativeLayout)findViewById(R.id.rlCollect);
 		rlCollect.setOnClickListener(this);
+		
+		imgCollect = (ImageView)findViewById(R.id.imageview_details_collect);
 		
 		rlDiscuss = (RelativeLayout)findViewById(R.id.rlDiscuss);
 		rlDiscuss.setOnClickListener(this);
@@ -373,9 +377,12 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 					if(Constants.D) Log.i(TAG, "collectons size:" + collection);
 					if(isCollected) {
 						Toast.makeText(CollectionDetailsActivity.this, "已取消收藏", Toast.LENGTH_SHORT).show();
+						imgCollect.setImageResource(R.drawable.button_details_collect_default);
+						isCollected = false;
 					}else {
 						Toast.makeText(CollectionDetailsActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
-						
+						imgCollect.setImageResource(R.drawable.button_details_collect_selected);
+						isCollected = true;
 					}
 					
 				}else {

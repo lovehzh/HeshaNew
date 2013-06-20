@@ -10,11 +10,14 @@
     <RelativeLayout 
         android:id="@+id/head"
         style="@style/TitleBackground"
+        android:gravity="center"
         >
         <Button 
             android:id="@+id/btnBack"
             style="@style/TitleButtonLeft"
-            android:text="@string/back"
+            android:text="@string/close"
+            android:background="@drawable/create_gray_selector"
+            android:textColor="#ffffff"
             />
         
         <TextView 
@@ -35,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/head"
+        android:layout_marginTop="4dip"
         >
         <LinearLayout 
             android:layout_width="match_parent"
@@ -76,6 +80,7 @@
                     android:id="@+id/etPassword" 
                     style="@style/EditTextMargin"
                     android:hint="@string/password_hint"
+                    android:inputType="textPassword"
                     />
             </LinearLayout>
             

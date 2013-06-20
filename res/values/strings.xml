@@ -12,6 +12,7 @@
     <string name="digital_0">0</string>
     
     <string name="back">返回</string>
+    <string name="close">关闭</string>
     <string name="back_to_main">回主页</string>
     <string name="more">更多&gt;&gt;</string>
     <string name="press_again_exit">再按一次退出</string>
@@ -49,6 +50,7 @@
 	<string name="no_net">目前网络不可以用</string>
     <string name="server_response_error">错误:\n服务暂不可用，请稍后再试</string>
     <string name="retry">重试</string>
+    <string name="response_data_error">系统返回数据异常,请稍后再试</string>
     
     <!-- retrieve password -->
     <string name="retrieve_password">找回密码</string>
@@ -71,9 +73,12 @@
     <string name="please_input_col_name">请输入专辑名称</string>
     
     <!-- 收藏 -->
-    <string name="collect">收集</string>
-    <string name="create_or_search">创建或收索专辑</string>
+    <string name="collect">收藏至专辑</string>
+    <string name="create_or_search">创建或搜索专辑</string>
     
     <!-- 评论 -->
     <string name="pls_input_comment_content">请输入评论内容&#8230;</string>
+    
+    <!-- 知识 -->
+    <string name="knowledge">知识</string>
 </resources>

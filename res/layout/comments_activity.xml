@@ -57,24 +57,29 @@
 	</RelativeLayout>
     
 	<ListView 
-		    android:id="@+id/list"
-		    android:layout_below="@+id/rl_tips"
-		    android:layout_above="@+id/ll_bottom"
-		 	android:layout_height="fill_parent"
+	    android:id="@+id/list"
+	    android:layout_below="@+id/rl_tips"
+	    android:layout_above="@+id/ll_bottom"
+	 	android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
 	    	android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
-            android:scrollbars="none"
-	    	android:divider="#bfc884"
+        android:layout_gravity="center_vertical"
+        android:scrollbars="none"
+	    	android:divider="#acacac"
 	    	android:dividerHeight="1dip"
 	    	android:cacheColorHint="#00000000"
-	    	android:background="#FFFFFFFF"/>
+	    	android:background="#FFFFFFFF"
+	    	android:layout_marginLeft="3dip"
+	    	android:layout_marginRight="3dip"
+	    	/>
     
     <LinearLayout 
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:padding="3dip"
+        android:background="#e1e1e1"
         >
         <EditText
             android:id="@+id/et_content" 
@@ -82,6 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/pls_input_comment_content"
+            android:background="@drawable/comment_editor_bg"
+            
             />
         
         <Button 
@@ -89,6 +96,9 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/send"
+            android:background="@drawable/comment_send_selector"
+            android:layout_marginLeft="3dip"
+            android:textColor="#ffffff"
             />
     </LinearLayout>
 </RelativeLayout>

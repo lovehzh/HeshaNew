@@ -18,23 +18,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginLeft="5dip"
         >
         <TextView 
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
         		android:layout_height="wrap_content"
+        		android:textColor="#1f9fce"
+        		android:textSize="15sp"
             />
         
         <TextView 
             android:id="@+id/tv_content_xxx"
             android:layout_width="match_parent"
         		android:layout_height="wrap_content"
+        		android:textColor="#666666"
+        		android:textSize="15sp"
             />
         
         <TextView 
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
         		android:layout_height="wrap_content"
+        		android:textColor="#949494"
+        		android:textSize="13sp"
             />
     </LinearLayout>
     

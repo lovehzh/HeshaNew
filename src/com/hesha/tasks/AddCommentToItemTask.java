@@ -12,7 +12,9 @@ import android.util.Log;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hesha.bean.AddCommentStruct;
 import com.hesha.bean.Collection;
+import com.hesha.bean.Comment;
 import com.hesha.bean.CreateColResStruct;
 import com.hesha.bean.gen.AddCommentToItemPar;
 import com.hesha.constants.Constants;
@@ -69,12 +71,13 @@ public class AddCommentToItemTask extends AsyncTask<Void, Void, Void> implements
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			CreateColResStruct struct = mapper.readValue(response, CreateColResStruct.class);
+			AddCommentStruct struct = mapper.readValue(response, AddCommentStruct.class);
 			boolean success = Boolean.valueOf(struct.getSuccess());
 			if(success) {
-				Collection collection = struct.getData();
+				Collection collection = struct.getData().getCollection_info();
+				Comment comment = struct.getData().getComment();
 				if(Constants.D) Log.i(TAG, "collecton:" + collection.getCollection_name());
-				if(null != listener) listener.updateActivityUI();
+				if(null != listener) listener.updateActivityUI(comment);
 			}else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(context);
 				builder.setTitle("获取数据失败");
@@ -89,13 +92,13 @@ public class AddCommentToItemTask extends AsyncTask<Void, Void, Void> implements
 				builder.create().show();
 			}
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
+			if(null != listener) listener.jsonParseError();
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			if(null != listener) listener.jsonParseError();
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			if(null != listener) listener.jsonParseError();
 			e.printStackTrace();
 		}
 	}

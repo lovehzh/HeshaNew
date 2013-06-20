@@ -5,26 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="5dip"
     >
 	<LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
 	    >
 	    <TextView 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/collect"
+	        android:textColor="#d65152"
+	        android:textSize="22sp"
+	        />
+	    
+	    <ImageView 
+	        android:layout_width="match_parent"
+	        android:layout_height="2dip"
+	        android:background="#d65152"
 	        />
 	</LinearLayout>	
 	
 	<LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:layout_marginTop="3dip"
 	    >
 	    <ImageView 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:background="@drawable/button_details_collect_default"
+	        android:background="@drawable/search"
 	        />
 	    
 	    <EditText 
@@ -32,8 +44,15 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:hint="@string/create_or_search"
+	        android:layout_marginLeft="3dip"
 	        />
 	</LinearLayout>
+	
+	<ImageView 
+	        android:layout_width="match_parent"
+	        android:layout_height="2dip"
+	        android:background="#acacac"
+	        />
 	
 	<ListView 
 	    android:id="@+id/list"
@@ -46,7 +65,12 @@
 	    android:id="@+id/btn_cancel"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+	    android:textColor="#ffffff"
 	    android:text="@string/cancel"
+	    android:background="#3ba7da"
+	    android:textSize="20sp"
+	    android:paddingTop="4dip"
+	    android:paddingBottom="4dip"
 	    />
 	
 </LinearLayout>

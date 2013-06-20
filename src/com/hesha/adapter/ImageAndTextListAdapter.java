@@ -61,7 +61,7 @@ public class ImageAndTextListAdapter extends ArrayAdapter<BaseItem> {
                 }
             });
             if (cachedImage == null) {
-                imageView.setImageResource(R.drawable.loading);
+                imageView.setImageResource(R.drawable.collection_loading_default);
             }else{
                 imageView.setImageDrawable(cachedImage);
             }

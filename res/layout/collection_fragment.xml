@@ -39,22 +39,28 @@
         android:id="@+id/hs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:gravity="center"
+        android:layout_gravity="center"
         >
         <LinearLayout 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:gravity="center"
             >
             <LinearLayout
                 android:id="@+id/ll_0" 
                 android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
+            		android:gravity="center"
                 ></LinearLayout>
             
             <LinearLayout
                 android:id="@+id/ll_1" 
                 android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
+            		android:gravity="center"
                 ></LinearLayout>
             
         </LinearLayout>
@@ -91,8 +97,9 @@
 	    android:id="@+id/list"
 	    android:layout_width="match_parent"
    		android:layout_height="match_parent"
-   		android:layout_marginLeft="2dip"
-   		android:layout_marginRight="2dip"
+   		android:layout_marginLeft="5dip"
+   		android:layout_marginRight="5dip"
+   		android:layout_marginTop="5dip"
    		android:layout_marginBottom="4dip"
    		android:divider="@null"
 	    >

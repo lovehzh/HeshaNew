@@ -8,6 +8,7 @@ import com.hesha.bean.Collection;
 import com.hesha.bean.ImageBean;
 import com.hesha.constants.Constants;
 import com.hesha.utils.AsyncImageLoader;
+import com.hesha.utils.Utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -62,7 +63,9 @@ public class ColAndPreviewItemsAdapter extends ArrayAdapter<Collection>{
 		}
 		
 		
-		holder.tvItemTitle.setText(collection.getCollection_name());
+		String name = collection.getCollection_name();
+		name = Utils.decodeSpecial(name);
+		holder.tvItemTitle.setText(name);
 		holder.tvItemDes.setText(collection.getCollection_des());
 		holder.tvPictursNum.setText(collection.getImage_num() + "");
 		holder.tvGoodsNum.setText(collection.getProduct_num() + "");
@@ -91,7 +94,11 @@ public class ColAndPreviewItemsAdapter extends ArrayAdapter<Collection>{
 						}
 					});
 			
-			iv.setImageDrawable(cacheImagePictureContent);
+			if (cacheImagePictureContent == null) {
+                iv.setImageResource(R.drawable.collection_loading_default);
+            }else{
+            		iv.setImageDrawable(cacheImagePictureContent);
+            }
 		}
 		
 		

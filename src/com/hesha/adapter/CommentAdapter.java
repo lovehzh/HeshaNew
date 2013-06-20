@@ -77,7 +77,20 @@ public class CommentAdapter extends ArrayAdapter<Comment>{
 					}
 				});
 		
-		iv.setImageDrawable(cacheImagePictureContent);
+		if (null == cacheImagePictureContent) {
+			try {
+			Thread.sleep(500);  //保证相同地址的图片可以加载上
+			} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
+		}
+		
+		if(null == cacheImagePictureContent) {
+			iv.setImageResource(R.drawable.default_avatar);
+		}else {
+			iv.setImageDrawable(cacheImagePictureContent);
+		}
 		
 		
 		return convertView;

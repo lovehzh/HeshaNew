@@ -51,23 +51,23 @@ public class MainActivity extends TabActivity {
 		public void onCheckedChanged(RadioGroup group, int checkedId) {
 			switch (checkedId) {
 			case R.id.main_tab_0:
-				tabHost.setCurrentTabByTag("news");
+				tabHost.setCurrentTabByTag(COLLECTION);
 //				moveFrontBg(img, startLeft, 0, 0, 0);
 				MoveBg.moveFrontBg(img, startLeft, 0, 0, 0);
 				startLeft = 0;
 				break;
 			case R.id.main_tab_1:
-				tabHost.setCurrentTabByTag("topic");
+				tabHost.setCurrentTabByTag(CHOICE);
 				MoveBg.moveFrontBg(img, startLeft, img.getWidth(), 0, 0);
 				startLeft = img.getWidth();
 				break;
 			case R.id.main_tab_2:
-				tabHost.setCurrentTabByTag("picture");
+				tabHost.setCurrentTabByTag(FRIENDS);
 				MoveBg.moveFrontBg(img, startLeft, img.getWidth() * 2, 0, 0);
 				startLeft = img.getWidth() * 2;
 				break;
 			case R.id.main_tab_3:
-				tabHost.setCurrentTabByTag("follow");
+				tabHost.setCurrentTabByTag(MYINFO);
 				MoveBg.moveFrontBg(img, startLeft, img.getWidth() * 3, 0, 0);
 				startLeft = img.getWidth() * 3;
 				break;

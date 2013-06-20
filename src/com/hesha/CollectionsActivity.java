@@ -6,10 +6,13 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +21,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -31,15 +36,16 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.MyListView.OnRefreshListener;
 import com.hesha.adapter.ColAndPreviewItemsAdapter;
-import com.hesha.adapter.CollectionTypeAndPreviewItemsAdapter;
 import com.hesha.bean.Collection;
 import com.hesha.bean.CollectionType;
 import com.hesha.bean.ColsStruct;
 import com.hesha.constants.Constants;
+import com.hesha.tasks.OnTaskFinishedListener;
 import com.hesha.utils.HttpUrlConnectionUtils;
+import com.hesha.utils.MyDialog;
 import com.hesha.utils.TimeoutErrorDialog;
 
-public class CollectionsActivity extends Activity implements OnClickListener, OnItemClickListener {
+public class CollectionsActivity extends Activity implements OnClickListener, OnItemClickListener, OnScrollListener, OnTaskFinishedListener {
 	private static final String TAG = "CollectionsActivity";
 	private Context context;
 	private Button btnCreateCollection, btnGoMain;
@@ -62,11 +68,25 @@ public class CollectionsActivity extends Activity implements OnClickListener, On
 	private static final int WHAT_DID_MORE = 2;
 	private static final int CONNECTION_TIME_OUT = 3;
 	
-	private static final int PAGE_SIZE = 20;
+	private static final int PAGE_SIZE = 10;
 	private int sortType =1, orderType =1;
 	private int startIndex;
 	
 	private CollectionType currentColType;
+	private ArrayList<Button> buttons;
+	
+	private Button bt;
+    private ProgressBar pg;
+	// ListView底部View
+    private View moreView;
+    private Handler handler;
+    // 设置一个最大的数据条数，超过即不再加载
+//    private int MaxDateNum;
+    // 最后可见条目的索引
+    private int lastVisibleIndex;
+    
+    private SharedPreferences settings;
+	private Dialog createDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -85,6 +105,7 @@ public class CollectionsActivity extends Activity implements OnClickListener, On
 	}
 	
 	private void initData() {
+		settings = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE);
 		Intent intent = getIntent();
 		currentColType = (CollectionType)intent.getSerializableExtra("col_type");
 		collectionTypes = (ArrayList<CollectionType>)intent.getSerializableExtra("types");
@@ -107,39 +128,87 @@ public class CollectionsActivity extends Activity implements OnClickListener, On
 		tvTipText = (TextView)findViewById(R.id.pulldown_header_text);
 		pdTips = (ProgressBar)findViewById(R.id.pulldown_header_loading);
 		
+		// 实例化底部布局
+        moreView = getLayoutInflater().inflate(R.layout.moredata, null);
+
+        bt = (Button) moreView.findViewById(R.id.bt_load);
+        pg = (ProgressBar) moreView.findViewById(R.id.pg);
+        handler = new Handler();
+		
 		list = (MyListView)findViewById(R.id.list);
-		list.setonRefreshListener(refreshListener);
-		
-		
 		adapter2 = new ColAndPreviewItemsAdapter(context, android.R.layout.simple_list_item_1, collections, list);
 		list.setAdapter(adapter2);
+		
+		list.setonRefreshListener(refreshListener);
+		list.setOnScrollListener(this);
 		list.setOnItemClickListener(this);
 	}
 	
 	private void addCollectionTypesUI() {
+		buttons = new ArrayList<Button>();
 		// add button dynamic
-		int itemSize = collectionTypes.size();
-		for (int i = 0; i < itemSize; i++) {
+		final int itemSize = collectionTypes.size();
+		int temp = itemSize;
+		if(itemSize % 2 != 0) ++temp;
+		for (int i = 0; i < temp; i++) {
 			final Button btnTite = new Button(this);
-			btnTite.setText(collectionTypes.get(i).getCollection_type_name());
+			ColorStateList csl=(ColorStateList)getResources().getColorStateList(R.color.my_button); 
+			btnTite.setTextColor(csl);
+			if(i < itemSize){
+				
+				btnTite.setText(collectionTypes.get(i).getCollection_type_name());
+				if(currentColType.getCollection_type_id() == collectionTypes.get(i).getCollection_type_id()) {
+						btnTite.setTextColor(getResources().getColor(R.color.my_checked));
+				}
+				btnTite.setText(collectionTypes.get(i).getCollection_type_name());
+			}
 			btnTite.setTag(i);
-			if (i < itemSize / 2) {
+			
+			
+			if (i < temp / 2) {
 				ll0.addView(btnTite);
+				if(i == 0) {
+					btnTite.setBackgroundResource(R.drawable.b1);
+				}else if(i == (temp/2 - 1)) {
+					btnTite.setBackgroundResource(R.drawable.b3);
+				}else {
+					btnTite.setBackgroundResource(R.drawable.b2);
+				}
+				
 			} else {
 				ll1.addView(btnTite);
+				if(i == temp/2) {
+					btnTite.setBackgroundResource(R.drawable.b4);
+				}else if(i == (temp - 1)) {
+					btnTite.setBackgroundResource(R.drawable.b6);
+				}else {
+					btnTite.setBackgroundResource(R.drawable.b5);
+				}
 			}
 
 			btnTite.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					int i = Integer.valueOf(v.getTag().toString());
-					Toast.makeText(CollectionsActivity.this, "some" + i,
-							Toast.LENGTH_SHORT).show();
 					
-					Intent intent = new Intent(CollectionsActivity.this, CollectionDetailsActivity.class);
-					startActivity(intent);
+					int i = Integer.valueOf(v.getTag().toString());
+					if(i < itemSize){
+						loadData(collectionTypes.get(i).getCollection_type_id());
+					}
+					setColor(buttons, i);
 				}
 			});
+			
+			buttons.add(btnTite);
+		}
+	}
+	
+	private void setColor(ArrayList<Button> btns, int tag) {
+		for(Button bt : btns) {
+			if(Integer.valueOf(bt.getTag().toString()) == tag) {
+				bt.setTextColor(getResources().getColor(R.color.my_checked));
+			}else {
+				bt.setTextColor(getResources().getColor(R.color.my_normal));
+			}
 		}
 	}
 
@@ -147,9 +216,11 @@ public class CollectionsActivity extends Activity implements OnClickListener, On
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.add_collection:
-			boolean isLogin = false;
-			if (isLogin) {
-
+			//先判断是否有登录，然后再进行后续操作
+			String username = settings.getString(Constants.USERNAME, "");
+			if (!username.equals("")) {
+				String token = settings.getString(Constants.TOKEN, "");
+				createDialog = MyDialog.showCreateColDialog(context, token, this);
 			} else {
 				Intent intent = new Intent(this, LoginActivity.class);
 				startActivity(intent);
@@ -208,6 +279,21 @@ public class CollectionsActivity extends Activity implements OnClickListener, On
 		
 	}
 	
+	private void loadMoreData(final int typeId) {
+		Log.i(TAG, "on loadMoreData");
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				startIndex = startIndex + PAGE_SIZE;
+				ArrayList<Collection> collections = getColByTypeIdFromServer(typeId, startIndex, PAGE_SIZE, sortType, orderType);//取服务器端数据
+//			    if(null != collectionInfoAndItems) Log.i(TAG, "on loadData photoInfos size : " + photoInfos.size());
+				Message msg = mUIHandler.obtainMessage(WHAT_DID_MORE);
+				msg.obj = collections;
+				msg.sendToTarget();
+			}
+		}).start();
+	}
+	
 	private Handler mUIHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -220,13 +306,31 @@ public class CollectionsActivity extends Activity implements OnClickListener, On
 					for(Collection c : collections) {
 						adapter2.add(c);
 					}
-					
+					if(collections.size() == PAGE_SIZE) {
+						list.addFooterView(moreView);
+					}
 					rlTips.setVisibility(View.GONE);
 					adapter2.notifyDataSetChanged();
 				}else {
 					tvTipText.setText(getString(R.string.no_record));
 					pdTips.setVisibility(View.INVISIBLE); 
 				}
+				break;
+				
+			case WHAT_DID_MORE:
+				if(null != msg.obj) {
+					ArrayList<Collection> collections = (ArrayList<Collection>)msg.obj;
+					for(Collection c : collections) {
+						adapter2.add(c);
+					}
+					
+					if(collections.size() < Constants.PAGE_SIZE) {
+						list.removeFooterView(moreView);
+					}
+				}
+				
+				
+				adapter2.notifyDataSetChanged();
 				break;
 				
 			case CONNECTION_TIME_OUT:
@@ -297,5 +401,40 @@ public class CollectionsActivity extends Activity implements OnClickListener, On
 		intent.putExtra("collection", collection);
 		intent.putExtra("col_type", currentColType);
 		startActivity(intent);
+	}
+	
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		// 计算最后可见条目的索引
+        lastVisibleIndex = firstVisibleItem + visibleItemCount - 2;
+	}
+
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, "last" + lastVisibleIndex + " " + adapter2.getCount() + " " + scrollState);
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+                && lastVisibleIndex == adapter2.getCount() && lastVisibleIndex != 0) {
+            // 当滑到底部时自动加载
+			Log.i("last", "true");
+             pg.setVisibility(View.VISIBLE);
+             bt.setVisibility(View.GONE);
+             loadMoreData(currentColType.getCollection_type_id());
+
+        }
+	}
+
+	@Override
+	public void updateActivityUI(Object obj) {
+		// TODO Auto-generated method stub
+		createDialog.dismiss();
+		Toast.makeText(this, "创建专辑成功", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void jsonParseError() {
+		// TODO Auto-generated method stub
+		MyDialog.showInfoDialog(this, R.string.tips, R.string.response_data_error);
 	}
 }
