@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/ll_expert_comment"
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:gravity="center_vertical"
+	android:padding="6dip"
+	android:background="@drawable/item_background_comment"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <ImageView 
+        android:id="@+id/iv_avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:src="@drawable/default_avatar"
+        />
+    
+    <LinearLayout 
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="4dip"
+        >
+        <TextView 
+            android:id="@+id/tv_username"
+            android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:textColor="#1f9fce"
+        		android:textSize="15sp"
+        		android:text="不醉不归"
+            />
+        
+        <TextView 
+            android:id="@+id/tv_content_xxx"
+            android:layout_width="match_parent"
+        		android:layout_height="wrap_content"
+        		android:textColor="#666666"
+        		android:textSize="13sp"
+        		android:text="此酒只应天上有"
+            />
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/tv_look_vidio"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#1f9fce"
+                android:text="@string/look_vedio"
+                android:textSize="9sp"
+                />
+            
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dip"
+                android:text="@string/date_demo"
+                android:textSize="9sp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    
+    
+    
+    <TextView 
+        android:id="@+id/tvMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/hi_setting_more"
+        android:layout_marginRight="4dip"
+        />
+    
+    
+</LinearLayout>
+
+

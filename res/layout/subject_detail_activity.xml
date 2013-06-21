@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_top" 
+        style="@style/TitleBackground"
+        >
+        <Button
+	        android:id="@+id/btn_back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:background="@drawable/back_1_selector"
+	        />
+        
+        <TextView 
+            android:id="@+id/tv_title"
+            style="@style/title1"
+	        android:text="@string/title"
+	        android:layout_centerInParent="true"
+	        android:layout_toRightOf="@+id/btn_back"
+	        android:layout_marginLeft="5dip"
+            />
+        
+    </RelativeLayout>
+    
+   <ListView 
+		    android:id="@+id/list"
+		    android:layout_below="@+id/rl_top"
+		    android:layout_above="@+id/bottom"
+		 	android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:paddingLeft="2dip"
+			android:paddingRight="2dip" 
+	    	android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:scrollbars="none"
+	    	android:divider="#bfc884"
+	    	android:dividerHeight="1dip"
+	    	android:cacheColorHint="#00000000"
+	    	android:background="#FFFFFFFF"/> 
+    
+ 
+    
+    
+    
+    
+    
+    
+    <LinearLayout 
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/details_bottom_height"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/back_behind_menu"
+        android:orientation="horizontal"
+        >
+        <com.hesha.widget.CustomButton
+            android:id="@+id/rlCollect"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            Image="@drawable/button_details_collect_default"
+            ImageID="@+id/imageview_details_collect"
+            Text="@string/DetailsCollect"
+            TextID="@+id/textview_details_collect"
+            android:background="@drawable/back_button_default_style"
+            android:clickable="true"
+            >
+        </com.hesha.widget.CustomButton>
+        
+        <com.hesha.widget.CustomButton
+            android:id="@+id/rlLike"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            Image="@drawable/button_details_like_default"
+            ImageID="@+id/imageview_details_like"
+            Text="@string/DetailsLike"
+            TextID="@+id/textview_details_like"
+            android:background="@drawable/back_button_default_style"
+            android:clickable="true"
+            >
+        </com.hesha.widget.CustomButton>
+        
+        <com.hesha.widget.CustomButton
+            android:id="@+id/rlDiscuss"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            Image="@drawable/button_details_discuss_default"
+            ImageID="@+id/imageview_details_discuss"
+            Text="@string/DetailsDiscuss"
+            TextID="@+id/textview_details_discuss"
+            android:background="@drawable/back_button_default_style"
+            android:clickable="true"
+            >
+        </com.hesha.widget.CustomButton>
+        
+        <com.hesha.widget.CustomButton
+            android:id="@+id/rlShare"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            Image="@drawable/button_details_share_default"
+            ImageID="@+id/imageview_details_share"
+            Text="@string/DetailsShare"
+            TextID="@+id/textview_details_share"
+            android:background="@drawable/back_button_default_style"
+            android:clickable="true"
+            >
+        </com.hesha.widget.CustomButton>
+    </LinearLayout>
+
+</RelativeLayout>

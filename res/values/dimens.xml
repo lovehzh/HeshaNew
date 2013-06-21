@@ -62,4 +62,11 @@
 	
 	<dimen name="avatar_size">50dp</dimen>
 	<dimen name="col_img_height">95dp</dimen>
+	
+	<!-- sliding menu -->
+	<dimen name="slidingmenu_offset">60dp</dimen>
+    <dimen name="list_padding">10dp</dimen>
+    <dimen name="shadow_width">15dp</dimen>
+
+    <integer name="num_cols">1</integer>
 </resources>

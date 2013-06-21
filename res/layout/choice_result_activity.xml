@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     >
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <RadioGroup 
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            >
+            <RadioButton 
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_left"
+                android:button="@null"
+                android:text="@string/hot"
+                android:gravity="center"
+                android:drawableRight="@drawable/choice_down_nor"
+                android:textSize="17sp"
+                />
+            
+            <RadioButton 
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/radio_button_middle"
+                android:button="@null"
+                android:text="@string/price"
+                android:gravity="center"
+                android:drawableRight="@drawable/choice_down_nor"
+                android:textSize="17sp"
+                />
+        </RadioGroup>
+        
+        <Button 
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/choice_right"
+            android:text="@string/list"
+            android:drawableRight="@drawable/choice_list"
+            android:paddingRight="35dip"
+            android:textSize="17sp"
+            
+            />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/choice_filter_btn_bg"
+        android:gravity="center_vertical"
+        >
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/choice_filter_selector"
+            android:layout_marginLeft="15dip"
+            />
+        
+        <TextView 
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        
+        <Button 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/choice_filter_selector"
+            android:layout_marginRight="15dip"
+            android:text="@string/filter_goods"
+            android:textColor="#666666"
+            android:textSize="17sp"
+            />
+    </LinearLayout>
+    
+    <RelativeLayout
+	    android:id="@+id/rl_tips"
+	    android:layout_below="@+id/rl_top"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingBottom="10dp"
+	    android:paddingTop="10dp"
+	    android:visibility="gone"
+	     >
+	
+	      <TextView
+	          android:id="@+id/pulldown_header_text"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:layout_centerInParent="true"
+	          android:text="加载中..." />
+	
+	
+	    <ProgressBar
+	        android:id="@+id/pulldown_header_loading"
+	        style="@android:style/Widget.ProgressBar.Small.Inverse"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="20dp" />
+	
+	</RelativeLayout>
+    
+</LinearLayout>

@@ -57,6 +57,7 @@
     		<activity android:name=".ActivityKnowledgeDetails" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		<activity android:name=".ActivityKnowlegeSecond" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		
+    		<activity android:name=".choicewine.ChoiceResultActivity" android:screenOrientation="portrait" android:theme="@style/Theme.Sherlock.Light.DarkActionBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import com.hesha.adapter.WineCatAdapter;
 import com.hesha.bean.choice.Intention;
 import com.hesha.bean.choice.WineCatBean;
 import com.hesha.bean.choice.WineCatStruct;
+import com.hesha.choicewine.ChoiceResultActivity;
 import com.hesha.constants.Constants;
 import com.hesha.utils.HttpUrlConnectionUtils;
 import com.hesha.utils.MyDialog;
@@ -19,6 +20,7 @@ import com.hesha.utils.TimeoutErrorDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -109,6 +111,7 @@ public class WineCatActivity extends Activity implements Constants, OnItemClickL
 		grid = (GridView)findViewById(R.id.grid);
 		intentionAdapter = new IntentionAdapter(this, intentions);
 		grid.setAdapter(intentionAdapter);
+		grid.setOnItemClickListener(this);
 	}
 	
 	private ArrayList<WineCatBean> getWineCatsFromServer() {
@@ -222,21 +225,34 @@ public class WineCatActivity extends Activity implements Constants, OnItemClickL
 		};
 	};
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-		WineCatBean bean = beans.get(position);
-		//ivCatIcon
-		tvCatName.setText(bean.getType_name());
-		tvDes.setText(bean.getDes());
-		
-		intentions = bean.getIntentions();
-		intentionAdapter.clear();
-		for(Intention i : intentions) {
-			intentionAdapter.add(i);
+	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+		switch (adapterView.getId()) {
+		case R.id.list:
+			WineCatBean bean = beans.get(position);
+			//ivCatIcon
+			tvCatName.setText(bean.getType_name());
+			tvDes.setText(bean.getDes());
+			
+			intentions = bean.getIntentions();
+			intentionAdapter.clear();
+			for(Intention i : intentions) {
+				intentionAdapter.add(i);
+			}
+			intentionAdapter.notifyDataSetChanged();
+			
+			llChoiceCatDetail.setVisibility(View.VISIBLE);
+			llChoiceCatDetail.setAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_in));
+			break;
+			
+		case R.id.grid:
+			Intent intent = new Intent(this, ChoiceResultActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
 		}
-		intentionAdapter.notifyDataSetChanged();
 		
-		llChoiceCatDetail.setVisibility(View.VISIBLE);
-		llChoiceCatDetail.setAnimation(AnimationUtils.loadAnimation(this, R.anim.push_up_in));
 	}
 
 	@Override

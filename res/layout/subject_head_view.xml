@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/default_bg"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/subject_goods_bg" >
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/subject_des_bg"
+            android:orientation="vertical"
+            android:padding="6dip" >
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="德国金凯斯勒雷司令晚收白葡萄酒 2009" />
+
+            <TextView
+                android:id="@+id/tv_en_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kessler-Zink Riesling Spatlese 2009" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dip" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分类:" />
+
+                <TextView
+                    android:id="@+id/tv_cat_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="红葡萄酒" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="价格:" />
+
+                <TextView
+                    android:id="@+id/tv_cat_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥169-￥699" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dip" >
+
+                <TextView
+                    android:id="@+id/tv_like_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/button_details_like_default"
+                    android:text="850" />
+
+                <TextView
+                    android:id="@+id/tv_collect_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/button_details_collect_default"
+                    android:text="102" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥125 | 去购买"
+            android:background="@drawable/subject_price_btn"
+            android:textColor="#ffffff"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="65dip"
+             />
+    </RelativeLayout>
+    
+    <!-- 商品介绍 -->
+    <!-- 达人点评 -->
+    <TextView 
+        android:id="@+id/tv_expert_comment_num"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/expert_comment_number"
+        android:paddingLeft="6dip"
+        />
+    <include layout="@layout/row_comment_in_subject_exp"/>
+    <!-- 分割线 -->
+    <ImageView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/subject_splite"
+        android:layout_marginLeft="6dip"
+        android:layout_marginRight="6dip"
+        />
+    
+    <!-- 大家点评 -->
+    <TextView 
+        android:id="@+id/tv_normal_comment_num"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/normal_comment_number"
+        />
+    <include layout="@layout/row_comment_in_subject_nor"/>
+    <!-- 商家 -->
+    <TextView
+        android:id="@+id/tv_sailers_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sailers_number"
+        android:background="@drawable/subject_sailers_bg"
+        android:gravity="center_vertical"
+        android:paddingLeft="6dip"
+        />
+    
+
+</LinearLayout>

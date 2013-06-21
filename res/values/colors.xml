@@ -23,4 +23,6 @@
     
     <color name="my_checked">#d55151</color>    
     <color name="my_normal">#a4a4a4</color>
+    
+    <color name="default_bg">#e6e6e6</color>
 </resources>
