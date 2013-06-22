@@ -197,18 +197,22 @@ public class CollectionDetailsActivity extends Activity implements OnClickListen
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-		Intent intent = new Intent(this, ItemDetailsActivity.class);
-		intent.putExtra("collection", collection);
-		intent.putExtra("col_type", currentColType);
+		Intent intent = null;// new Intent(this, ItemDetailsActivity.class);
+		
 		
 		BaseItem baseItem = baseItems.get(position);
 		if(baseItem instanceof PhotoItem) {//bug ?
+			intent = new Intent(this, ItemDetailsActivity.class);
 			baseItem.setItem_type(1);
 		}else if(baseItem instanceof SubjectItem) {
+			intent =new Intent(this, SubjectDetailsActivity.class);
 			baseItem.setItem_type(2);
 		}else {
+			intent = new Intent(this, ItemDetailsActivity.class);
 			baseItem.setItem_type(3);
 		}
+		intent.putExtra("collection", collection);
+		intent.putExtra("col_type", currentColType);
 		intent.putExtra("base_item", baseItem);
 		startActivity(intent);
 	}

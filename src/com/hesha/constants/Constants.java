@@ -28,6 +28,9 @@ public interface Constants{
 	
 	public static final int INTENT_CODE_COLLECTION_DETAIL = 3;
 	
+	public static final int INTENT_CODE_SUBJECT_UPLOAD_PHOTO = 4;
+	public static final int INTENT_CODE_SUBJECT_DETAIL = 5;
+	public static final int INTENT_CODE_SUBJECT_DETAIL_LIKE = 6;
 	
 	public static final int ADD = 1;
 	public static final int REMOVE = 2;

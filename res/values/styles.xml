@@ -153,5 +153,10 @@
 	  <item name="android:backgroundDimEnabled">true</item>
 	  <item name="android:backgroundDimAmount">0.6</item>
  </style>
+ 
+  <style name="rise_up" parent="android:Animation">  
+        <item name="@android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_exit</item>  
+    </style>
 
 </resources>

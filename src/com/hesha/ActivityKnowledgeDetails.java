@@ -3,14 +3,11 @@ package com.hesha;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.bean.knowledge.Article;
-import com.hesha.bean.knowledge.ArticleCat;
-import com.hesha.bean.knowledge.ArticleCatData;
 import com.hesha.bean.knowledge.ArticleDetailsData;
 import com.hesha.constants.Constants;
 import com.hesha.utils.DateUtils;
@@ -30,7 +27,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -96,6 +92,7 @@ public class ActivityKnowledgeDetails extends Activity implements OnClickListene
 		String template = "<html xmlns=\"http://www.w3.org/1999/xhtml\"><body>mycontent</body></html>";
 		
 		webView = (WebView)findViewById(R.id.webView);
+		webView.setBackgroundColor(0);
 		webView.loadDataWithBaseURL(null, template.replace("mycontent", imgTemplate + article.getContent()), "text/html", "utf-8", null);
 		
 		if(Constants.D) Log.i("ss", article.getContent());

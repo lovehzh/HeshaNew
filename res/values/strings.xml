@@ -92,6 +92,14 @@
     <string name="normal_comment_number">大家点评([#]条)</string>
     <string name="sailers_number">以下商家在卖这款酒([#]个商家)</string>
     <string name="look_vedio">查看点评视频>></string>
+    <string name="goods_details">商品详情</string>
+    
+    <string name="upload_photo">上传照片</string>
+    <string name="from_shot">手机拍照</string>
+    <string name="from_albums">手机相册</string>
+    <string name="upload">上传</string>
+    <string name="click_upload">点击上传</string>
+    <string name="maohao">:</string>
     
     <!-- sliding menu -->
     <string name="menu_settings">Settings</string>

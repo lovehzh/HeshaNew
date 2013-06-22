@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_style_alert_dialog_background"
+    android:paddingBottom="10dip"
+     >
+     
+    <TextView 
+        android:id="@+id/tv_title"
+        android:text="@string/upload_photo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dip"
+        />
+
+    <Button 
+        android:id="@+id/btn_from_shot"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/from_shot"
+        android:background="@drawable/btn_style_alert_dialog_button"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_below="@+id/tv_title"
+        />
+    
+    <Button 
+        android:id="@+id/btn_from_albums"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/from_albums"
+        android:background="@drawable/btn_style_alert_dialog_button"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_below="@+id/btn_from_shot"
+        />
+    
+    <Button 
+        android:id="@+id/btn_cancel"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/cancel"
+        android:textColor="#ffffff"
+        android:background="@drawable/btn_style_alert_dialog_cancel"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginBottom="10dip"
+        android:layout_below="@+id/btn_from_albums"
+        />
+
+</RelativeLayout>

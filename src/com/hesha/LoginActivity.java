@@ -233,6 +233,12 @@ public class LoginActivity extends Activity implements OnClickListener, Constant
 						setResult(INTENT_CODE_ITEM_DETAIL_LIKE);
 						finish();
 					}
+					
+					else if(intentCode == INTENT_CODE_SUBJECT_UPLOAD_PHOTO) {
+						setResult(INTENT_CODE_SUBJECT_UPLOAD_PHOTO);
+						finish();
+					}
+					
 				}else {
 					String errorMessage = Utils.parseCode(LoginActivity.this, strCode);
 					AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);

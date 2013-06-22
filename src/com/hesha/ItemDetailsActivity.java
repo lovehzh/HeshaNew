@@ -60,7 +60,7 @@ import com.hesha.utils.TimeoutErrorDialog;
 import com.hesha.utils.Utils;
 
 public class ItemDetailsActivity extends Activity implements OnClickListener, OnItemClickListener, OnTaskFinishedListener{
-	private static final String TAG = "CollectionDetailsActivity";
+	private static final String TAG = "ItemDetailsActivity";
 	private Button btnBack, btnBackToCat;
 	private TextView tvTitle;
 	private ImageView ivAvatar;

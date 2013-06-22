@@ -13,7 +13,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -122,6 +124,25 @@ public class MyDialog {
 		
 		dialog.setCancelable(true);
 		dialog.show();
+		return dialog;
+	}
+	
+	public static Dialog getRiseUpDialog(Context context) {
+		final Dialog dialog = new Dialog(context, R.style.dialog);
+		dialog.setContentView(R.layout.upload_photo_rise_up_dialog_view);
+		Window window = dialog.getWindow();
+		window.setGravity(Gravity.BOTTOM); // set dialog display position here
+		window.setWindowAnimations(R.style.rise_up);//set animation here
+		dialog.show();
+		
+		Button btnCancel = (Button)dialog.findViewById(R.id.btn_cancel);
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+		
 		return dialog;
 	}
 }

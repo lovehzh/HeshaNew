@@ -1,5 +1,6 @@
 package com.hesha;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,17 +12,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -45,29 +48,31 @@ import com.hesha.bean.Comment;
 import com.hesha.bean.ItemDetailData;
 import com.hesha.bean.ItemDetailStruct;
 import com.hesha.bean.User;
-import com.hesha.bean.gen.AddCommentToItemPar;
 import com.hesha.bean.gen.DoActionForItemPar;
 import com.hesha.constants.Constants;
 import com.hesha.tasks.DownloadImageTask;
 import com.hesha.tasks.OnTaskFinishedListener;
 import com.hesha.utils.AsyncImageLoader;
-import com.hesha.utils.DateUtils;
 import com.hesha.utils.HttpUrlConnectionUtils;
 import com.hesha.utils.JsonUtils;
-import com.hesha.utils.MyDialog;
 import com.hesha.utils.ResponseErrorDialog;
+import com.hesha.utils.SelectPhoto;
 import com.hesha.utils.TimeoutErrorDialog;
 import com.hesha.utils.Utils;
 
 public class SubjectDetailsActivity extends Activity implements OnClickListener, OnItemClickListener, OnTaskFinishedListener{
-	private static final String TAG = "CollectionDetailsActivity";
-	private Button btnBack, btnBackToCat;
-	private TextView tvTitle;
-	private ImageView ivAvatar;
-	private TextView tvUsername, tvItemNum, tvCreationDate, tvItemDes;
+	private static final String TAG = "SubjectDetailsActivity";
+	public static final int INTENT_FROM_CAMERA = 11;
+	public static final int INTENT_FROM_PHOTO_ALBUM = 12;
+	public static final int INTENT_FROM_PHOTO_ZOOM = 13;
+	private Button btnBack, btnUploadPhoto;
+	private TextView tvName, tvEnName, tvCatName;
+	private TextView tvPrice, tvLikeNum, tvCollectNum;
+	private Button btnBuy;
+	private WebView webSubjectDes;
+	private TextView tvExpertCommentNum, tvNorCommentNum, tvSailersNum;
 	
 	private ImageView ivItem;
-	private TextView tvNumOfCollected, tvNumOfLiked;
 	private LinearLayout llUserCollected, llUserLiked;
 	private LinearLayout llCollectedDes, llLikedDes;
 	
@@ -103,7 +108,7 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.item_detail_activity);
+		setContentView(R.layout.subject_detail_activity);
 		context = SubjectDetailsActivity.this;
 		initData();
 		initComponent();
@@ -122,54 +127,37 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 	}
 	
 	private void updateUI() {
-		tvTitle.setText(collection.getCollection_name());
-		tvUsername.setText(collection.getUser_info().getUser_name());
-		tvCreationDate.setText(DateUtils.getStringFromTimeSeconds( collection.getCreation_date()));
-		tvItemDes.setText(baseItem.getItem_des());
+//		tvCreationDate.setText(DateUtils.getStringFromTimeSeconds( collection.getCreation_date()));
+		tvName.setText(baseItem.getItem_name());
+		tvEnName.setText("");
+		tvCatName.setText("");
+		tvPrice.setText("");
+		tvLikeNum.setText(baseItem.getLike_num() + "");
+		tvCollectNum.setText(baseItem.getComment_num() + "");
 		
-		tvNumOfCollected.setText("" + baseItem.getRecollect_num());
-		tvNumOfLiked.setText("" + baseItem.getLike_num());
-		
+		webSubjectDes.loadDataWithBaseURL(null, baseItem.getItem_des(), "text/html", "utf-8", null);
 	}
 	
 	private void initComponent() {
 		btnBack = (Button)findViewById(R.id.btn_back);
 		btnBack.setOnClickListener(this);
 		
-		tvTitle = (TextView)findViewById(R.id.tv_title);
+		btnUploadPhoto = (Button)findViewById(R.id.btn_upload_photo);
+		btnUploadPhoto.setOnClickListener(this);
+		
 		
 		LayoutInflater inflater = getLayoutInflater();
-		LinearLayout llHeader = (LinearLayout)inflater.inflate(R.layout.item_head_view, null);
+		LinearLayout llHeader = (LinearLayout)inflater.inflate(R.layout.subject_head_view, null);
 	
-		ivAvatar = (ImageView)llHeader.findViewById(R.id.iv_avatar);
-		new DownloadImageTask(ivAvatar).execute(Constants.IMAGE_BASE_URL + collection.getUser_info().getUser_avatar());
-		tvUsername = (TextView)llHeader.findViewById(R.id.tv_username);
-		tvItemNum = (TextView)llHeader.findViewById(R.id.tv_item_num);
-		tvItemNum.setVisibility(View.GONE);
-		tvCreationDate = (TextView)llHeader.findViewById(R.id.tv_creation_date);
-		tvItemDes = (TextView)llHeader.findViewById(R.id.tv_collection_des);
-		btnBackToCat = (Button)llHeader.findViewById(R.id.btn_back_to_cat);
-		btnBackToCat.setOnClickListener(this);
-		btnBackToCat.setText(currentColType.getCollection_type_name());
+		tvName = (TextView)llHeader.findViewById(R.id.tv_name);
+		tvEnName = (TextView)llHeader.findViewById(R.id.tv_en_name);
+		tvCatName = (TextView)llHeader.findViewById(R.id.tv_cat_name);
+		tvPrice = (TextView)llHeader.findViewById(R.id.tv_price);
+		tvLikeNum = (TextView)llHeader.findViewById(R.id.tv_like_num);
+		tvCollectNum = (TextView)llHeader.findViewById(R.id.tv_collect_num);
 		
-		ivItem = (ImageView)llHeader.findViewById(R.id.iv_item);
-//		Display mDisplay= getWindowManager().getDefaultDisplay();
-//		int width= mDisplay.getWidth();
-//		int Height= mDisplay.getHeight();
-//		ivItem.setScaleType(ImageView.ScaleType.FIT_XY);
-//		ivItem.setAdjustViewBounds(true);
-//		ivItem.setMaxHeight(Height);//屏幕高度
-//		ivItem.setMaxWidth(width);//屏幕宽度  
-		loadPicture();
-		
-		tvNumOfCollected = (TextView)llHeader.findViewById(R.id.tv_num_of_collected);
-		tvNumOfLiked = (TextView)llHeader.findViewById(R.id.tv_num_of_liked);
-		
-		llUserCollected = (LinearLayout)llHeader.findViewById(R.id.ll_user_collected);
-		llUserLiked = (LinearLayout)llHeader.findViewById(R.id.ll_user_liked);
-		llCollectedDes = (LinearLayout)llHeader.findViewById(R.id.ll_collect_des);
-		llLikedDes = (LinearLayout)llHeader.findViewById(R.id.ll_like_des);
-		
+		webSubjectDes = (WebView)llHeader.findViewById(R.id.web_subject_des);
+		webSubjectDes.setBackgroundColor(0);
 		
 		listView = (ListView)findViewById(R.id.list);
 		adapter = new CommentAdapter(this, android.R.layout.simple_list_item_1, comments, listView);
@@ -270,6 +258,17 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 			
 			break;
 			
+		case R.id.btn_upload_photo:
+			username = settings.getString(Constants.USERNAME, "");
+			if (username.equals("")) {
+				intent = new Intent(this, LoginActivity.class);
+				startActivityForResult(intent, Constants.INTENT_CODE_SUBJECT_UPLOAD_PHOTO);
+			} else {
+				SelectPhoto.getRiseUpDialog(this);
+			}
+			
+			break;
+			
 
 		default:
 			break;
@@ -286,6 +285,30 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 			intent.putExtra("collection", collection);
 			intent.putExtra("base_item", baseItem);
 			startActivity(intent);
+			break;
+			
+		case INTENT_FROM_CAMERA:
+			File mCurrentPhotoFile = SelectPhoto.getmCurrentPhotoFile();
+			Log.i(TAG, "url:" + mCurrentPhotoFile.getAbsolutePath() + " file length:" + mCurrentPhotoFile.length());
+			if(mCurrentPhotoFile.length() != 0) {
+				startPhotoZoom(Uri.fromFile(mCurrentPhotoFile));
+			}
+			break;
+			
+		case INTENT_FROM_PHOTO_ALBUM:
+			if(data != null) {
+				startPhotoZoom(data.getData());
+			}
+			break;
+			
+		case INTENT_FROM_PHOTO_ZOOM:
+			if(data != null) {
+				setPicToView(data);
+			}
+			break;
+			
+		case Constants.INTENT_CODE_SUBJECT_UPLOAD_PHOTO:
+			SelectPhoto.getRiseUpDialog(this);
 			break;
 
 		default:
@@ -373,26 +396,6 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 						
 						//updata ui
 						updateUI();
-						
-						ArrayList<User> collectedUser = data.getRecollect_users();
-						ArrayList<User> likedUser = data.getLike_users();
-						
-						//用户为0时不显示对应UI
-						if(collectedUser== null || collectedUser.size() == 0) {
-							//not show ui
-							llCollectedDes.setVisibility(View.GONE);
-						}else {
-							llCollectedDes.setVisibility(View.VISIBLE);
-							setUserIcon(collectedUser, llUserCollected);
-						}
-						
-						if(likedUser == null || likedUser.size() == 0) {
-							//not show ui
-							llLikedDes.setVisibility(View.GONE);
-						}else {
-							llLikedDes.setVisibility(View.VISIBLE);
-							setUserIcon(likedUser, llUserLiked);
-						}
 						
 						
 						//普通评论和专家评论
@@ -577,5 +580,45 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 	public void jsonParseError() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/**
+	 * 裁剪图片方法实现
+	 * 
+	 * @param uri
+	 */
+	public void startPhotoZoom(Uri uri)
+	{
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		intent.setDataAndType(uri, "image/*");
+		// 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+		intent.putExtra("crop", "true");
+		// aspectX aspectY 是宽高的比例
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		// outputX outputY 是裁剪图片宽高
+		intent.putExtra("outputX", 150);
+		intent.putExtra("outputY", 150);
+		intent.putExtra("return-data", true);
+		startActivityForResult(intent, INTENT_FROM_PHOTO_ZOOM);
+	}
+
+	/**
+	 * 保存裁剪之后的图片数据
+	 * 
+	 * @param picdata
+	 */
+	private void setPicToView(Intent picdata)
+	{
+		Bundle extras = picdata.getExtras();
+		if (extras != null)
+		{
+			Bitmap photo = extras.getParcelable("data");
+			
+			Intent intent = new Intent(this, ActivityUploadPhoto.class);
+			intent.putExtra("photo", photo);
+			intent.putExtra("base_item", baseItem);
+			startActivity(intent);
+		}
 	}
 }

@@ -5,60 +5,55 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/rl_top" 
-        style="@style/TitleBackground"
-        >
+        android:id="@+id/rl_top"
+        style="@style/TitleBackground" >
+
         <Button
-	        android:id="@+id/btn_back"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_centerVertical="true"
-	        android:background="@drawable/back_1_selector"
-	        />
-        
-        <TextView 
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_1_selector" />
+
+        <TextView
             android:id="@+id/tv_title"
             style="@style/title1"
-	        android:text="@string/title"
-	        android:layout_centerInParent="true"
-	        android:layout_toRightOf="@+id/btn_back"
-	        android:layout_marginLeft="5dip"
-            />
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="5dip"
+            android:text="@string/goods_details" />
         
+        <Button
+            android:id="@+id/btn_upload_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/subject_camera_selector" />
     </RelativeLayout>
-    
-   <ListView 
-		    android:id="@+id/list"
-		    android:layout_below="@+id/rl_top"
-		    android:layout_above="@+id/bottom"
-		 	android:layout_height="fill_parent"
-	    	android:layout_width="fill_parent"
-	    	android:paddingLeft="2dip"
-			android:paddingRight="2dip" 
-	    	android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
-            android:scrollbars="none"
-	    	android:divider="#bfc884"
-	    	android:dividerHeight="1dip"
-	    	android:cacheColorHint="#00000000"
-	    	android:background="#FFFFFFFF"/> 
-    
- 
-    
-    
-    
-    
-    
-    
-    <LinearLayout 
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom"
+        android:layout_below="@+id/rl_top"
+        android:layout_gravity="center_vertical"
+        android:background="#FFFFFFFF"
+        android:cacheColorHint="#00000000"
+        android:divider="#bfc884"
+        android:dividerHeight="1dip"
+        android:gravity="center_vertical"
+        android:scrollbars="none" />
+
+    <LinearLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/details_bottom_height"
         android:layout_alignParentBottom="true"
         android:background="@drawable/back_behind_menu"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal" >
+
         <com.hesha.widget.CustomButton
             android:id="@+id/rlCollect"
             android:layout_width="0dp"
@@ -69,10 +64,9 @@
             Text="@string/DetailsCollect"
             TextID="@+id/textview_details_collect"
             android:background="@drawable/back_button_default_style"
-            android:clickable="true"
-            >
+            android:clickable="true" >
         </com.hesha.widget.CustomButton>
-        
+
         <com.hesha.widget.CustomButton
             android:id="@+id/rlLike"
             android:layout_width="0dp"
@@ -83,10 +77,9 @@
             Text="@string/DetailsLike"
             TextID="@+id/textview_details_like"
             android:background="@drawable/back_button_default_style"
-            android:clickable="true"
-            >
+            android:clickable="true" >
         </com.hesha.widget.CustomButton>
-        
+
         <com.hesha.widget.CustomButton
             android:id="@+id/rlDiscuss"
             android:layout_width="0dp"
@@ -97,10 +90,9 @@
             Text="@string/DetailsDiscuss"
             TextID="@+id/textview_details_discuss"
             android:background="@drawable/back_button_default_style"
-            android:clickable="true"
-            >
+            android:clickable="true" >
         </com.hesha.widget.CustomButton>
-        
+
         <com.hesha.widget.CustomButton
             android:id="@+id/rlShare"
             android:layout_width="0dp"
@@ -111,8 +103,7 @@
             Text="@string/DetailsShare"
             TextID="@+id/textview_details_share"
             android:background="@drawable/back_button_default_style"
-            android:clickable="true"
-            >
+            android:clickable="true" >
         </com.hesha.widget.CustomButton>
     </LinearLayout>
 

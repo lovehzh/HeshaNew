@@ -46,6 +46,17 @@ public class ArticleListAdapter extends ArrayAdapter<Article> {
 		holder.tvUsername.setText(article.getUser_info().getUser_name());
 		holder.tvDate.setText(DateUtils.getStringFromTimeMillis(article.getCreation_date() * 1000 + ""));
 		
+		if(articles.size() == 1) {
+			convertView.setBackgroundResource(R.drawable.bg_both_select);
+		}else {
+			if(position == 0) {
+				convertView.setBackgroundResource(R.drawable.bg_top_select);
+			}else if(position == articles.size() - 1) {
+				convertView.setBackgroundResource(R.drawable.bg_bottom_select);
+			}else {
+				convertView.setBackgroundResource(R.drawable.bg_middle_select);
+			}
+		}
 		return convertView;
 	}
 	

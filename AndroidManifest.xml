@@ -49,6 +49,7 @@
     		<activity android:name=".CollectionsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
     		<activity android:name=".CollectionDetailsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
     		<activity android:name=".ItemDetailsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+    		<activity android:name=".SubjectDetailsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
     		<activity android:name=".FavoriteActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustPan|stateHidden"></activity>
     		<activity android:name=".CommentsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		<activity android:name=".WineCatActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
@@ -56,6 +57,7 @@
     		<activity android:name="com.hesha.ActivityKnowledgeList" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		<activity android:name=".ActivityKnowledgeDetails" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		<activity android:name=".ActivityKnowlegeSecond" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+    		<activity android:name=".ActivityUploadPhoto" android:screenOrientation="portrait" android:theme="@android:style/Theme.Light.NoTitleBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     		
     		<activity android:name=".choicewine.ChoiceResultActivity" android:screenOrientation="portrait" android:theme="@style/Theme.Sherlock.Light.DarkActionBar" android:windowSoftInputMode="adjustResize|stateHidden"></activity>
     </application>

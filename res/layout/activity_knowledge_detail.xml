@@ -3,7 +3,7 @@
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent" android:orientation="vertical"
 	android:layout_gravity="center" 
-	android:background="#ffffff"
+	android:background="@color/default_bg"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	
     <RelativeLayout 
@@ -24,6 +24,36 @@
             style="@style/TitleName"
             android:text="@string/title"
             android:layout_centerInParent="true"
+            android:visibility="invisible"
+            />
+        
+        <ImageView 
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/knowledge_share_nor"
+            android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="6dip"
+            />
+        
+        <ImageView 
+            android:id="@+id/iv_split"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_toLeftOf="@+id/iv_share"
+	        android:layout_marginRight="10dip"
+            />
+        
+        <ImageView 
+            android:id="@+id/iv_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/knowledge_like_nor"
+	        android:layout_centerVertical="true"
+	        android:layout_toLeftOf="@+id/iv_split"
+	        android:layout_marginRight="10dip"
             />
         
     </RelativeLayout>
@@ -45,6 +75,7 @@
 	        android:orientation="vertical"
 	        android:paddingLeft="4dip"
 	        android:paddingRight="4dip"
+	        android:layout_marginTop="15dp"
 	        >
 	        <TextView 
 		        android:id="@+id/tvName"
@@ -88,24 +119,27 @@
 	        android:orientation="vertical"
 	        android:paddingLeft="4dip"
 	        android:paddingRight="4dip"
+	        android:layout_marginTop="15dp"
 	        >
 	        <ImageView 
 	            android:layout_width="match_parent"
-	            android:layout_height="1dip"
+	            android:layout_height="wrap_content"
 	            android:contentDescription="@string/title"
-	            android:background="#acacac"
+	            android:background="@drawable/subject_splite"
 	            />
 	        <TextView 
 		        android:id="@+id/tv_intro"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:textColor="#666666"
+		        android:layout_marginTop="15dp"
 		        />
 	        <ImageView 
 	            android:layout_width="match_parent"
-	            android:layout_height="1dip"
+	            android:layout_height="wrap_content"
 	            android:contentDescription="@string/title"
-	            android:background="#acacac"
+	            android:background="@drawable/subject_splite"
+	            android:layout_marginTop="15dp"
 	            />
 	    </LinearLayout>
 	    

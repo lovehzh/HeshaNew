@@ -21,8 +21,12 @@
     <color name="result_view">#b0000000</color>
     <!-- end zxing -->
     
-    <color name="my_checked">#d55151</color>    
+    <color name="my_checked">#d55151</color>
     <color name="my_normal">#a4a4a4</color>
     
-    <color name="default_bg">#e6e6e6</color>
+    <color name="default_bg">#e6e6e6</color> <!-- 米色 背景 -->
+    <color name="my_red">#d55151</color> <!-- 红色 价格 -->
+    <color name="my_cyan_blue">#1f9fce</color><!-- 青色 用户名-->
+    <color name="my_text_gray">#666666</color><!-- 灰色 文字的颜色 -->
+    
 </resources>

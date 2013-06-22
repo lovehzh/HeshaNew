@@ -30,7 +30,6 @@ public class ArticleCategoryAdapter extends ArrayAdapter<ArticleCat> {
 		if(null == convertView) {
 			LayoutInflater inflater = LayoutInflater.from(context);
 			convertView = inflater.inflate(R.layout.row_article_category, null);
-			
 			holder = new Holder();
 			holder.tvName = (TextView)convertView.findViewById(R.id.tvName);
 			
@@ -41,6 +40,17 @@ public class ArticleCategoryAdapter extends ArrayAdapter<ArticleCat> {
 		
 		holder.tvName.setText(cat.getAc_name());
 		
+		if(cats.size() == 1) {
+			convertView.setBackgroundResource(R.drawable.bg_both_select);
+		}else {
+			if(position == 0) {
+				convertView.setBackgroundResource(R.drawable.bg_top_select);
+			}else if(position == cats.size() - 1) {
+				convertView.setBackgroundResource(R.drawable.bg_bottom_select);
+			}else {
+				convertView.setBackgroundResource(R.drawable.bg_middle_select);
+			}
+		}
 		return convertView;
 	}
 	

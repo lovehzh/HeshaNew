@@ -62,7 +62,7 @@
                     android:text="价格:" />
 
                 <TextView
-                    android:id="@+id/tv_cat_name"
+                    android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="￥169-￥699" />
@@ -77,14 +77,14 @@
                     android:id="@+id/tv_like_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/button_details_like_default"
+                    android:drawableLeft="@drawable/like_mimi"
                     android:text="850" />
 
                 <TextView
                     android:id="@+id/tv_collect_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/button_details_collect_default"
+                    android:drawableLeft="@drawable/collect_mini"
                     android:text="102" />
             </LinearLayout>
         </LinearLayout>
@@ -102,6 +102,11 @@
     </RelativeLayout>
     
     <!-- 商品介绍 -->
+    <WebView
+        android:id="@+id/web_subject_des" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
     <!-- 达人点评 -->
     <TextView 
         android:id="@+id/tv_expert_comment_num"
