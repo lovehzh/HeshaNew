@@ -92,6 +92,8 @@
 	        android:layout_marginLeft="20dp" />
 	
 	</RelativeLayout>
+	
+    <include layout="@layout/connection_error_tips"/>
 
 	<com.hesha.MyListView
 	    android:id="@+id/list"

@@ -9,7 +9,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/subject_goods_bg" >
+        android:background="@drawable/subject_goods_bg" 
+        android:orientation="vertical"
+        >
+        <Gallery 
+            android:id="@+id/gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            />
+        
+        <LinearLayout 
+            android:orientation="horizontal"
+	        android:id="@+id/gallery_point_linear"
+	        android:layout_width="fill_parent"
+	        android:layout_height="30dip"
+	        android:gravity="center"
+	        android:layout_marginTop="5dip"
+	         />
     </LinearLayout>
 
     <RelativeLayout
@@ -65,7 +82,9 @@
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥169-￥699" />
+                    android:text="￥169-￥699" 
+                    android:textColor="@color/my_red"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -85,7 +104,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/collect_mini"
-                    android:text="102" />
+                    android:text="102" 
+                    android:layout_marginLeft="10dip"
+                    />
             </LinearLayout>
         </LinearLayout>
 
@@ -131,6 +152,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="@string/normal_comment_number"
+        android:paddingLeft="6dip"
         />
     <include layout="@layout/row_comment_in_subject_nor"/>
     <!-- 商家 -->

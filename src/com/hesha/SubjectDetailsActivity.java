@@ -3,6 +3,8 @@ package com.hesha;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +15,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -27,7 +31,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -45,11 +51,16 @@ import com.hesha.bean.ColStruct;
 import com.hesha.bean.Collection;
 import com.hesha.bean.CollectionType;
 import com.hesha.bean.Comment;
+import com.hesha.bean.ImageBean;
 import com.hesha.bean.ItemDetailData;
 import com.hesha.bean.ItemDetailStruct;
+import com.hesha.bean.SubjectItem;
 import com.hesha.bean.User;
 import com.hesha.bean.gen.DoActionForItemPar;
 import com.hesha.constants.Constants;
+import com.hesha.gallery.Files;
+import com.hesha.gallery.ImageAdapter;
+import com.hesha.gallery.Net;
 import com.hesha.tasks.DownloadImageTask;
 import com.hesha.tasks.OnTaskFinishedListener;
 import com.hesha.utils.AsyncImageLoader;
@@ -104,12 +115,25 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 	private Dialog createCommentDialog;
 	private ImageView imgLike;
 	private boolean isCollect;
+	
+	
+	public static HashMap<String, Bitmap> imagesCache = new HashMap<String, Bitmap>(); // 图片缓存
+	private Gallery images_ga;
+	public static ImageAdapter imageAdapter;
+	private int num = 0;
+	List<String> urls = new ArrayList<String>(); // 所有图片地址List
+
+	List<String> url = new ArrayList<String>(); // 需要下载图片的url地址
+	private int position;
+	private LinearLayout pointLinear; 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.subject_detail_activity);
 		context = SubjectDetailsActivity.this;
+		Files.mkdir(context);
+		
 		initData();
 		initComponent();
 		loadData();
@@ -126,16 +150,31 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 		comments = new ArrayList<Comment>();
 	}
 	
-	private void updateUI() {
+	private void updateUI(ItemDetailData data) {
 //		tvCreationDate.setText(DateUtils.getStringFromTimeSeconds( collection.getCreation_date()));
 		tvName.setText(baseItem.getItem_name());
-		tvEnName.setText("");
+		tvEnName.setText(((SubjectItem)baseItem).getEn_name());
 		tvCatName.setText("");
-		tvPrice.setText("");
+		tvPrice.setText(((SubjectItem)baseItem).getPrice_range());
 		tvLikeNum.setText(baseItem.getLike_num() + "");
 		tvCollectNum.setText(baseItem.getComment_num() + "");
 		
 		webSubjectDes.loadDataWithBaseURL(null, baseItem.getItem_des(), "text/html", "utf-8", null);
+		
+		if(null != data) {
+			int expertCommentNum = data.getExpert_comment_nums();
+			int norCommentNum = data.getOther_comment_nums();
+			int sailersNum = ((SubjectItem)baseItem).getShop_nums();
+			//数量为0时对应UI应该隐藏
+			tvExpertCommentNum.setText(Utils.replayDigital(getResources().getString(R.string.expert_comment_number), expertCommentNum));
+			tvNorCommentNum.setText(Utils.replayDigital(getResources().getString(R.string.normal_comment_number), norCommentNum));
+			tvSailersNum.setText(Utils.replayDigital(getResources().getString(R.string.sailers_number), sailersNum));
+		}
+		
+		String price = ((SubjectItem)baseItem).getPrice();
+		if(null != price) {
+			btnBuy.setText(getResources().getString(R.string.go_and_buy).replace("[#]", price));
+		}
 	}
 	
 	private void initComponent() {
@@ -146,9 +185,22 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 		btnUploadPhoto.setOnClickListener(this);
 		
 		
+		
 		LayoutInflater inflater = getLayoutInflater();
 		LinearLayout llHeader = (LinearLayout)inflater.inflate(R.layout.subject_head_view, null);
-	
+		
+		Bitmap image = BitmapFactory.decodeResource(getResources(),
+				R.drawable.collection_loading_default);
+		imagesCache.put("background_non_load", image); // 设置缓存中默认的图片
+		images_ga = (Gallery)llHeader.findViewById(R.id.gallery);
+//		imageAdapter = new ImageAdapter(urls, this);
+//		images_ga.setAdapter(imageAdapter);
+		images_ga.setSelection(position);
+		images_ga.setOnItemClickListener(this);
+		images_ga.setOnItemSelectedListener(selectedListener);
+		
+		pointLinear = (LinearLayout) llHeader.findViewById(R.id.gallery_point_linear);
+		
 		tvName = (TextView)llHeader.findViewById(R.id.tv_name);
 		tvEnName = (TextView)llHeader.findViewById(R.id.tv_en_name);
 		tvCatName = (TextView)llHeader.findViewById(R.id.tv_cat_name);
@@ -159,6 +211,13 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 		webSubjectDes = (WebView)llHeader.findViewById(R.id.web_subject_des);
 		webSubjectDes.setBackgroundColor(0);
 		
+		tvExpertCommentNum = (TextView)llHeader.findViewById(R.id.tv_expert_comment_num);
+		tvNorCommentNum = (TextView)llHeader.findViewById(R.id.tv_normal_comment_num);
+		tvSailersNum = (TextView)llHeader.findViewById(R.id.tv_sailers_num);
+		
+		btnBuy = (Button)llHeader.findViewById(R.id.btn_buy);
+		btnBuy.setOnClickListener(this);
+		
 		listView = (ListView)findViewById(R.id.list);
 		adapter = new CommentAdapter(this, android.R.layout.simple_list_item_1, comments, listView);
 		listView.addHeaderView(llHeader);
@@ -166,7 +225,7 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 //		listView.setOnScrollListener(this);
 //		listView.setOnItemClickListener(this);
 		
-		updateUI();
+		updateUI(null);
 		
 		rlCollect = (RelativeLayout)findViewById(R.id.rlCollect);
 		rlCollect.setOnClickListener(this);
@@ -179,6 +238,141 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 		rlDiscuss = (RelativeLayout)findViewById(R.id.rlDiscuss);
 		rlDiscuss.setOnClickListener(this);
 	}
+	
+	OnItemSelectedListener selectedListener = new OnItemSelectedListener() {
+
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			// TODO Auto-generated method stub
+			num = arg2;
+			Log.i(TAG, "ItemSelected==" + arg2);
+			GalleryWhetherStop();
+			changePointView(num);
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	public void changePointView(int cur){
+	    	LinearLayout pointLinear = (LinearLayout) findViewById(R.id.gallery_point_linear);
+	    	View view = pointLinear.getChildAt(position);
+	    	View curView = pointLinear.getChildAt(cur);
+	    	if(view!=null&& curView!=null){
+	    		ImageView pointView = (ImageView)view;
+	    		ImageView curPointView = (ImageView)curView;
+	    		pointView.setBackgroundResource(R.drawable.subject_point_over);
+	    		
+	    		curPointView.setBackgroundResource(R.drawable.subject_point_nor);
+	    		position = cur;
+	    	}
+    }
+	
+	/**
+	 * 判断Gallery滚动是否停止,如果停止则加载当前页面的图片
+	 */
+	private void GalleryWhetherStop() {
+		Runnable runnable = new Runnable() {
+			public void run() {
+				try {
+					int index = 0;
+					index = num;
+					Thread.sleep(1000);
+					if (index == num) {
+						url.add(urls.get(num));
+						if (num != 0 && urls.get(num - 1) != null) {
+							url.add(urls.get(num - 1));
+						}
+						if (num != urls.size() - 1 && urls.get(num + 1) != null) {
+							url.add(urls.get(num + 1));
+						}
+						Message m = new Message();
+						m.what = 1;
+						mHandler.sendMessage(m);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		new Thread(runnable).start();
+	}
+
+	// 加载图片的异步任务
+	class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+		@Override
+		protected void onCancelled() {
+			// TODO Auto-generated method stub
+			super.onCancelled();
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected Bitmap doInBackground(String... params) {
+			Bitmap bitmap = null;
+			try {
+				String url = params[0];
+				Log.i(TAG, "image url:" + url);
+				boolean isExists = Files.compare(url);
+				if (isExists == false) {
+					Net net = new Net();
+					byte[] data = net.downloadResource(context, url);
+					bitmap = BitmapFactory
+							.decodeByteArray(data, 0, data.length);
+					imagesCache.put(url, bitmap); // 把下载好的图片保存到缓存中
+					Files.saveImage(url, data);
+				} else {
+					byte[] data = Files.readImage(url);
+					bitmap = BitmapFactory
+							.decodeByteArray(data, 0, data.length);
+					imagesCache.put(url, bitmap); // 把下载好的图片保存到缓存中
+				}
+
+				Message m = new Message();
+				m.what = 0;
+				mHandler.sendMessage(m);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return bitmap;
+		}
+	}
+
+	private Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			try {
+				switch (msg.what) {
+				case 0: {
+					imageAdapter.notifyDataSetChanged();
+					break;
+				}
+				case 1: {
+					for (int i = 0; i < url.size(); i++) {
+						LoadImageTask task = new LoadImageTask();// 异步加载图片
+						task.execute(url.get(i));
+						Log.i("mahua", url.get(i));
+					}
+					url.clear();
+				}
+				}
+				super.handleMessage(msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	};
+
 	
 	@Override
 	protected void onResume() {
@@ -269,7 +463,18 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 			
 			break;
 			
-
+		case R.id.btn_buy:
+			if(baseItem instanceof SubjectItem) {
+				String buyUrl = ((SubjectItem) baseItem).getBuy_url();
+				if(null != buyUrl) {
+					intent = new Intent(Intent.ACTION_VIEW);  
+					intent.setData(Uri.parse(buyUrl));  
+					startActivity(intent);  
+				}else {
+					Toast.makeText(this, "没有可用的链接", Toast.LENGTH_SHORT).show();
+				}
+			}
+			break;
 		default:
 			break;
 		}
@@ -395,7 +600,7 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 						}
 						
 						//updata ui
-						updateUI();
+						updateUI(data);
 						
 						
 						//普通评论和专家评论
@@ -410,7 +615,30 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 //							rlTips.setVisibility(View.GONE);
 							adapter.notifyDataSetChanged();
 						}
-					}
+						
+						//单品详细图片
+						
+						if(baseItem instanceof SubjectItem) {
+							ArrayList<ImageBean> beans = ((SubjectItem)baseItem).getDetail_images();
+							for(ImageBean bean : beans) {
+								urls.add(Constants.IMAGE_BASE_URL + bean.getThumb());
+							}
+							imageAdapter = new ImageAdapter(urls, context);
+							images_ga.setAdapter(imageAdapter);
+							imageAdapter.notifyDataSetChanged();
+						}
+						
+				        //pointLinear.setBackgroundColor(Color.argb(200, 135, 135, 152));
+				        for (int i = 0; i < urls.size(); i++) {
+					        	ImageView pointView = new ImageView(context);
+					        	pointView.setPadding(3, 3, 3, 3);
+					        	if(i==position){
+					        		pointView.setBackgroundResource(R.drawable.subject_point_nor);
+					        	}else
+					        		pointView.setBackgroundResource(R.drawable.subject_point_over);
+					        		pointLinear.addView(pointView);
+							}
+						}
 					
 				}else {
 //					tvTipText.setText(getString(R.string.no_record));

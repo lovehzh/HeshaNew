@@ -60,11 +60,14 @@
         android:background="@drawable/choice_filter_btn_bg"
         android:gravity="center_vertical"
         >
-        <Button 
+        <Button
+            android:id="@+id/btn_intention" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/choice_filter_selector"
             android:layout_marginLeft="15dip"
+            android:textColor="#666666"
+            android:textSize="17sp"
             />
         
         <TextView 
@@ -74,6 +77,7 @@
             />
         
         <Button 
+            android:id="@+id/btn_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/choice_filter_selector"

@@ -1,19 +1,24 @@
 package com.hesha.choicewine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.hesha.R;
+import com.hesha.bean.choice.Intention;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class ChoiceResultActivity extends BaseActivity {
+public class ChoiceResultActivity extends BaseActivity implements OnClickListener{
 	private static final String TAG = "ChoiceResultActivity";
 	private ListView list;
+	private Intention intention;
+	private Button btnIntention, btnFilter;
 	
 	private static final int WHAT_DID_LOAD_DATA = 0;
 //	private static final int WHAT_DID_REFRESH = 1;
@@ -38,19 +43,21 @@ public class ChoiceResultActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-//		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
-//		final ActionBar actionBar = getActionBar();
-//		actionBar.setDisplayOptions(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.choice_result_activity);
 		
+		initData();
+		initComponent();
+	}
+	
+	private void initData() {
+		Intent intent = getIntent();
+		intention = (Intention)intent.getSerializableExtra("intention");
+	}
+	
+	private void initComponent() {
 		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		
-		setContentView(R.layout.choice_result_activity);
-//		getSupportFragmentManager()
-//		.beginTransaction()
-//		.replace(R.id.content_frame, new SampleListFragment())
-//		.commit();
 		
 		getSlidingMenu().setSecondaryMenu(R.layout.menu_frame_two);
 		getSlidingMenu().setSecondaryShadowDrawable(R.drawable.shadowright);
@@ -58,6 +65,29 @@ public class ChoiceResultActivity extends BaseActivity {
 		.beginTransaction()
 		.replace(R.id.menu_frame_two, new FilterFragment())
 		.commit();
+		
+		btnIntention = (Button)findViewById(R.id.btn_intention);
+		btnIntention.setText(intention.getIntention_name());
+		btnIntention.setOnClickListener(this);
+		
+		btnFilter = (Button)findViewById(R.id.btn_filter);
+		btnFilter.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btn_intention:
+			
+			break;
+			
+		case R.id.btn_filter:
+			break;
+
+		default:
+			break;
+		}
+		
 	}
 
 

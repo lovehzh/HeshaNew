@@ -88,6 +88,7 @@
     <string name="price">价格</string>
     <string name="list">列表</string>
     <string name="filter_goods">筛选商品</string>
+    <string name="go_and_buy">￥[#] | 去购买</string>
     <string name="expert_comment_number">达人点评([#]条)</string>
     <string name="normal_comment_number">大家点评([#]条)</string>
     <string name="sailers_number">以下商家在卖这款酒([#]个商家)</string>

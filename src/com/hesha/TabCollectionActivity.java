@@ -1,6 +1,9 @@
 package com.hesha;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -27,6 +30,8 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,16 +57,17 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 	private ArrayList<CollectionType> collectionTypes;
 	
 	
-	private RelativeLayout rlTips;
+	private RelativeLayout rlTips, rlConnectErrorTips;
 	private TextView tvTipText;
 	private ProgressBar pdTips;
+	private Button btnRetry;
 	
 	
 	private static final int WHAT_DID_LOAD_DATA = 0;
 	private static final int WHAT_DID_REFRESH = 1;
 	private static final int WHAT_DID_MORE = 2;
 	private static final int CONNECTION_TIME_OUT = 3;
-	
+	private static final int CONNECT_ERROR = 8;
 	private static final int PAGE_SIZE = 20;
 	private int sortType =1, orderType =1;
 	private int startIndex;
@@ -106,6 +112,11 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 		rlTips = (RelativeLayout)findViewById(R.id.rl_tips);
 		tvTipText = (TextView)findViewById(R.id.pulldown_header_text);
 		pdTips = (ProgressBar)findViewById(R.id.pulldown_header_loading);
+		
+		rlConnectErrorTips = (RelativeLayout)findViewById(R.id.rl_connect_erro_tips);
+		rlConnectErrorTips.setVisibility(View.GONE);
+		btnRetry = (Button)findViewById(R.id.btnRetry);
+		btnRetry.setOnClickListener(this);
 		
 		list = (MyListView)findViewById(R.id.list);
 		list.setonRefreshListener(refreshListener);
@@ -178,7 +189,11 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 			}
 			break;
 			
-
+		case R.id.btnRetry:
+			rlConnectErrorTips.setVisibility(View.GONE);
+			GetCollectionPageTask collectionPage = new GetCollectionPageTask(this, dialog);
+			collectionPage.execute((Void)null);
+			break;	
 		default:
 			break;
 		}
@@ -244,7 +259,17 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 			if(D) Log.i(TAG, "url:" + url);
 			try {
 				response = HttpUrlConnectionUtils.get(url, "");
-			} catch (IOException e) {
+			} catch (ConnectException e) {
+				Message msg = mUIHandler.obtainMessage(CONNECT_ERROR);
+				msg.sendToTarget();
+			}catch (SocketException e) {
+				Message msg = mUIHandler.obtainMessage(CONNECT_ERROR);
+				msg.sendToTarget();
+			}catch(UnknownHostException e) {
+				Message msg = mUIHandler.obtainMessage(CONNECT_ERROR);
+				msg.sendToTarget();
+			}
+			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -292,7 +317,10 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 				adapter.setListener(TabCollectionActivity.this);
 				list.setAdapter(adapter);
 				
-			} catch (JsonParseException e) {
+			}catch (NullPointerException e) {
+				Message msg = mUIHandler.obtainMessage(CONNECT_ERROR);
+				msg.sendToTarget();
+			}catch (JsonParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				Log.i(TAG, e.toString());
@@ -310,6 +338,21 @@ public class TabCollectionActivity extends Activity implements OnClickListener, 
 			}
 		}
 	}
+	
+	private Handler mUIHandler = new Handler() {
+		@Override
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+				
+			case CONNECT_ERROR:
+				rlConnectErrorTips.setVisibility(View.VISIBLE);
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
 
 	@Override
 	public void onMoreClick(int typeId) {

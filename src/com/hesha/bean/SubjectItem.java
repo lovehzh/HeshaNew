@@ -18,10 +18,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
    “introduction_des”:”品牌\:埃德华兹酒园  智利 规格750ml”	//商品介绍  
    “introduction_image”:”http://1.jpg”                   //商品介绍图片 
    “refer_items”:[“商品”, ....]  	                        	// 关联的产品实体
+   
+  “shop_nums”=”4”					   	                //卖家数量，没有则为0        
+  “buy_url”=”hhh.com”					   	            //购买的URL  （待定）               
+  “detail_images”:[{图片基本数据结构},{}]			        // 单品的详细图片
  *
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SubjectItem extends BaseItem{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String price;
 	private String price_range;
 	private String en_name;
@@ -33,6 +41,10 @@ public class SubjectItem extends BaseItem{
 	private String introduction_des;
 	private String introduction_image;
 	private ArrayList<LinkItem>   refer_items;
+	
+	private int shop_nums;
+	private String buy_url;
+	private ArrayList<ImageBean> detail_images;
 	
 	public String getPrice() {
 		return price;
@@ -99,6 +111,24 @@ public class SubjectItem extends BaseItem{
 	}
 	public void setRefer_items(ArrayList<LinkItem> refer_items) {
 		this.refer_items = refer_items;
+	}
+	public int getShop_nums() {
+		return shop_nums;
+	}
+	public void setShop_nums(int shop_nums) {
+		this.shop_nums = shop_nums;
+	}
+	public String getBuy_url() {
+		return buy_url;
+	}
+	public void setBuy_url(String buy_url) {
+		this.buy_url = buy_url;
+	}
+	public ArrayList<ImageBean> getDetail_images() {
+		return detail_images;
+	}
+	public void setDetail_images(ArrayList<ImageBean> detail_images) {
+		this.detail_images = detail_images;
 	}
 	
 	

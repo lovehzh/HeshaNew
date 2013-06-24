@@ -160,4 +160,10 @@ public class Utils {
 		return baseItem;
 	}
 	
+	public static String replayDigital(String source, int num) {
+		String target = "";
+		target = source.replace("[#]", String.valueOf(num));
+		return target;
+	}
+	
 }

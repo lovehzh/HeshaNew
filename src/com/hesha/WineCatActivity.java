@@ -246,6 +246,7 @@ public class WineCatActivity extends Activity implements Constants, OnItemClickL
 			
 		case R.id.grid:
 			Intent intent = new Intent(this, ChoiceResultActivity.class);
+			intent.putExtra("intention", intentions.get(position));
 			startActivity(intent);
 			break;
 
