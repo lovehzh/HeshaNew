@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.adapter.IntentionAdapter;
 import com.hesha.adapter.WineCatAdapter;
+import com.hesha.bean.choice.Filter;
 import com.hesha.bean.choice.Intention;
 import com.hesha.bean.choice.WineCatBean;
 import com.hesha.bean.choice.WineCatStruct;
@@ -63,6 +64,8 @@ public class WineCatActivity extends Activity implements Constants, OnItemClickL
     private GridView grid;
     private IntentionAdapter intentionAdapter;
     private ArrayList<Intention> intentions;
+    private WineCatBean wineCatBean;
+    private ArrayList<Filter> filters;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -228,12 +231,13 @@ public class WineCatActivity extends Activity implements Constants, OnItemClickL
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 		switch (adapterView.getId()) {
 		case R.id.list:
-			WineCatBean bean = beans.get(position);
+			wineCatBean = beans.get(position);
+			filters = wineCatBean.getFilters();
 			//ivCatIcon
-			tvCatName.setText(bean.getType_name());
-			tvDes.setText(bean.getDes());
+			tvCatName.setText(wineCatBean.getType_name());
+			tvDes.setText(wineCatBean.getDes());
 			
-			intentions = bean.getIntentions();
+			intentions = wineCatBean.getIntentions();
 			intentionAdapter.clear();
 			for(Intention i : intentions) {
 				intentionAdapter.add(i);
@@ -246,7 +250,10 @@ public class WineCatActivity extends Activity implements Constants, OnItemClickL
 			
 		case R.id.grid:
 			Intent intent = new Intent(this, ChoiceResultActivity.class);
+			intent.putExtra("wine_cat_bean", wineCatBean);
 			intent.putExtra("intention", intentions.get(position));
+			intent.putExtra("intentions", intentions);
+			intent.putExtra("filters", filters);
 			startActivity(intent);
 			break;
 

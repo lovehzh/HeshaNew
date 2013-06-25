@@ -87,6 +87,7 @@
     <string name="hot">热门</string>
     <string name="price">价格</string>
     <string name="list">列表</string>
+    <string name="filter">筛选</string>
     <string name="filter_goods">筛选商品</string>
     <string name="go_and_buy">￥[#] | 去购买</string>
     <string name="expert_comment_number">达人点评([#]条)</string>
@@ -106,4 +107,11 @@
     <string name="menu_settings">Settings</string>
 	<string name="github">GitHub</string>
     <string name="github_label">SlidingMenu on GitHub</string>
+    
+    <string-array name="select_dialog_items2">
+        <item>Map</item>
+        <item>Satellite</item>
+        <item>Traffic</item>
+        <item>Street view</item>
+    </string-array>
 </resources>

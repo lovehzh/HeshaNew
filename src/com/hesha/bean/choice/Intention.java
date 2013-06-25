@@ -25,4 +25,10 @@ public class Intention implements Serializable{
 		this.intention_name = intention_name;
 	}
 	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return intention_name;
+	}
+	
 }

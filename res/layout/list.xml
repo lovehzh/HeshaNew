@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/list"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/list_padding"
-    android:paddingRight="@dimen/list_padding" />
+    android:orientation="vertical"
+    android:background="#626262"
+    >
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/filter"
+	        android:layout_centerInParent="true"
+	        android:textColor="@color/white"
+	        android:textSize="23sp"
+	        />
+        
+        <Button 
+            android:id="@+id/btn_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done"
+            android:textColor="@color/white"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+    
+    
+    <ListView 
+	    android:id="@android:id/list"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:paddingLeft="@dimen/list_padding"
+	    android:paddingRight="@dimen/list_padding"
+	    android:cacheColorHint="#00000000"
+	     />
+</LinearLayout>
+
