@@ -9,6 +9,7 @@
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="6dip"
         >
         <TextView 
 	        android:layout_width="wrap_content"
@@ -26,6 +27,7 @@
             android:text="@string/done"
             android:textColor="@color/white"
             android:layout_alignParentRight="true"
+            android:background="@drawable/filter_wine_done_select"
             />
     </RelativeLayout>
     

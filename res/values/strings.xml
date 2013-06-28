@@ -89,16 +89,22 @@
     <string name="list">列表</string>
     <string name="filter">筛选</string>
     <string name="filter_goods">筛选商品</string>
-    <string name="go_and_buy">￥[#] | 去购买</string>
+    <string name="compare_and_buy">比比价再购买</string>
+    <string name="go_and_buy">￥[#] | 直接买</string>
     <string name="expert_comment_number">达人点评([#]条)</string>
     <string name="normal_comment_number">大家点评([#]条)</string>
     <string name="sailers_number">以下商家在卖这款酒([#]个商家)</string>
+    <string name="find_these_goods">共找到[#]件商品</string>
     <string name="look_vedio">查看点评视频>></string>
     <string name="goods_details">商品详情</string>
+    <string name="please_select_property">请选择对象属性</string>
+    
+    <string name="pls_input_key_words">请输入酒名</string>
     
     <string name="upload_photo">上传照片</string>
-    <string name="from_shot">手机拍照</string>
-    <string name="from_albums">手机相册</string>
+    <string name="upload_photo_tips">赶快上传和这款酒相关的照片吧</string>
+    <string name="from_shot">拍照</string>
+    <string name="from_albums">从手机相册选择</string>
     <string name="upload">上传</string>
     <string name="click_upload">点击上传</string>
     <string name="maohao">:</string>

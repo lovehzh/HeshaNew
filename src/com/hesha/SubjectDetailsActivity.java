@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -45,15 +44,15 @@ import android.widget.Toast;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hesha.adapter.CommentAdapter;
+import com.hesha.adapter.LinkItemAdapter;
 import com.hesha.bean.BaseItem;
 import com.hesha.bean.ColStruct;
 import com.hesha.bean.Collection;
-import com.hesha.bean.CollectionType;
 import com.hesha.bean.Comment;
 import com.hesha.bean.ImageBean;
 import com.hesha.bean.ItemDetailData;
 import com.hesha.bean.ItemDetailStruct;
+import com.hesha.bean.LinkItem;
 import com.hesha.bean.SubjectItem;
 import com.hesha.bean.User;
 import com.hesha.bean.gen.DoActionForItemPar;
@@ -79,20 +78,18 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 	private Button btnBack, btnUploadPhoto;
 	private TextView tvName, tvEnName, tvCatName;
 	private TextView tvPrice, tvLikeNum, tvCollectNum;
-	private Button btnBuy;
+	private Button btnBuy, btnCompare;
 	private WebView webSubjectDes;
 	private TextView tvExpertCommentNum, tvNorCommentNum, tvSailersNum;
 	
 	private ImageView ivItem;
-	private LinearLayout llUserCollected, llUserLiked;
-	private LinearLayout llCollectedDes, llLikedDes;
 	
 	private ListView listView;
-	private CommentAdapter adapter;
 	private ArrayList<Comment> comments;
+	private LinkItemAdapter adapter;
+	private ArrayList<LinkItem> linkItems;
 	
-	private Collection collection;
-	private CollectionType currentColType;
+//	private Collection collection;
 	private BaseItem baseItem;
 	private int commentNum = 20;
 	
@@ -143,11 +140,11 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 		settings = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE);
 		
 		Intent intent = getIntent();
-		collection = (Collection)intent.getSerializableExtra("collection");
-		currentColType = (CollectionType)intent.getSerializableExtra("col_type");
+//		collection = (Collection)intent.getSerializableExtra("collection");
 		baseItem = (BaseItem)intent.getSerializableExtra("base_item");
 		
 		comments = new ArrayList<Comment>();
+		linkItems = new ArrayList<LinkItem>();
 	}
 	
 	private void updateUI(ItemDetailData data) {
@@ -215,15 +212,18 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 		tvNorCommentNum = (TextView)llHeader.findViewById(R.id.tv_normal_comment_num);
 		tvSailersNum = (TextView)llHeader.findViewById(R.id.tv_sailers_num);
 		
-		btnBuy = (Button)llHeader.findViewById(R.id.btn_buy);
+		btnBuy = (Button)findViewById(R.id.btn_buy);
 		btnBuy.setOnClickListener(this);
 		
+		btnCompare = (Button)findViewById(R.id.btn_compare_price);
+		btnCompare.setOnClickListener(this);
+		
 		listView = (ListView)findViewById(R.id.list);
-		adapter = new CommentAdapter(this, android.R.layout.simple_list_item_1, comments, listView);
+		adapter = new LinkItemAdapter(this, android.R.layout.simple_list_item_1, linkItems);
 		listView.addHeaderView(llHeader);
 		listView.setAdapter(adapter);
 //		listView.setOnScrollListener(this);
-//		listView.setOnItemClickListener(this);
+		listView.setOnItemClickListener(this);
 		
 		updateUI(null);
 		
@@ -398,7 +398,7 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 				startActivityForResult(intent, Constants.INTENT_CODE_ITEM_DETAIL);
 			} else {
 				intent =new Intent(this, FavoriteActivity.class);
-				intent.putExtra("collection", collection);
+//				intent.putExtra("collection", collection);
 				intent.putExtra("base_item", baseItem);
 				startActivity(intent);
 			}
@@ -443,7 +443,7 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 //				}else {
 					intent = new Intent(this, CommentsActivity.class);
 					intent.putExtra("base_item", baseItem);
-					intent.putExtra("collection", collection);
+//					intent.putExtra("collection", collection);
 					intent.putExtra("request_type", Constants.FROM_ITEM_ID);
 					startActivity(intent);
 //				}
@@ -475,6 +475,10 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 				}
 			}
 			break;
+			
+		case R.id.btn_compare_price:
+			listView.setSelection(1);
+			break;
 		default:
 			break;
 		}
@@ -487,7 +491,7 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 		switch (requestCode) {
 		case Constants.INTENT_CODE_ITEM_DETAIL:
 			Intent intent =new Intent(this, FavoriteActivity.class);
-			intent.putExtra("collection", collection);
+//			intent.putExtra("collection", collection);
 			intent.putExtra("base_item", baseItem);
 			startActivity(intent);
 			break;
@@ -523,7 +527,15 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-		
+		LinkItem linkItem = linkItems.get(position - 1);
+		String buyUrl = linkItem.getProduct_url();
+		if(null != buyUrl) {
+			Intent intent = new Intent(Intent.ACTION_VIEW);  
+			intent.setData(Uri.parse(buyUrl));  
+			startActivity(intent);  
+		}else {
+			Toast.makeText(this, "没有可用的链接", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	private void loadPicture() {
@@ -607,12 +619,14 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 						ArrayList<Comment> normalComments =  data.getOther_comment();
 						
 						ArrayList<Comment> expertComments =  data.getExpert_comment();
-						if(null != normalComments) {
+						
+						//链接商品 比比价
+						if(baseItem instanceof SubjectItem) {
+							linkItems = ((SubjectItem)baseItem).getRefer_items();
 							adapter.clear();
-							for(Comment c : normalComments) {
-								adapter.add(c);
+							for(LinkItem obj : linkItems) {
+								adapter.add(obj);
 							}
-//							rlTips.setVisibility(View.GONE);
 							adapter.notifyDataSetChanged();
 						}
 						

@@ -76,7 +76,6 @@ public class WineCatAdapter extends ArrayAdapter<WineCatBean>{
 //		
 //		iv.setImageDrawable(cacheImagePictureContent);
 		
-		
 		return convertView;
 	}
 	

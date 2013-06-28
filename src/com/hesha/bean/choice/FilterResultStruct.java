@@ -11,13 +11,14 @@ public class FilterResultStruct implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int count;
+	private int counts;
 	private ArrayList<BaseItem> subjects;
-	public int getCount() {
-		return count;
+	
+	public int getCounts() {
+		return counts;
 	}
-	public void setCount(int count) {
-		this.count = count;
+	public void setCounts(int counts) {
+		this.counts = counts;
 	}
 	public ArrayList<BaseItem> getSubjects() {
 		return subjects;

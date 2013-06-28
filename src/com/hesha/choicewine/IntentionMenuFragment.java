@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class IntentionFragment extends ListFragment {
+public class IntentionMenuFragment extends ListFragment {
 	private ArrayList<Intention> intentions;
 	private Button btnDone;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,18 +59,19 @@ public class IntentionFragment extends ListFragment {
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Fragment newContent = new IntentionFragment();
-		switchFragment(newContent, position);
+		Fragment newContent = new ChoiceAboveFragment(position);
+		if (newContent != null)
+			switchFragment(newContent);
 	}
 	
 	// the meat of switching the above fragment
-		private void switchFragment(Fragment fragment, int index) {
+		private void switchFragment(Fragment fragment) {
 			if (getActivity() == null)
 				return;
 
 			if (getActivity() instanceof ChoiceResultActivity) {
 				ChoiceResultActivity ra = (ChoiceResultActivity) getActivity();
-				ra.switchContent(fragment, index);
+				ra.switchContent(fragment);
 			}
 		}
 }

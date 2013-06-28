@@ -41,7 +41,7 @@
         android:layout_gravity="center_vertical"
         android:background="#FFFFFFFF"
         android:cacheColorHint="#00000000"
-        android:divider="#bfc884"
+        android:divider="@drawable/subject_splite"
         android:dividerHeight="1dip"
         android:gravity="center_vertical"
         android:scrollbars="none" />
@@ -106,5 +106,38 @@
             android:clickable="true" >
         </com.hesha.widget.CustomButton>
     </LinearLayout>
+    
+	<RelativeLayout 
+	    android:id="@+id/rl_buy"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_marginBottom="125dip"
+	    >
+	    <Button
+	            android:id="@+id/btn_compare_price"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/compare_and_buy"
+	            android:background="@drawable/price_btn_blue_selector"
+	            android:textColor="#ffffff"
+	            android:layout_alignParentRight="true"
+	            android:paddingRight="6dip"
+	             />
+	
+	        <Button
+	            android:id="@+id/btn_buy"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/btn_compare_price"
+	            android:text="@string/go_and_buy"
+	            android:background="@drawable/price_btn_red_selector"
+	            android:textColor="#ffffff"
+	            android:layout_alignParentRight="true"
+	            android:paddingRight="6dip"
+	            android:layout_marginTop="6dip"
+	             />
+	</RelativeLayout>
+	    
 
 </RelativeLayout>

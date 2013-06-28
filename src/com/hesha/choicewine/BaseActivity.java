@@ -32,7 +32,7 @@ public class BaseActivity extends SlidingFragmentActivity {
 		setBehindContentView(R.layout.menu_frame);
 		if (savedInstanceState == null) {
 			FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
-			mFrag = new IntentionFragment();
+			mFrag = new IntentionMenuFragment();
 			t.replace(R.id.menu_frame, mFrag);
 			t.commit();
 		} else {
@@ -45,6 +45,7 @@ public class BaseActivity extends SlidingFragmentActivity {
 //		sm.setShadowDrawable(R.drawable.shadow);
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		sm.setFadeDegree(0.35f);
+//		sm.attachToActivity(BaseActivity.this, SlidingMenu.SLIDING_CONTENT);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);//是否启用action 

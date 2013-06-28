@@ -8,11 +8,12 @@
      
     <TextView 
         android:id="@+id/tv_title"
-        android:text="@string/upload_photo"
+        android:text="@string/upload_photo_tips"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_marginTop="5dip"
+        android:textColor="@color/white"
         />
 
     <Button 
@@ -25,6 +26,8 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_below="@+id/tv_title"
+        android:textStyle="bold"
+        android:textSize="21sp"
         />
     
     <Button 
@@ -37,6 +40,8 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_below="@+id/btn_from_shot"
+        android:textStyle="bold"
+        android:textSize="21sp"
         />
     
     <Button 
@@ -51,6 +56,8 @@
         android:layout_marginRight="10dip"
         android:layout_marginBottom="10dip"
         android:layout_below="@+id/btn_from_albums"
+        android:textStyle="bold"
+        android:textSize="21sp"
         />
 
 </RelativeLayout>

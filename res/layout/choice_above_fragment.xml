@@ -4,7 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/default_bg"
      >
+     
+    <RelativeLayout 
+        android:id="@+id/rl_top" 
+        style="@style/TitleBackground"
+        >
+        <Button
+	        android:id="@+id/btn_back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:background="@drawable/back_1_selector"
+	        />
+        
+        <TextView 
+            android:id="@+id/tv_title"
+            style="@style/title1"
+	        android:text="@string/title"
+	        android:layout_centerInParent="true"
+	        android:layout_toRightOf="@+id/btn_back"
+	        android:layout_marginLeft="5dip"
+            />
+        
+        <Button
+	        android:id="@+id/btn_search"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="6dip"
+	        android:background="@drawable/search_selector"
+	        />
+        
+    </RelativeLayout>
     
     <LinearLayout 
         android:layout_width="fill_parent"
@@ -54,7 +89,8 @@
             />
     </LinearLayout>
     
-    <LinearLayout 
+    <LinearLayout
+        android:id="@+id/ll_buttons" 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/choice_filter_btn_bg"

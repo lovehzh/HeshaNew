@@ -112,6 +112,7 @@ public class WineCatActivity extends Activity implements Constants, OnItemClickL
 		tvDes = (TextView)llRowChoiceCat.findViewById(R.id.tv_des);
 		
 		grid = (GridView)findViewById(R.id.grid);
+		grid.setSelector(R.drawable.hide_listview_yellow_selector);
 		intentionAdapter = new IntentionAdapter(this, intentions);
 		grid.setAdapter(intentionAdapter);
 		grid.setOnItemClickListener(this);
@@ -254,6 +255,7 @@ public class WineCatActivity extends Activity implements Constants, OnItemClickL
 			intent.putExtra("intention", intentions.get(position));
 			intent.putExtra("intentions", intentions);
 			intent.putExtra("filters", filters);
+			intent.putExtra("position", position);
 			startActivity(intent);
 			break;
 
