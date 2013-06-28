@@ -59,7 +59,16 @@
                 android:maxWidth="200dip"
                 android:layout_marginTop="10dip"
                 android:layout_marginBottom="10dip"
+                android:visibility="gone"
                 />
+            
+            <com.hesha.widget.HorizontalListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                
+            </com.hesha.widget.HorizontalListView>
 	        
 	        
 	        
