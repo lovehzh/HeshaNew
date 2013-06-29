@@ -5,12 +5,14 @@ package com.hesha;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,11 +21,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -31,10 +39,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.bean.BaseStruct;
 import com.hesha.bean.SubjectItem;
-import com.hesha.bean.personal.Code;
+import com.hesha.bean.choice.UploadPhotoBean;
 import com.hesha.constants.Constants;
 import com.hesha.utils.ImageUpload;
 import com.hesha.utils.Storage;
+import com.hesha.widget.HorizontalListView;
 
 
 public class ActivityUploadPhoto extends Activity implements OnClickListener{
@@ -48,6 +57,10 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 	private File photoFile;
 	private SubjectItem subjectItem;
 	
+	private ImageAdapter adapter;
+	private HorizontalListView list;
+	private ArrayList<UploadPhotoBean> beans;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -60,6 +73,13 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 	
 	private void initData() {
 		settings = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE);
+		beans = new ArrayList<UploadPhotoBean>();
+		for(int i=0; i<5; i++) {
+			UploadPhotoBean bean = new UploadPhotoBean();
+			bean.setFileName(i + "");
+			bean.setTitle(i + "");
+			beans.add(bean);
+		}
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
@@ -70,6 +90,8 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 				+ "/product_photo.jpg");
 		Storage.writeBitmapToExternalStorage(photoFile, photo);
 		Log.i(TAG, "bitmap:" + photo);
+		
+		
 	}
 	
 	private void initComponent() {
@@ -86,6 +108,14 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 		
 		btnSubmit = (Button)findViewById(R.id.btn_submit);
 		btnSubmit.setOnClickListener(this);
+		
+//		LayoutInflater inflater = getLayoutInflater();
+//		LinearLayout footView = (LinearLayout)inflater.inflate(R.layout.item_of_upload_add, null);
+		
+		adapter = new ImageAdapter(this, android.R.layout.simple_list_item_1, beans);
+		list = (HorizontalListView)findViewById(R.id.listView);
+//		list.addView(footView);
+		list.setAdapter(adapter);
 	}
 
 	@Override
@@ -271,6 +301,36 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 		result += code;
 		
 		return result;
+	}
+	
+	
+	private class ImageAdapter extends ArrayAdapter<UploadPhotoBean>{
+		private ArrayList<UploadPhotoBean> beans;
+		private Context context;
+		public ImageAdapter(Context context,
+				int textViewResourceId, ArrayList<UploadPhotoBean> beans) {
+			super(context, textViewResourceId, beans);
+			this.context = context;
+			this.beans = beans;
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater inflater = LayoutInflater.from(context);
+			if(position == beans.size() -1 ) {
+				convertView = inflater.inflate(R.layout.item_of_upload_add, null);
+			}else {
+				convertView = inflater.inflate(R.layout.item_of_upload_list, null);
+			}
+			
+			
+			
+//			ImageView iv = (ImageView)convertView.findViewById(R.id.image_mask);
+//			iv.setBackgroundResource(R.drawable.image_upload_mask);
+			Log.i(TAG, "xx" + position);
+			return convertView;
+		}
+		
 	}
 	
 	

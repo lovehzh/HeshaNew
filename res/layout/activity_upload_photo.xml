@@ -36,10 +36,19 @@
             />
     </RelativeLayout>
     
+    <com.hesha.widget.HorizontalListView
+                android:id="@+id/listView"
+                android:layout_below="@+id/head"
+                android:layout_width="match_parent"
+                android:layout_height="150dip"
+                >
+                
+            </com.hesha.widget.HorizontalListView>
+    
     <ScrollView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/head"
+        android:layout_below="@+id/listView"
         >
         <LinearLayout 
             android:layout_width="match_parent"
@@ -61,15 +70,15 @@
                 android:layout_marginBottom="10dip"
                 android:visibility="gone"
                 />
-            
+            <!--  
             <com.hesha.widget.HorizontalListView
-                android:id="@+id/list"
+                android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
                 
             </com.hesha.widget.HorizontalListView>
-	        
+	        -->
 	        
 	        
 	        
