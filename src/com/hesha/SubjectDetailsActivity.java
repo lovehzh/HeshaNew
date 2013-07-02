@@ -527,14 +527,16 @@ public class SubjectDetailsActivity extends Activity implements OnClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-		LinkItem linkItem = linkItems.get(position - 1);
-		String buyUrl = linkItem.getProduct_url();
-		if(null != buyUrl) {
-			Intent intent = new Intent(Intent.ACTION_VIEW);  
-			intent.setData(Uri.parse(buyUrl));  
-			startActivity(intent);  
-		}else {
-			Toast.makeText(this, "没有可用的链接", Toast.LENGTH_SHORT).show();
+		if(adapter.getId() == R.id.list) {
+			LinkItem linkItem = linkItems.get(position - 1);
+			String buyUrl = linkItem.getProduct_url();
+			if(null != buyUrl) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);  
+				intent.setData(Uri.parse(buyUrl));  
+				startActivity(intent);  
+			}else {
+				Toast.makeText(this, "没有可用的链接", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 	

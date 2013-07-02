@@ -87,6 +87,7 @@
     <string name="hot">热门</string>
     <string name="price">价格</string>
     <string name="list">列表</string>
+    <string name="grid">表格</string>
     <string name="filter">筛选</string>
     <string name="filter_goods">筛选商品</string>
     <string name="compare_and_buy">比比价再购买</string>
@@ -95,6 +96,9 @@
     <string name="normal_comment_number">大家点评([#]条)</string>
     <string name="sailers_number">以下商家在卖这款酒([#]个商家)</string>
     <string name="find_these_goods">共找到[#]件商品</string>
+    <string name="unit_price">￥[#]</string>
+    <string name="there_are_sailers">[#]个卖家</string>
+    
     <string name="look_vedio">查看点评视频>></string>
     <string name="goods_details">商品详情</string>
     <string name="please_select_property">请选择对象属性</string>

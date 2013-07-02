@@ -1,8 +1,5 @@
 package com.hesha;
 
-
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,16 +19,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -42,8 +36,8 @@ import com.hesha.bean.SubjectItem;
 import com.hesha.bean.choice.UploadPhotoBean;
 import com.hesha.constants.Constants;
 import com.hesha.utils.ImageUpload;
+import com.hesha.utils.SelectPhoto;
 import com.hesha.utils.Storage;
-import com.hesha.widget.HorizontalListView;
 
 
 public class ActivityUploadPhoto extends Activity implements OnClickListener{
@@ -57,10 +51,10 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 	private File photoFile;
 	private SubjectItem subjectItem;
 	
-	private ImageAdapter adapter;
-	private HorizontalListView list;
 	private ArrayList<UploadPhotoBean> beans;
-	
+	private LinearLayout llView;
+	private ImageView ivAddItem;
+	private ArrayList<View> itemViews;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -74,12 +68,14 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 	private void initData() {
 		settings = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE);
 		beans = new ArrayList<UploadPhotoBean>();
-		for(int i=0; i<5; i++) {
+		for(int i=0; i<1; i++) {
 			UploadPhotoBean bean = new UploadPhotoBean();
 			bean.setFileName(i + "");
 			bean.setTitle(i + "");
 			beans.add(bean);
 		}
+		
+		itemViews = new ArrayList<View>();
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
@@ -109,13 +105,75 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 		btnSubmit = (Button)findViewById(R.id.btn_submit);
 		btnSubmit.setOnClickListener(this);
 		
-//		LayoutInflater inflater = getLayoutInflater();
-//		LinearLayout footView = (LinearLayout)inflater.inflate(R.layout.item_of_upload_add, null);
+		llView = (LinearLayout)findViewById(R.id.ll_view);
+		LayoutInflater inflater = LayoutInflater.from(this);
 		
-		adapter = new ImageAdapter(this, android.R.layout.simple_list_item_1, beans);
-		list = (HorizontalListView)findViewById(R.id.listView);
-//		list.addView(footView);
-		list.setAdapter(adapter);
+		View addView = inflater.inflate(R.layout.item_of_upload_add, null);
+		ivAddItem = (ImageView)addView.findViewById(R.id.iv_add_item);
+		ivAddItem.setOnClickListener(this);
+		
+		for(int i=0; i<beans.size(); i++) {
+			View itemView = inflater.inflate(R.layout.item_of_upload_list, null);
+			itemView.setTag(i);
+			itemViews.add(itemView);
+			
+			ImageView image = (ImageView)itemView.findViewById(R.id.image);
+			if(null != photo) image.setImageBitmap(photo); 
+			
+			final LinearLayout llColse = (LinearLayout)itemView.findViewById(R.id.btnClose);
+			if(i == 0) {
+				llColse.setVisibility(View.VISIBLE);
+				itemView.findViewById(R.id.image_mask).setVisibility(View.INVISIBLE);
+				itemView.findViewById(R.id.item_of_upload_list).setBackgroundResource(R.drawable.upload_photo_focus_bg);
+			}else {
+				llColse.setVisibility(View.INVISIBLE);
+			}
+			llColse.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(ActivityUploadPhoto.this, "hello", Toast.LENGTH_SHORT).show();
+				}
+			});
+			
+			itemView.setOnTouchListener(new View.OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					int position = Integer.valueOf(v.getTag().toString());
+					for(int i=0; i<itemViews.size(); i++) {
+						View temp = itemViews.get(i);
+						if(i == position) {
+							temp.findViewById(R.id.btnClose).setVisibility(View.VISIBLE);
+							temp.findViewById(R.id.image_mask).setVisibility(View.INVISIBLE);
+							temp.findViewById(R.id.item_of_upload_list).setBackgroundResource(R.drawable.upload_photo_focus_bg);
+							
+						}else {
+							temp.findViewById(R.id.btnClose).setVisibility(View.INVISIBLE);
+							temp.findViewById(R.id.image_mask).setVisibility(View.VISIBLE);
+							temp.findViewById(R.id.item_of_upload_list).setBackgroundResource(R.drawable.upload_photo_normal_bg);
+						}
+					}
+					
+//					for(int i=0; i< beans.size(); i++) {
+//						Log.i("touch", Integer.valueOf(v.getTag().toString()) + "  i=" +i);
+//						if(i == Integer.valueOf(v.getTag().toString())) {
+//							llColse.setVisibility(View.VISIBLE);
+//						}else {
+//							llColse.setVisibility(View.INVISIBLE);
+//						}
+//						
+//					}
+					
+					return false;
+				}
+			});
+			
+			
+			llView.addView(itemView);
+		}
+		
+		
+		llView.addView(addView);
 	}
 
 	@Override
@@ -158,6 +216,10 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 						photoFile.getAbsolutePath()).execute((Void)null);
 			}
 			
+			break;
+			
+		case R.id.iv_add_item:
+			SelectPhoto.getRiseUpDialog(this);
 			break;
 			
 
@@ -304,34 +366,7 @@ public class ActivityUploadPhoto extends Activity implements OnClickListener{
 	}
 	
 	
-	private class ImageAdapter extends ArrayAdapter<UploadPhotoBean>{
-		private ArrayList<UploadPhotoBean> beans;
-		private Context context;
-		public ImageAdapter(Context context,
-				int textViewResourceId, ArrayList<UploadPhotoBean> beans) {
-			super(context, textViewResourceId, beans);
-			this.context = context;
-			this.beans = beans;
-		}
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = LayoutInflater.from(context);
-			if(position == beans.size() -1 ) {
-				convertView = inflater.inflate(R.layout.item_of_upload_add, null);
-			}else {
-				convertView = inflater.inflate(R.layout.item_of_upload_list, null);
-			}
-			
-			
-			
-//			ImageView iv = (ImageView)convertView.findViewById(R.id.image_mask);
-//			iv.setBackgroundResource(R.drawable.image_upload_mask);
-			Log.i(TAG, "xx" + position);
-			return convertView;
-		}
-		
-	}
+	
 	
 	
 }

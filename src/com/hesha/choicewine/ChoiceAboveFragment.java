@@ -2,17 +2,16 @@ package com.hesha.choicewine;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,12 +23,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,10 +43,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hesha.R;
 import com.hesha.SubjectDetailsActivity;
-import com.hesha.adapter.ImageAndTextListAdapter;
+import com.hesha.adapter.SubjectItemListAdapter;
 import com.hesha.bean.BaseItem;
 import com.hesha.bean.SubjectItem;
-import com.hesha.bean.choice.Filter;
 import com.hesha.bean.choice.FilterResultData;
 import com.hesha.bean.choice.FilterResultStruct;
 import com.hesha.bean.choice.Intention;
@@ -52,13 +53,18 @@ import com.hesha.bean.choice.SearchResultData;
 import com.hesha.bean.choice.SearchResultStruct;
 import com.hesha.bean.choice.WineCatBean;
 import com.hesha.constants.Constants;
+import com.hesha.constants.SortType;
 import com.hesha.utils.HttpUrlConnectionUtils;
 import com.hesha.utils.MyDialog;
 import com.hesha.utils.TimeoutErrorDialog;
 import com.hesha.utils.Utils;
+import com.hesha.widget.DataLoader;
+import com.hesha.widget.DataLoader.OnCompletedListener;
+import com.hesha.widget.FooterView;
+import com.hesha.widget.ItemAdapter;
 
 public class ChoiceAboveFragment extends Fragment implements OnClickListener,
-		OnItemClickListener {
+		OnItemClickListener, OnScrollListener, OnCompletedListener {
 	private static final String TAG = "ChoiceAboveFragment";
 	private static InputMethodManager imm;
 	private static Activity activity;
@@ -66,7 +72,6 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 	private WineCatBean wineCatBean;
 	private Intention intention;
 	private ArrayList<Intention> intentions;
-	private ArrayList<Filter> filters;
 
 	private Button btnIntention, btnFilter;
 	private ArrayList<BaseItem> items;
@@ -76,9 +81,21 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 	
 	private Button btnBack, btnSearch;
 	private TextView tvTitle;
+	
+	private LinearLayout llHot, llPrice, llDisplayStyle;
+	private TextView tvHot, tvPrice, tvDisplayStyle;
+	
 
 	private GridView gridView;
-	private ImageAndTextListAdapter adapter;
+//	private ImageAndTextListAdapter adapter;
+	private ItemAdapter adapter;
+	
+	private DataLoader loader;
+	private boolean isLoadFinished;
+	private HashMap<String, String> loaderMap = new HashMap<String, String>();
+	
+	private ListView list;
+	private SubjectItemListAdapter listAdapter;
 
 	private RelativeLayout rlTips;
 	private TextView tvTipText;
@@ -139,17 +156,16 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 			intention = intentions.get(mPos);
 		}
 		
-		filters = (ArrayList<Filter>) b1.getSerializable("filters");
 
 		typeId = wineCatBean.getType_id();
 		intentionId = intention.getIntention_id();
-		pageSize = 10;
-		sortType = 1;
+		pageSize = 20;
+		sortType = SortType.LIKE.getValue();
 		orderType = Constants.ASC;
 		parameter = b1.getString("parameter");
 
 		items = new ArrayList<BaseItem>();
-		loadData();
+//		loadData();
 	}
 	
 
@@ -177,17 +193,100 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 		btnFilter.setOnClickListener(this);
 		
 		llButtons = (LinearLayout) activity.findViewById(R.id.ll_buttons);
-
+		
+		llHot = (LinearLayout)activity.findViewById(R.id.ll_hot);
+		llHot.setOnClickListener(this);
+		tvHot = (TextView)activity.findViewById(R.id.tv_hot);
+		
+		llPrice = (LinearLayout)activity.findViewById(R.id.ll_price);
+		llPrice.setOnClickListener(this);
+		tvPrice = (TextView)activity.findViewById(R.id.tv_price);
+		
+		llDisplayStyle = (LinearLayout)activity.findViewById(R.id.ll_display_style);
+		llDisplayStyle.setOnClickListener(this);
+		tvDisplayStyle = (TextView)activity.findViewById(R.id.tv_display_style);
+		
+		LayoutInflater inflater = activity.getLayoutInflater();
+		headView = (RelativeLayout)inflater.inflate(R.layout.pulldown_header, null);
+		
+		// 实例化底部布局
+        moreView = activity.getLayoutInflater().inflate(R.layout.moredata, null);
+        bt = (Button) moreView.findViewById(R.id.bt_load);
+        pg = (ProgressBar) moreView.findViewById(R.id.pg);
+        handler = new Handler();
+        
+        
 		rlTips = (RelativeLayout) activity.findViewById(R.id.rl_tips);
 		tvTipText = (TextView) activity.findViewById(R.id.pulldown_header_text);
 		pdTips = (ProgressBar) activity
 				.findViewById(R.id.pulldown_header_loading);
 
 		gridView = (GridView) activity.findViewById(R.id.grid);
-		adapter = new ImageAndTextListAdapter(activity, items, gridView);
-		gridView.setAdapter(adapter);
-		gridView.setOnItemClickListener(this);
+//		adapter = new ImageAndTextListAdapter(activity, items, gridView);
+//		adapter = new ItemAdapter(activity, items, gridView);
+//		gridView.setAdapter(adapter);
+//		gridView.setOnItemClickListener(this);
+		//beginIndex, pageSize, sortType, orderType, parameter
+		initGridView();
+		loaderMap.put("beginIndex", String.valueOf(beginIndex));
+		loaderMap.put("pageSize", String.valueOf(pageSize));
+		loaderMap.put("sortType", String.valueOf(sortType));
+		loaderMap.put("orderType", String.valueOf(orderType));
+		loaderMap.put("parameter", parameter);
+		loaderMap.put("typeId", String.valueOf(typeId));
+		loaderMap.put("intentionId", String.valueOf(intentionId));
+
+		loader = new DataLoader(activity);
+		loader.setOnCompletedListerner(this);
+		loader.startLoading(loaderMap);
+		
+		list = (ListView) activity.findViewById(R.id.list);
+		listAdapter = new SubjectItemListAdapter(activity, android.R.layout.simple_list_item_1, items, list);
+		list.setAdapter(listAdapter);
+		list.setOnScrollListener(this);
 	}
+	
+	private void initGridView() {
+		adapter = new ItemAdapter(activity, items, gridView);
+		adapter.setOnFooterViewClickListener(this);
+		gridView.setAdapter(adapter);
+		gridView.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+					if (view.getLastVisiblePosition() == (view.getCount() - 1)
+							&& !isLoadFinished
+							&& adapter.getFooterView().getStatus() != FooterView.LOADING) {
+						loadMoreDataGrid();
+
+					}
+				}
+
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+
+			}
+		});
+	}
+	
+	private void loadMoreDataGrid() {
+		if (loader != null) {
+
+			beginIndex = beginIndex + 1;
+			loaderMap.put("beginIndex", beginIndex + "");
+			if (adapter != null) {
+				adapter.setFooterViewStatus(FooterView.LOADING);
+			}
+
+			loader.startLoading(loaderMap);
+		}
+	}
+	
 
 	@Override
 	public void onClick(View v) {
@@ -211,11 +310,94 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 			getSearchDialog(activity);
 			
 			break;
+			
+		case R.id.ll_hot:
+			if(sortType == SortType.PRICE.getValue()) {
+				//加载数据 防止重复点击
+				sortType = SortType.LIKE.getValue();
+				orderType = Constants.DES;
+			}
+			
+			loaderMap.put("sortType", sortType + "");
+			loaderMap.put("orderType", orderType + "");
+			loader.startLoading(loaderMap);
+			break;
+			
+		case R.id.ll_price:
+			if(sortType == SortType.LIKE.getValue()) {
+				sortType = SortType.PRICE.getValue();
+				orderType = Constants.DES;
+			}else {
+				if(orderType == Constants.DES) {
+					orderType = Constants.ASC;
+				}else {
+					orderType = Constants.DES;
+				}
+			}
+			
+			setViewForPrice(orderType);
+			
+			loaderMap.put("sortType", sortType + "");
+			loaderMap.put("orderType", orderType + "");
+			loader.startLoading(loaderMap);
+			break;
+			
+		case R.id.ll_display_style:
+			
+			if(gridView.getVisibility() == View.VISIBLE) {
+				loadData();
+				
+				setViewForDisplayStyle(true);
+				gridView.setVisibility(View.GONE);
+				list.setVisibility(View.VISIBLE);
+				listAdapter.clear();
+				for(BaseItem item : items) {
+					listAdapter.add(item);
+				}
+				
+				if(items.size() == pageSize){
+					list.addFooterView(moreView);
+				}
+				listAdapter.notifyDataSetChanged();
+			}else {
+				setViewForDisplayStyle(false);
+				gridView.setVisibility(View.VISIBLE);
+				list.setVisibility(View.GONE);
+				
+				loaderMap.put("beginIndex", String.valueOf(beginIndex));
+				loader.startLoading(loaderMap);
+			}
+			
+			break;
 
 		default:
 			break;
 		}
 
+	}
+	
+	private void setViewForDisplayStyle(boolean isList) {
+		Drawable drawable = null;
+		if(isList) {
+			drawable = getResources().getDrawable(R.drawable.choice_grid);
+			tvDisplayStyle.setText(getString(R.string.grid));
+		}else {
+			drawable = getResources().getDrawable(R.drawable.choice_list);
+			tvDisplayStyle.setText(getString(R.string.list));
+		}
+		
+		tvDisplayStyle.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+	}
+	
+	private void setViewForPrice(int order) {
+		Drawable drawable = null;
+		if(order == Constants.DES) {
+			drawable = getResources().getDrawable(R.drawable.choice_down_over);
+		}else {
+			drawable = getResources().getDrawable(R.drawable.choice_up);
+		}
+		
+		tvPrice.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
 	}
 
 	@Override
@@ -282,6 +464,31 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 		}).start();
 
 	}
+	
+	private void loadMoreData() {
+		Log.i(TAG, "on loadData");
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				beginIndex = beginIndex + pageSize;
+				Message msg = null;
+				Object struct = null;
+				if(isSearch) {
+					struct = getWineByKeywords(beginIndex, pageSize, sortType, orderType, parameter);
+					msg = mUIHandler.obtainMessage(WHAT_DID_SEARCH);
+				}else {
+					struct = getWineByFilters(typeId,
+							intentionId, beginIndex, pageSize, sortType, orderType,
+							parameter);// 取服务器端数据
+					msg = mUIHandler.obtainMessage(WHAT_DID_MORE);
+				}
+				
+				msg.obj = struct;
+				msg.sendToTarget();
+			}
+		}).start();
+
+	}
 
 	private Handler mUIHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
@@ -293,17 +500,18 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 				totalItems = struct.getCounts();
 				tvTitle.setText(Utils.replayDigital(getString(R.string.find_these_goods), totalItems));
 				if (null != items) {
-					adapter.clear();
+					listAdapter.clear();
 					for (BaseItem item : items) {
-						adapter.add(item);
+						listAdapter.add(item);
 					}
 					rlTips.setVisibility(View.GONE);
-					adapter.notifyDataSetChanged();
+					
+					listAdapter.notifyDataSetChanged();
 				} else {
 					// 筛选时
 					// {"success":true,"error_code":"GB0000000","error_des":"","data":{"counts":"0","subjects":null}}
-					adapter.clear();
-					adapter.notifyDataSetChanged();
+					listAdapter.clear();
+					listAdapter.notifyDataSetChanged();
 
 					tvTipText.setText(getString(R.string.no_record));
 					pdTips.setVisibility(View.INVISIBLE);
@@ -311,30 +519,52 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 				break;
 				
 			case WHAT_DID_SEARCH:
-				SearchResultStruct struct2 = (SearchResultStruct) msg.obj;
-				items = struct2.getItems();
-				totalItems = struct2.getResult_nums();
-				tvTitle.setText(Utils.replayDigital(getString(R.string.find_these_goods), totalItems));
-				if (null != items) {
-					adapter.clear();
-					for (BaseItem item : items) {
-						adapter.add(item);
+//				SearchResultStruct struct2 = (SearchResultStruct) msg.obj;
+//				items = struct2.getItems();
+//				totalItems = struct2.getResult_nums();
+//				tvTitle.setText(Utils.replayDigital(getString(R.string.find_these_goods), totalItems));
+//				if (null != items) {
+//					adapter.clear();
+//					for (BaseItem item : items) {
+//						adapter.add(item);
+//					}
+//					rlTips.setVisibility(View.GONE);
+//					adapter.notifyDataSetChanged();
+//				} else {
+//					// 筛选时
+//					// {"success":true,"error_code":"GB0000000","error_des":"","data":{"counts":"0","subjects":null}}
+//					adapter.clear();
+//					adapter.notifyDataSetChanged();
+//
+//					tvTipText.setText(getString(R.string.no_record));
+//					pdTips.setVisibility(View.INVISIBLE);
+//				}
+				break;
+				
+			case WHAT_DID_MORE:
+				FilterResultStruct struct4 = (FilterResultStruct) msg.obj;
+				items = struct4.getSubjects();
+				if(null != items) {
+					for(BaseItem item : items) {
+						listAdapter.add(item);
 					}
-					rlTips.setVisibility(View.GONE);
-					adapter.notifyDataSetChanged();
-				} else {
-					// 筛选时
-					// {"success":true,"error_code":"GB0000000","error_des":"","data":{"counts":"0","subjects":null}}
-					adapter.clear();
-					adapter.notifyDataSetChanged();
-
-					tvTipText.setText(getString(R.string.no_record));
-					pdTips.setVisibility(View.INVISIBLE);
+					
+//					if(items.size() < pageSize) {
+//						list.removeFooterView(moreView);
+//					}
 				}
+				adapter.notifyDataSetChanged();
 				break;
 				
 			case SEARCH_ACTION:
-				loadData();
+				if(gridView.VISIBLE == View.VISIBLE) {
+					loaderMap.put("isSearch", String.valueOf(true));
+					loaderMap.put("parameter", parameter);
+					loader.startLoading(loaderMap);
+					
+				}else {
+					loadData();
+				}
 				break;
 
 			case CONNECTION_TIME_OUT:
@@ -521,6 +751,66 @@ public class ChoiceAboveFragment extends Fragment implements OnClickListener,
 		}
 
 		return null;
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		// TODO Auto-generated method stub
+		// 计算最后可见条目的索引
+        lastVisibleIndex = firstVisibleItem + visibleItemCount;
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+                && lastVisibleIndex == adapter.getCount() && lastVisibleIndex != 0) {
+            // 当滑到底部时自动加载
+             pg.setVisibility(View.VISIBLE);
+             bt.setVisibility(View.GONE);
+             loadMoreData();
+
+        }
+	}
+
+	@Override
+	public void onCompletedSucceed(List<BaseItem> l) {
+		// 在添加数据之前删除最后的伪造item
+		if (adapter.isFooterViewEnable()) {
+			items.remove(items.get(items.size() - 1));
+		}
+
+		// 分页加载
+		if (l.size() < pageSize || items.size() + l.size() == 10000000) {
+			// 如果加载出来的数目小于指定条数，可视为已全部加载完成
+			isLoadFinished = true;
+			items.addAll(l);
+			adapter.setFootreViewEnable(false);
+			adapter.notifyDataSetChanged();
+		} else {
+			// 还有数据可加载。
+			items.addAll(l);
+			// 伪造一个空项来构造一个footerview;
+			items.add(null);
+			adapter.setFootreViewEnable(true);
+			adapter.notifyDataSetChanged();
+		}
+		
+		rlTips.setVisibility(View.GONE);
+		
+	}
+
+	@Override
+	public void onCompletedFailed(String str) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getCount(int count) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
